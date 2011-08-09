@@ -25,8 +25,8 @@ public class JigsawBoardView extends View {
 	private boolean isBoardInitialized;
 	private JigsawCell[] cells;
 	private Context context;
+	private int emptyCellIndex;
 	View.OnClickListener jigsawCellClickListener;
-	MotionEvent jigsawCellTouchListener;
 
 	public JigsawBoardView(Context context) {
 		super(context);
@@ -36,7 +36,6 @@ public class JigsawBoardView extends View {
 	public JigsawBoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	private void init(final Context context) {
@@ -55,7 +54,6 @@ public class JigsawBoardView extends View {
 	public JigsawBoardView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	/*
@@ -81,7 +79,6 @@ public class JigsawBoardView extends View {
 				cells[currentCell].setJigsawImageIndex(currentCell);
 				cells[currentCell].setClickable(true);
 				cells[currentCell].setOnClickListener(jigsawCellClickListener);
-				// cells[currentCell].onTouchEvent(jigsawCellTouchListener);
 				imageStartX += width;
 				currentCell++;
 			}
@@ -92,7 +89,8 @@ public class JigsawBoardView extends View {
 		cells[currentCell].layout((columns - 1) * width, imageStartY, columns
 				* width, imageStartY + height);
 		cells[currentCell].setJigsawImageIndex(currentCell);
-
+		jigsawCellImages[currentCell] = Bitmap.createScaledBitmap(jigsawImage,
+				width, height, true);
 		// new
 		// AlertDialog.Builder(context).setMessage("w="+height+"\nh="+width+"\nrows"+rows).setNegativeButton("cancle",
 		// null).setTitle("Setting").show();
@@ -112,39 +110,17 @@ public class JigsawBoardView extends View {
 		Paint p1 = new Paint();
 		p1.setStyle(Style.STROKE);
 		p1.setColor(Color.RED);
-		// Bitmap img;
-		// img = setting.getJigwasImage();
-
-		// if (img != null)
-		// canvas.drawBitmap(img, 0, 0, p1);
-		// else
-		// canvas.drawRect(10, 10, getRight() - 10, getBottom() - 10, p1);
-		// int i=0;
-		for (int i = 0; i < cells.length-1; i++) {
-
-			canvas.drawBitmap(jigsawCellImages[cells[i].getJigsawImageIndex()], cells[i].getLeft(),
-			 cells[i].getTop(), p1);
+		for (int i = 0; i < cells.length; i++) {
+			canvas.drawBitmap(jigsawCellImages[cells[i].getJigsawImageIndex()],
+					cells[i].getLeft(), cells[i].getTop(), p1);
 			canvas.drawRect(cells[i].getLeft(), cells[i].getTop(), cells[i]
 					.getRight(), cells[i].getBottom(), p1);
-
 		}
-		// i=5;
-		// canvas.drawBitmap(jigsawCellImages[i], cells[i].getLeft(),
-		// cells[i].getTop(), p1);
-		// i=2;
-		// canvas.drawBitmap(jigsawCellImages[i], cells[i].getLeft(),
-		// cells[i].getTop(), p1);
-		// i=3;
-		// canvas.drawBitmap(jigsawCellImages[i], cells[i].getLeft(),
-		// cells[i].getTop(), p1);
-
 	}
-
 	/*
 	 * initialize game..crop jigsaw image.prepar cells.and draw cells
 	 */
 	public void initBoard(boolean shuffleCells) {
-
 		// new
 		// AlertDialog.Builder(context).setMessage("w="+getWidth()+"\nh="+getHeight()).
 		// setTitle("This Size").show();
@@ -163,7 +139,6 @@ public class JigsawBoardView extends View {
 		if (shuffleCells)
 			shuffleCells();
 		isBoardInitialized = true;
-		// drawBoard();
 	}
 
 	/*
@@ -172,11 +147,13 @@ public class JigsawBoardView extends View {
 	public void shuffleCells(int shuffleCount) {
 		Random r = new Random();
 		for (int i = 0; i < shuffleCount; i++) {
-			int num1 = r.nextInt(cells.length-2);
-			int num2 = r.nextInt(cells.length-2);
-			int tempImageIndex=cells[num1].getJigsawImageIndex();
-			cells[num1].setJigsawImageIndex(cells[num2].getJigsawImageIndex());
-	        cells[num2].setJigsawImageIndex(tempImageIndex);
+			int num1 = r.nextInt(cells.length - 2);
+			int num2 = r.nextInt(cells.length - 2);
+			swapCellsImageIndex(num1,num2);
+			
+			//int tempImageIndex = cells[num1].getJigsawImageIndex();
+			//cells[num1].setJigsawImageIndex(cells[num2].getJigsawImageIndex());
+			//cells[num2].setJigsawImageIndex(tempImageIndex);
 		}
 	}
 
@@ -197,17 +174,71 @@ public class JigsawBoardView extends View {
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
-		int cellIndex=findClickedCellIndex(event.getX(), event.getY());
-		if (cellIndex>0)
-		//new AlertDialog.Builder(context).setMessage(
-			//	cells[cellIndex].getLeft() + " R "+cells[cellIndex].getRight()+" T: "+cells[cellIndex].getTop()+" D "+cells[cellIndex].getBottom()).show();
+		int cellIndex = findClickedCellIndex(event.getX(), event.getY());
+		if (cellIndex > 0)
+		{	// new AlertDialog.Builder(context).setMessage(
+			// cells[cellIndex].getLeft() +
+			// " R "+cells[cellIndex].getRight()+" T: "+cells[cellIndex].getTop()+" D "+cells[cellIndex].getBottom()).show();
+			handelClick(cellIndex);
+
 			new AlertDialog.Builder(context).setMessage(
-					cells[cellIndex].getJigsawImageIndex() + " P "+cells[cellIndex].getCurrentPosition()).show();
-				
-			else
+					cells[cellIndex].getJigsawImageIndex() + " P "
+							+ cells[cellIndex].getCurrentPosition()).show();
+		}
+
+		else
 			new AlertDialog.Builder(context).setMessage("zero").show();
-						
+
 		return true;
+	}
+	
+	public void swapCellsImageIndex(int  cell1,int cell2)
+	{
+		int tempImageIndex = cells[cell1].getJigsawImageIndex();
+		cells[cell1].setJigsawImageIndex(cells[cell2].getJigsawImageIndex());
+		cells[cell2].setJigsawImageIndex(tempImageIndex);
+	}
+	
+	public void handelClick(int  p)
+	{emptyCellIndex=8;
+		try{//Check if Up Cell is free
+			if(cells[p-setting.getBoardRowCount()].getJigsawImageIndex()==emptyCellIndex)
+			{
+				new AlertDialog.Builder(context).setMessage("up").show();
+
+				swapCellsImageIndex(p, p-setting.getBoardRowCount());
+				//cells[p].swapCell(cells[p-puzzleColumn]);
+				
+			}
+		}catch(Exception e){ }
+		try{//Check if Down Cell is free
+			new AlertDialog.Builder(context).setMessage("down").show();
+
+			if(cells[p+setting.getBoardRowCount()].getJigsawImageIndex()==emptyCellIndex)
+			{
+				new AlertDialog.Builder(context).setMessage("left").show();
+
+				//cells[p].swapCell(cells[p+puzzleColumn]);
+				swapCellsImageIndex(p, p+setting.getBoardRowCount());
+			}
+		}catch(Exception e){ }
+		try{//Check if Left Cell is free
+			if(cells[p+1].getJigsawImageIndex()==emptyCellIndex)
+			{
+				new AlertDialog.Builder(context).setMessage("rigt").show();
+
+			//	cells[p].swapCell(cells[p+1]);
+				swapCellsImageIndex(p,p+1);
+			}
+		}catch(Exception e){ }
+		try{//Check if Left Cell is free
+			if(cells[p-1].getJigsawImageIndex()==emptyCellIndex)
+			{
+				//cells[p].swapCell(cells[p-1]);
+				swapCellsImageIndex(p, p-1);
+			}
+		}catch(Exception e){ }
+		
 	}
 
 }
