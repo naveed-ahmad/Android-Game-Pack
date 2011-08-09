@@ -46,7 +46,7 @@ public class JigsawBoardView extends View {
 			@Override
 			public void onClick(View v) {
 				new AlertDialog.Builder(context).setMessage(
-						((JigsawCell) v).getCellCurrentPosition() + "").show();
+						((JigsawCell) v).getCurrentPosition() + "").show();
 			}
 		};
 
@@ -78,7 +78,7 @@ public class JigsawBoardView extends View {
 				cells[currentCell] = new JigsawCell(context);
 				cells[currentCell].layout(imageStartX, imageStartY, imageStartX
 						+ width, imageStartY + height);
-				cells[currentCell].setCellImageIndex(currentCell);
+				cells[currentCell].setJigsawImageIndex(currentCell);
 				cells[currentCell].setClickable(true);
 				cells[currentCell].setOnClickListener(jigsawCellClickListener);
 				// cells[currentCell].onTouchEvent(jigsawCellTouchListener);
@@ -91,7 +91,7 @@ public class JigsawBoardView extends View {
 		cells[currentCell] = new JigsawCell(context);
 		cells[currentCell].layout((columns - 1) * width, imageStartY, columns
 				* width, imageStartY + height);
-		cells[currentCell].setCellImageIndex(currentCell);
+		cells[currentCell].setJigsawImageIndex(currentCell);
 
 		// new
 		// AlertDialog.Builder(context).setMessage("w="+height+"\nh="+width+"\nrows"+rows).setNegativeButton("cancle",
@@ -107,7 +107,7 @@ public class JigsawBoardView extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		if (!isBoardInitialized)
-			initBoard(false);
+			initBoard(true);
 
 		Paint p1 = new Paint();
 		p1.setStyle(Style.STROKE);
@@ -120,10 +120,10 @@ public class JigsawBoardView extends View {
 		// else
 		// canvas.drawRect(10, 10, getRight() - 10, getBottom() - 10, p1);
 		// int i=0;
-		for (int i = 0; i < cells.length; i++) {
+		for (int i = 0; i < cells.length-1; i++) {
 
-			// canvas.drawBitmap(jigsawCellImages[i], cells[i].getLeft(),
-			// cells[i].getTop(), p1);
+			canvas.drawBitmap(jigsawCellImages[cells[i].getJigsawImageIndex()], cells[i].getLeft(),
+			 cells[i].getTop(), p1);
 			canvas.drawRect(cells[i].getLeft(), cells[i].getTop(), cells[i]
 					.getRight(), cells[i].getBottom(), p1);
 
@@ -172,11 +172,11 @@ public class JigsawBoardView extends View {
 	public void shuffleCells(int shuffleCount) {
 		Random r = new Random();
 		for (int i = 0; i < shuffleCount; i++) {
-			int num1 = r.nextInt(cells.length);
-			int num2 = r.nextInt(cells.length);
-			JigsawCell c = cells[num1];
-			cells[num1] = cells[num2];
-			cells[num2] = c;
+			int num1 = r.nextInt(cells.length-2);
+			int num2 = r.nextInt(cells.length-2);
+			int tempImageIndex=cells[num1].getJigsawImageIndex();
+			cells[num1].setJigsawImageIndex(cells[num2].getJigsawImageIndex());
+	        cells[num2].setJigsawImageIndex(tempImageIndex);
 		}
 	}
 
@@ -199,9 +199,12 @@ public class JigsawBoardView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		int cellIndex=findClickedCellIndex(event.getX(), event.getY());
 		if (cellIndex>0)
-		new AlertDialog.Builder(context).setMessage(
-				cells[cellIndex].getLeft() + " R "+cells[cellIndex].getRight()+" T: "+cells[cellIndex].getTop()+" D "+cells[cellIndex].getBottom()).show();
-		else
+		//new AlertDialog.Builder(context).setMessage(
+			//	cells[cellIndex].getLeft() + " R "+cells[cellIndex].getRight()+" T: "+cells[cellIndex].getTop()+" D "+cells[cellIndex].getBottom()).show();
+			new AlertDialog.Builder(context).setMessage(
+					cells[cellIndex].getJigsawImageIndex() + " P "+cells[cellIndex].getCurrentPosition()).show();
+				
+			else
 			new AlertDialog.Builder(context).setMessage("zero").show();
 						
 		return true;

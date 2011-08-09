@@ -39,14 +39,14 @@ public class JigsawCell extends View {
 	/**
 	 * @param cellImageIndex the cellImageIndex to set
 	 */
-	public void setCellImageIndex(int cellImageIndex) {
-		this.cellImageIndex = cellImageIndex;
+	public void setJigsawImageIndex(int jigsawImageIndex) {
+		this.cellImageIndex = jigsawImageIndex;
 	}
 
 	/**
 	 * @return the cellImageIndex
 	 */
-	public int getCellImageIndex() {
+	public int getJigsawImageIndex() {
 		return cellImageIndex;
 	}
 
@@ -60,7 +60,7 @@ public class JigsawCell extends View {
 	/**
 	 * @return the cellCurrentPosition
 	 */
-	public int getCellCurrentPosition() {
+	public int getCurrentPosition() {
 		return cellCurrentPosition;
 	}
 	
