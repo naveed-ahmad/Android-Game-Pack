@@ -33,7 +33,7 @@ public class JigsawSetting extends View {
 		defaultShuffleCount = 10;
 		defaultBoardRowCount = defaultBoardColumnCount = 5;
 		boardColumnCount = boardRowCount = 0;
-		defaultJigsawBoardHeight = defaultJigsawBoardWidth = 475;
+		defaultJigsawBoardHeight = defaultJigsawBoardWidth = (boardHeight>boardWidth ? boardWidth :boardHeight);//use value whose size is less
 		this.setJigsawBoardWidth(boardWidth);
 		this.setJigsawBoardHeight(boardHeight);
 	}
@@ -139,8 +139,9 @@ public class JigsawSetting extends View {
 	 *            the jigsawBoardWidth to set
 	 */
 	public void setJigsawBoardWidth(int jigsawBoardWidth) {
-		this.jigsawBoardWidth = jigsawBoardWidth > defaultJigsawBoardWidth ? jigsawBoardWidth
+		this.jigsawBoardWidth = jigsawBoardWidth  > defaultJigsawBoardWidth ? jigsawBoardWidth
 				: defaultJigsawBoardWidth;
+		//this.jigsawBoardWidth=jigsawBoardWidth;
 	}
 
 	/**
@@ -155,8 +156,9 @@ public class JigsawSetting extends View {
 	 *            the jigsawBoardWidth to set
 	 */
 	public void setJigsawBoardHeight(int jigsawBoardHeight) {
-		this.jigsawBoardHeight = jigsawBoardHeight > defaultJigsawBoardHeight ? jigsawBoardHeight
+	this.jigsawBoardHeight = jigsawBoardHeight > defaultJigsawBoardHeight ? jigsawBoardHeight
 				: defaultJigsawBoardHeight;
+	//this.jigsawBoardHeight=jigsawBoardHeight;
 	}
 
 	/**

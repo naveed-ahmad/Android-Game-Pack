@@ -29,11 +29,39 @@ import android.view.View;
 public class JigsawCell extends View {
   
 	private int cellCurrentPosition;//current position of this cell in board
-	private int cellFinalPosition;//final position in board
+	private int cellImageIndex;//final position in board
 	
 	public JigsawCell(Context context) {
 		super(context);
 		
+	}
+
+	/**
+	 * @param cellImageIndex the cellImageIndex to set
+	 */
+	public void setCellImageIndex(int cellImageIndex) {
+		this.cellImageIndex = cellImageIndex;
+	}
+
+	/**
+	 * @return the cellImageIndex
+	 */
+	public int getCellImageIndex() {
+		return cellImageIndex;
+	}
+
+	/**
+	 * @param cellCurrentPosition the cellCurrentPosition to set
+	 */
+	public void setCellCurrentPosition(int cellCurrentPosition) {
+		this.cellCurrentPosition = cellCurrentPosition;
+	}
+
+	/**
+	 * @return the cellCurrentPosition
+	 */
+	public int getCellCurrentPosition() {
+		return cellCurrentPosition;
 	}
 	
 
