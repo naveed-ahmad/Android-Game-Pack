@@ -44,8 +44,8 @@ public class JigsawBoardView extends View {
 		jigsawCellClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(context).setMessage(
-						((JigsawCell) v).getCurrentPosition() + "").show();
+				// new AlertDialog.Builder(context).setMessage(
+				// ((JigsawCell) v).getCurrentPosition() + "").show();
 			}
 		};
 
@@ -89,12 +89,9 @@ public class JigsawBoardView extends View {
 		cells[currentCell].layout((columns - 1) * width, imageStartY, columns
 				* width, imageStartY + height);
 		cells[currentCell].setJigsawImageIndex(currentCell);
+		emptyCellIndex = currentCell;
 		jigsawCellImages[currentCell] = Bitmap.createScaledBitmap(jigsawImage,
 				width, height, true);
-		// new
-		// AlertDialog.Builder(context).setMessage("w="+height+"\nh="+width+"\nrows"+rows).setNegativeButton("cancle",
-		// null).setTitle("Setting").show();
-
 	}
 
 	/*
@@ -117,17 +114,11 @@ public class JigsawBoardView extends View {
 					.getRight(), cells[i].getBottom(), p1);
 		}
 	}
+
 	/*
 	 * initialize game..crop jigsaw image.prepar cells.and draw cells
 	 */
 	public void initBoard(boolean shuffleCells) {
-		// new
-		// AlertDialog.Builder(context).setMessage("w="+getWidth()+"\nh="+getHeight()).
-		// setTitle("This Size").show();
-		// new
-		// AlertDialog.Builder(context).setMessage("w="+setting.getJigsawBoardHeight()+"\nh="+setting.getJigsawBoardWidth()).setNegativeButton("cancle",
-		// null).setTitle("Setting").show();
-
 		if (isBoardInitialized)
 			return;// Board is already initialized
 		setting = new JigsawSetting(context, getWidth() - 5, getWidth() - 5);
@@ -147,24 +138,37 @@ public class JigsawBoardView extends View {
 	public void shuffleCells(int shuffleCount) {
 		Random r = new Random();
 		for (int i = 0; i < shuffleCount; i++) {
-			int num1 = r.nextInt(cells.length - 2);
-			int num2 = r.nextInt(cells.length - 2);
-			swapCellsImageIndex(num1,num2);
-			
-			//int tempImageIndex = cells[num1].getJigsawImageIndex();
-			//cells[num1].setJigsawImageIndex(cells[num2].getJigsawImageIndex());
-			//cells[num2].setJigsawImageIndex(tempImageIndex);
+			int num1 = r.nextInt(cells.length - 3);
+			int num2 = r.nextInt(cells.length - 3);
+			swapCellsImageIndex(num1, num2);
 		}
 	}
 
+	/**
+     * 
+     */
 	public void shuffleCells() {
 		shuffleCells(setting.getShuffleCount());
 	}
 
+	/**
+	 * Check if Game is End
+	 * 
+	 * @return true if game over false otherwise
+	 */
 	public boolean isGameOver() {
-		return false;
+		for (int i = 0; i < jigsawCellImages.length; i++)
+			if (cells[i].getCurrentPosition() != cells[i].getJigsawImageIndex())
+				return false;
+		return true;
 	}
 
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return Position(index) of cell user clicked
+	 */
 	private int findClickedCellIndex(final float x, final float y) {
 		for (int i = 0; i < cells.length; i++)
 			if (cells[i].getLeft() < x && cells[i].getRight() > x
@@ -173,72 +177,227 @@ public class JigsawBoardView extends View {
 		return -1;
 	}
 
+	/**
+     * 
+     */
 	public boolean onTouchEvent(MotionEvent event) {
 		int cellIndex = findClickedCellIndex(event.getX(), event.getY());
-		if (cellIndex > 0)
-		{	// new AlertDialog.Builder(context).setMessage(
-			// cells[cellIndex].getLeft() +
-			// " R "+cells[cellIndex].getRight()+" T: "+cells[cellIndex].getTop()+" D "+cells[cellIndex].getBottom()).show();
+		if (cellIndex >= 0)
 			handelClick(cellIndex);
-
-			new AlertDialog.Builder(context).setMessage(
-					cells[cellIndex].getJigsawImageIndex() + " P "
-							+ cells[cellIndex].getCurrentPosition()).show();
-		}
-
-		else
-			new AlertDialog.Builder(context).setMessage("zero").show();
-
-		return true;
+		return false;
 	}
-	
-	public void swapCellsImageIndex(int  cell1,int cell2)
-	{
+
+	/**
+	 * 
+	 * @param cell1
+	 * @param cell2
+	 */
+	public void swapCellsImageIndex(int cell1, int cell2) {
 		int tempImageIndex = cells[cell1].getJigsawImageIndex();
+		// if (cells[cell1].getJigsawImageIndex() == emptyCellIndex)
+		// emptyCellIndex = cells[cell2].getJigsawImageIndex();
+		// if (cells[cell2].getJigsawImageIndex() == emptyCellIndex)
+		// emptyCellIndex = cells[cell1].getJigsawImageIndex();
+
 		cells[cell1].setJigsawImageIndex(cells[cell2].getJigsawImageIndex());
 		cells[cell2].setJigsawImageIndex(tempImageIndex);
 	}
-	
-	public void handelClick(int  p)
-	{emptyCellIndex=8;
-		try{//Check if Up Cell is free
-			if(cells[p-setting.getBoardRowCount()].getJigsawImageIndex()==emptyCellIndex)
-			{
-				new AlertDialog.Builder(context).setMessage("up").show();
 
-				swapCellsImageIndex(p, p-setting.getBoardRowCount());
-				//cells[p].swapCell(cells[p-puzzleColumn]);
+	/**
+	 * 
+	 * @param clickedCellIndex
+	 */
+	public void handelClick(int clickedCellIndex) {
+		//new AlertDialog.Builder(context).setMessage("CC="+clickedCellIndex+"\n EC="+emptyCellIndex).show();
+		int columns = setting.getBoardColumnCount();
+		int rows = setting.getBoardRowCount();
+		if(cells[clickedCellIndex].getJigsawImageIndex()==emptyCellIndex)
+			return;
+		if (clickedCellIndex == getLastCellIndex()) {
+			// last cell is clicked.Only Empty cell side can be Top
+			if (get2ndLastCellIndex() == emptyCellIndex) {
+				swapCellsImageIndex(getLastCellIndex(), get2ndLastCellIndex());
+			}
+		} else if (clickedCellIndex < columns) {// Clicked in first row
+			if (clickedCellIndex == 0) {
+				// First Cell of First Row Clicked.
+				// Possible Empty cell side can be Right or Down
+				checkEmptyCellSide(clickedCellIndex, "RD");
+			} else if (clickedCellIndex == columns - 1) {
+				// Last Cell of First Row Clicked.
+				// Possible Empty cell side can be Left or Down
+				checkEmptyCellSide(clickedCellIndex, "LD");
+			} else {
+				// Any other Cell is Clicked other than first and last
+				// Possible Empty Cell side can be Left,Right,or Down
+				checkEmptyCellSide(clickedCellIndex, "LRD");
+			}
+		}// First Row Clicked END
+		else if ((clickedCellIndex + 1) % columns == 0) {// Clicked in Last
+			new AlertDialog.Builder(context).setMessage("last c").show();
+			
+			if (clickedCellIndex == get2ndLastCellIndex()) {
+				// 2nd Last cell clicked possible EMpty cell side can be
+				// Up,Left,or Down
+				// Down Side is last cell so will handle differently
+				if (cells[getLastCellIndex()].getJigsawImageIndex() == emptyCellIndex) {
+					swapCellsImageIndex(get2ndLastCellIndex(),
+							getLastCellIndex());
+					invalidate();
+				} else {
+					// Any other cell other than last and first(actually covered
+					// in first row check) is clicked from last column Possible
+					// Empty cell side can be Left,Up,or Down
+					checkEmptyCellSide(clickedCellIndex, "LUD");
+				}
+			}
+		}// Last Column clicked END
+		else if (clickedCellIndex % columns == 0) {// First Column Clicked
+			if (clickedCellIndex == columns * (rows - 1)) {
+				// last Cell of first Column(First Cell of last row -:D ) is
+				// clicked
+				// possible side of Empty cell can be Top,Right
+				checkEmptyCellSide(clickedCellIndex, "TR");
+			} else {
+				// Any other cell(Other than last and first(witch is already
+				// checked in first row)) from first column is clicked
+				// Possible side for Empty cell can be Top,Down,Right
+				checkEmptyCellSide(clickedCellIndex, "TDR");
+			}
+		}// First Column Clicked END
+		else if (clickedCellIndex > columns * (rows - 1)
+				&& clickedCellIndex < columns * rows) {// Last Row Clicked
+			// possible Empty cell side can be Left,Right,or Top...first and
+			// last cell clicked are already checked
+			new AlertDialog.Builder(context).setMessage("CC="+clickedCellIndex+"\n EC="+emptyCellIndex).show();
 				
-			}
-		}catch(Exception e){ }
-		try{//Check if Down Cell is free
-			new AlertDialog.Builder(context).setMessage("down").show();
+			checkEmptyCellSide(clickedCellIndex, "LRT");
+		}// Last row clicked END
+		else {
+			// ah First row,column and Last row ,column check is end
+			// now clicked in any cell they can be moved in any direction so
+			// check for all four sides
+			checkEmptyCellSide(clickedCellIndex, "LRTD");// piece of cake
+			// calling this
+			// method
+		}
+	}
 
-			if(cells[p+setting.getBoardRowCount()].getJigsawImageIndex()==emptyCellIndex)
-			{
-				new AlertDialog.Builder(context).setMessage("left").show();
+	private int get2ndLastCellIndex() {
+		return jigsawCellImages.length - 2;
+	}
 
-				//cells[p].swapCell(cells[p+puzzleColumn]);
-				swapCellsImageIndex(p, p+setting.getBoardRowCount());
-			}
-		}catch(Exception e){ }
-		try{//Check if Left Cell is free
-			if(cells[p+1].getJigsawImageIndex()==emptyCellIndex)
-			{
-				new AlertDialog.Builder(context).setMessage("rigt").show();
+	private int getLastCellIndex() {
+		return jigsawCellImages.length - 1;
+	}
 
-			//	cells[p].swapCell(cells[p+1]);
-				swapCellsImageIndex(p,p+1);
+	/**
+	 * 
+	 * @param clickedCellIndex
+	 * @param possibleSides
+	 */
+	private void checkEmptyCellSide(int clickedCellIndex, String possibleSides) {
+		for (int i = 0; i < possibleSides.length(); i++)
+			switch (possibleSides.charAt(i)) {
+			case 'L':
+				if (isEmptyCellIsOnLeft(clickedCellIndex))
+					moveLeft(clickedCellIndex);
+				break;
+			case 'R':
+				if (isEmptyCellIsOnRight(clickedCellIndex))
+					moveRight(clickedCellIndex);
+
+				break;
+			case 'U':
+				if (isEmptyCellIsOnUp(clickedCellIndex))
+					moveUp(clickedCellIndex);
+
+				break;
+			case 'D':
+				if (isEmptyCellIsOnDown(clickedCellIndex))
+					moveDown(clickedCellIndex);
+				break;
 			}
-		}catch(Exception e){ }
-		try{//Check if Left Cell is free
-			if(cells[p-1].getJigsawImageIndex()==emptyCellIndex)
-			{
-				//cells[p].swapCell(cells[p-1]);
-				swapCellsImageIndex(p, p-1);
-			}
-		}catch(Exception e){ }
+	}
+
+	/**
+	 * 
+	 * @param clickedCellIndex
+	 * @return
+	 */
+	private boolean isEmptyCellIsOnLeft(int clickedCellIndex) {
+		return cells[clickedCellIndex - 1].getJigsawImageIndex() == emptyCellIndex;
+	}
+
+	/**
+	 * 
+	 * @param clickedCellIndex
+	 * @return
+	 */
+	private boolean isEmptyCellIsOnRight(int clickedCellIndex) {
+		return cells[clickedCellIndex + 1].getJigsawImageIndex() == emptyCellIndex;
+	}
+
+	/**
+	 * 
+	 * @param clickedCellIndex
+	 * @return
+	 */
+	private boolean isEmptyCellIsOnUp(int clickedCellIndex) {
+		return cells[clickedCellIndex - setting.getBoardColumnCount()]
+				.getJigsawImageIndex() == emptyCellIndex;
+	}
+
+	/**
+	 * 
+	 * @param clickedCellIndex
+	 * @return
+	 */
+	private boolean isEmptyCellIsOnDown(final int clickedCellIndex) {
+		return cells[clickedCellIndex + setting.getBoardColumnCount()]
+				.getJigsawImageIndex() == emptyCellIndex;
+	}
+
+	/**
+	 * 
+	 * @param currentCellIndex
+	 */
+	private void moveDown(int currentCellIndex) {
+		new AlertDialog.Builder(context).setMessage("d").show();
 		
+		swapCellsImageIndex(currentCellIndex, currentCellIndex
+				+ setting.getBoardColumnCount());
+		invalidate();
+	}
+
+	/**
+	 * 
+	 * @param currentCellIndex
+	 */
+	private void moveUp(int currentCellIndex) {
+		new AlertDialog.Builder(context).setMessage("u").show();
+		
+		swapCellsImageIndex(currentCellIndex, currentCellIndex
+				- setting.getBoardColumnCount());
+		invalidate();
+	}
+
+	/**
+	 * 
+	 * @param currentCellIndex
+	 */
+	private void moveLeft(int currentCellIndex) {
+		swapCellsImageIndex(currentCellIndex, currentCellIndex - 1);
+		invalidate();
+	}
+
+	/**
+	 * 
+	 * @param currentCellIndex
+	 */
+	private void moveRight(int currentCellIndex) {
+		swapCellsImageIndex(currentCellIndex, currentCellIndex + 1);
+		invalidate();
 	}
 
 }
