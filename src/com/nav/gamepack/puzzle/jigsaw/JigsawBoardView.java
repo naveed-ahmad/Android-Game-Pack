@@ -204,9 +204,13 @@ public class JigsawBoardView extends View {
      */
 	public boolean onTouchEvent(MotionEvent event) {
 		int cellIndex = findClickedCellIndex(event.getX(), event.getY());
+		// TODO handle Click should return true if any cell is swap
+		//and call invalidate only if it return true
 		if (cellIndex >= 0)
 			handelClick(cellIndex);
 		invalidate();
+		if(isGameOver())
+			new AlertDialog.Builder(context).setMessage("GAme Over").setTitle("U Rocks").setNegativeButton("OK ",null).show();
 		return false;
 	}
 
