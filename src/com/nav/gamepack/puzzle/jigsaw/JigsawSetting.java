@@ -21,7 +21,11 @@ public class JigsawSetting extends View {
 	private int defaultBoardColumnCount;
 	private int boardColumnCount;
 	private int boardRowCount;
-
+	/**
+	 * @playSoundOnInvalidMove if set to true will play a sound if user tries to play invalid move
+	 */
+    private boolean playSoundOnInvalidMove;
+    
 	private int jigwasCellWidth;
 	private int jigwasCellHeight;
 	private int jigsawBoardWidth;
@@ -30,9 +34,11 @@ public class JigsawSetting extends View {
 
 	public JigsawSetting(Context context, int boardWidth, int boardHeight) {
 		super(context);
-		defaultShuffleCount = 10;
-		defaultBoardRowCount = defaultBoardColumnCount = 5;
+		defaultShuffleCount = 14;
+		defaultBoardRowCount =3;
+			defaultBoardColumnCount = 3;
 		boardColumnCount = boardRowCount = 0;
+		playSoundOnInvalidMove=true;
 		defaultJigsawBoardHeight = defaultJigsawBoardWidth = (boardHeight>boardWidth ? boardWidth :boardHeight);//use value whose size is less
 		this.setJigsawBoardWidth(boardWidth);
 		this.setJigsawBoardHeight(boardHeight);

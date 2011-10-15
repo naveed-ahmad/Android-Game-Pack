@@ -3,7 +3,6 @@ package com.nav.gamepack;
 import com.nav.gamepack.puzzle.jigsaw.JigsawBoardView;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 
 public class GamePackActivity extends Activity {

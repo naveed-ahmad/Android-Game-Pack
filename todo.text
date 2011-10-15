@@ -1,7 +1,12 @@
 voice reconginzation for movement instruction]
 git pic from cam
-search pic from mem/sdcard
+search pic from sdcard
 image selector
 save game in db
 ColorPicker
+DPAD support for playing game
+Jigsaw As Home backgound
+show hint/image final place highlight in complete image
+Auto Solve ,Step by step solve 
+Crop image in zigzap shape(V 1.0)
 
