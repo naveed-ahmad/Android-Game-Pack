@@ -1,5 +1,6 @@
 package com.nav.gamepack.puzzle.jigsaw;
 
+import java.lang.annotation.Retention;
 import java.util.Random;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -334,17 +335,12 @@ public class JigsawBoardView extends View {
 		return 0;
 	}
 
-	public int getBordLastCellIndex() {
-		return setting.getBoardColumnCount() * setting.getBoardColumnCount();
-	}
-
 	public int getBottomRightCellIndex() {
-		return getBordLastCellIndex() - 1;
+		return get2ndLastCellIndex();
 	}
 
 	public int getBottomLeftCellIndex() {
-		return setting.getBoardColumnCount()
-				* (setting.getBoardColumnCount() - 1);
+		return setting.getBoardColumnCount() * (setting.getBoardRowCount() - 1);
 	}
 
 	/**
@@ -362,7 +358,8 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public boolean isCellIsInLastRow(int cellIndex) {
-		return cellIndex >= getBottomLeftCellIndex() && cellIndex<= getBottomRightCellIndex();
+		return cellIndex >= getBottomLeftCellIndex()
+				&& cellIndex <= getBottomRightCellIndex();
 	}
 
 	/**
@@ -370,8 +367,10 @@ public class JigsawBoardView extends View {
 	 * @param cellIndex
 	 * @return
 	 */
-	public boolean isCellIsInFirstColumn(int cellIndex) {
-		return true;
+	public Boolean isCellIsInFirstColumn(int cellIndex) {
+
+		return (cellIndex % setting.getBoardColumnCount() == 0)
+				&& emptyCellIndex != getLastCellIndex();
 	}
 
 	/**
@@ -380,7 +379,8 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public boolean isCellIsInLastColumn(int cellIndex) {
-		return true;
+		return cellIndex % setting.getBoardColumnCount() == 2
+				|| cellIndex == getLastCellIndex();
 	}
 
 	/**
@@ -523,8 +523,15 @@ public class JigsawBoardView extends View {
 	 * @return true if empty cell can move left side false otherwise
 	 */
 	public boolean canEmptyCellMoveLeft() {
-
-		return true;
+		// new AlertDialog.Builder(context).setMessage(
+		// "Firstcol" +
+		// isCellIsInFirstColumn(emptyCellIndex)+" empty "+emptyCellIndex
+		// +"lasr  "+getLastCellIndex()).setNegativeButton("OK", null)
+		// .show();
+		if (emptyCellIndex == getLastCellIndex())
+			return false;
+		else
+			return !isCellIsInFirstColumn(emptyCellIndex);
 	}
 
 	/**
@@ -533,7 +540,10 @@ public class JigsawBoardView extends View {
 	 * @return true if empty cell can move right side false otherwise
 	 */
 	public boolean canEmptyCellMoveRight() {
-		return true;
+		if (emptyCellIndex == getLastCellIndex())
+			return false;
+		else
+			return !isCellIsInLastColumn(emptyCellIndex);
 	}
 
 	/**
@@ -550,18 +560,19 @@ public class JigsawBoardView extends View {
 	 * 
 	 * @return true if empty cell can move down side false otherwise
 	 */
-	public boolean canEmptyCellMoveDown() {
-		if (isCellIsInBottomRightCorner(emptyCellIndex))
-		{		
+	public Boolean canEmptyCellMoveDown() {
+		if (isCellIsInBottomRightCorner(emptyCellIndex)) {
 			return true;
+		} else if (getLastCellIndex() == emptyCellIndex)
+			return false;
+		else {
+			// Boolean c = isCellIsInLastRow(emptyCellIndex);
+			// new AlertDialog.Builder(context).setMessage(
+			// "Last Row" + c.toString()).setNegativeButton("OK", null)
+			// .show();
+			return !isCellIsInLastRow(emptyCellIndex);
 		}
-		else{
-		
-		   Boolean c= !isCellIsInFirstRow(emptyCellIndex);
-			new AlertDialog.Builder(context).setMessage("BR" + c.toString())
-			.setNegativeButton("OK", null).show();
-		   return !isCellIsInFirstRow(emptyCellIndex);
-	}}
+	}
 
 	/**
 	 * 
@@ -569,7 +580,10 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public int getUpCellIndex(int currentCellIndex) {
-		return currentCellIndex - setting.getBoardColumnCount();
+		if (getLastCellIndex() == currentCellIndex)
+			return currentCellIndex - 1;
+		else
+			return currentCellIndex - setting.getBoardColumnCount();
 	}
 
 	/**
@@ -578,8 +592,10 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public int getDownCellIndex(int currentCellIndex) {
-		// TODO: check for first row
-		return currentCellIndex + setting.getBoardColumnCount();
+		if (get2ndLastCellIndex() == currentCellIndex)
+			return currentCellIndex + 1;
+		else
+			return currentCellIndex + setting.getBoardColumnCount();
 	}
 
 	/**
@@ -588,7 +604,6 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public int getLeftCellIndex(int currentCellIndex) {
-		// TODO:add current position check
 		return currentCellIndex - 1;
 	}
 
@@ -597,7 +612,7 @@ public class JigsawBoardView extends View {
 	 * @param currentCellIndex
 	 * @return
 	 */
-	public int getRIghtCellIndex(int currentCellIndex) {
+	public int getRightCellIndex(int currentCellIndex) {
 		return currentCellIndex + 1;
 	}
 
@@ -606,13 +621,12 @@ public class JigsawBoardView extends View {
 	 * @return true if move is successfull false otherwise
 	 */
 	public boolean moveEmptyCellUp() {
-		// new AlertDialog.Builder(context).setMessage("UP").setNegativeButton(
-		// "OK", null).show();
 		if (canEmptyCellMoveUp()) {
 			swapCellsImageIndex(emptyCellIndex, getUpCellIndex(emptyCellIndex));
 			invalidate();
-		}
-		return true;
+			return true;
+		} else
+			return false;
 	}
 
 	/**
@@ -621,17 +635,12 @@ public class JigsawBoardView extends View {
 	 */
 	public boolean moveEmptyCellDown() {
 		if (canEmptyCellMoveDown()) {
-			new AlertDialog.Builder(context).setMessage("" + emptyCellIndex)
-			.setNegativeButton("OK", null).show();
-
-//			if (isCellIsInBottomRightCorner(emptyCellIndex))
-//				swapCellsImageIndex(emptyCellIndex, emptyCellIndex + 1);
-//			else
-//				swapCellsImageIndex(emptyCellIndex,
-//						getDownCellIndex(emptyCellIndex));
-//			invalidate();
+			swapCellsImageIndex(emptyCellIndex,
+					getDownCellIndex(emptyCellIndex));
+			invalidate();
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -640,15 +649,13 @@ public class JigsawBoardView extends View {
 	 */
 
 	public boolean moveEmptyCellLeft() {
-		// new
-		// AlertDialog.Builder(context).setMessage("Left").setNegativeButton(
-		// "OK", null).show();
 		if (canEmptyCellMoveLeft()) {
 			swapCellsImageIndex(emptyCellIndex,
 					getLeftCellIndex(emptyCellIndex));
 			invalidate();
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -656,18 +663,18 @@ public class JigsawBoardView extends View {
 	 * @return true if move is successfull false otherwise
 	 */
 	public boolean moveEmptyCellRight() {
-		// new
-		// AlertDialog.Builder(context).setMessage("Right").setNegativeButton(
-		// "OK", null).show();
 		if (canEmptyCellMoveRight()) {
 			swapCellsImageIndex(emptyCellIndex,
-					getRIghtCellIndex(emptyCellIndex));
+					getRightCellIndex(emptyCellIndex));
 			invalidate();
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public void playInvalidMoveSound() {
+		new AlertDialog.Builder(context).setMessage("Wrong Move Sound")
+				.setNegativeButton("OK", null).show();
 
 	}
 }
