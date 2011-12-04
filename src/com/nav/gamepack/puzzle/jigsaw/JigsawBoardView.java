@@ -1,6 +1,5 @@
 package com.nav.gamepack.puzzle.jigsaw;
 
-import java.lang.annotation.Retention;
 import java.util.Random;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -673,8 +672,8 @@ public class JigsawBoardView extends View {
 	}
 
 	public void playInvalidMoveSound() {
-		new AlertDialog.Builder(context).setMessage("Wrong Move Sound")
-				.setNegativeButton("OK", null).show();
+//		new AlertDialog.Builder(context).setMessage("Wrong Move Sound")
+//				.setNegativeButton("OK", null).show();
 
 	}
 }
