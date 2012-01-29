@@ -55,7 +55,7 @@ public class JigsawSetting extends View {
 			// TODO Show Select Image View//
 			currentJigwasImage = Bitmap.createScaledBitmap(BitmapFactory
 					.decodeStream(getResources().openRawResource(
-							R.drawable.image)), jigsawBoardWidth,
+							R.drawable.arrow_left_gs_normal)), jigsawBoardWidth,
 					jigsawBoardHeight, true);
 
 		}
