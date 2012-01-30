@@ -52,21 +52,22 @@ public final class R {
         public static final int icon_ludo_normal=0x7f020022;
         public static final int icon_ludo_normal_light=0x7f020023;
         public static final int icon_ludo_pressed=0x7f020024;
-        public static final int my_jigsaw_character=0x7f020025;
-        public static final int next_btn_back_big=0x7f020026;
-        public static final int ok_normal=0x7f020027;
-        public static final int ok_pressed=0x7f020028;
-        public static final int one=0x7f020029;
-        public static final int piece_ludo_blue=0x7f02002a;
-        public static final int piece_ludo_red=0x7f02002b;
-        public static final int piece_ludo_yellow=0x7f02002c;
-        public static final int previous_btn_back_big=0x7f02002d;
-        public static final int six=0x7f02002e;
-        public static final int three=0x7f02002f;
-        public static final int tree=0x7f020030;
-        public static final int tree2=0x7f020031;
-        public static final int tree3=0x7f020032;
-        public static final int two=0x7f020033;
+        public static final int image=0x7f020025;
+        public static final int my_jigsaw_character=0x7f020026;
+        public static final int next_btn_back_big=0x7f020027;
+        public static final int ok_normal=0x7f020028;
+        public static final int ok_pressed=0x7f020029;
+        public static final int one=0x7f02002a;
+        public static final int piece_ludo_blue=0x7f02002b;
+        public static final int piece_ludo_red=0x7f02002c;
+        public static final int piece_ludo_yellow=0x7f02002d;
+        public static final int previous_btn_back_big=0x7f02002e;
+        public static final int six=0x7f02002f;
+        public static final int three=0x7f020030;
+        public static final int tree=0x7f020031;
+        public static final int tree2=0x7f020032;
+        public static final int tree3=0x7f020033;
+        public static final int two=0x7f020034;
     }
     public static final class id {
         public static final int button1=0x7f070001;
