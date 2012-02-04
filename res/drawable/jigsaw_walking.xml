@@ -1,0 +1,13 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+android:oneshot="false">
+<item android:drawable="@drawable/jigsaw1" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw4" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw7" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw10" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw13" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw16" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw19" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw22" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw25" android:duration="400"/>
+<item android:drawable="@drawable/jigsaw28" android:duration="400"/>
+</animation-list>

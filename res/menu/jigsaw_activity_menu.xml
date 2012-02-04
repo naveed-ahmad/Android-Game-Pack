@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_jigsaw_setting" android:title="@string/setting_lbl"></item>
+    <item android:id="@+id/menu_save_game" android:title="@string/save_game"></item>
+    <item android:id="@+id/menu_back" android:title="@string/back"></item>
+</menu>

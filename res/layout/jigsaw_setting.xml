@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+         >
+
+        <TextView
+            android:id="@+id/txtViewRowsMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/jigwas_setting_rows_lbl"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <SeekBar
+            android:id="@+id/seekBarJigsawBoardRows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="@string/jigsaw_baord_max_rows_and_columns"
+            android:progress="@string/jigsaw_baord_default_rows"
+         />
+
+        <TextView
+            android:id="@+id/txtViewJigsawBoardRowsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/jigsaw_baord_default_rows"
+            
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+</LinearLayout>
