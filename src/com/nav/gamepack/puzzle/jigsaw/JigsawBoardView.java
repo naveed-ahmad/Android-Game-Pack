@@ -1,8 +1,13 @@
 package com.nav.gamepack.puzzle.jigsaw;
 
 import java.util.Random;
+
+import com.nav.gamepack.R;
+
+import android.R.bool;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,80 +24,80 @@ import android.view.View;
  */
 
 public class JigsawBoardView extends View {
-	private final String TAG="JigsawBoardView";
-	private JigsawSetting setting;
+	private final String TAG = "JigsawBoardView";
 	private Bitmap[] jigsawCellImages;
+	Bitmap jigsawOrigionalImage;
 	private boolean isBoardInitialized;
 	private JigsawCell[] cells;
-	public Context context;
+	private Context context;
 	private int emptyCellIndex;
-	JigsawBoardKeyListener jigsawCellClickListener;
-	public int clickedCellIndex;
+	private JigsawBoardKeyListener jigsawCellClickListener;
+	private int clickedCellIndex;
+	private int rowCount, columnCount, cellShuffleCount;
 
 	public JigsawBoardView(Context context) {
-		super(context);
-		init(context);
+		this(context, null);
 	}
 
 	public JigsawBoardView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(context);
+		this(context, attrs, 0);
 	}
 
-	private void init(final Context context) {
+	private void init(final Context context, AttributeSet attrs, int defStyle) {
 		this.context = context;
+		load(context, attrs, defStyle);
 		isBoardInitialized = false;
+		cellShuffleCount = 10;
 		jigsawCellClickListener = new JigsawBoardKeyListener(this);
 		setOnKeyListener(jigsawCellClickListener);
 		setFocusableInTouchMode(true);
-
 	}
 
 	public JigsawBoardView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init(context);
+		init(context, attrs, defStyle);
 	}
 
 	/*
 	 * 
 	 */
 	public void prepareJigsawBoardImage() {
-		Bitmap jigsawImage = setting.getJigwasImage();
-		setting.prepareJigwasCellDimension();
-		int rows = setting.getBoardRowCount();
-		int columns = setting.getBoardColumnCount();
-		int width = setting.getJigsawCellWidth();
-		int height = setting.getJigsawCellHeight();
-		Log.i(TAG,"Board width="+setting.getJigsawBoardWidth()+" Board height="+setting.getJigsawBoardHeight());
-		Log.i(TAG,"rows="+setting.getBoardRowCount()+" columns="+setting.getBoardColumnCount());
-		Log.i(TAG,"Cellwidth="+setting.getJigsawCellWidth()+" cell height="+setting.getJigsawCellHeight());
-		
+		if (jigsawOrigionalImage == null) {
+			showImageChooserDialog();
+			return;
+		}
+
 		int imageStartX = 0, imageStartY = 5;
 		int currentCell = 0;
-		for (int row = 0; row < rows; row++) {
-			for (int column = 0; column< columns;column++) {
-				Log.i(TAG,"Croping column+"+column+" row="+row+ "startX="+imageStartX+" startY="+imageStartY);
-				
-				jigsawCellImages[currentCell] = Bitmap.createBitmap(
-						jigsawImage, imageStartX, imageStartY - 5, width,
-						height);
+		int cellWidth = 3, cellHeight = 3;
+		for (int row = 0; row < getRowCount(); row++) {
+			for (int column = 0; column < getColumnCount(); column++) {
+				Log.i(TAG, "Croping column+" + column + " row=" + row + "startX=" + imageStartX + " startY=" + imageStartY);
+
+				jigsawCellImages[currentCell] = Bitmap.createBitmap(jigsawOrigionalImage, imageStartX, imageStartY - 5, cellWidth, cellHeight);
 				cells[currentCell] = new JigsawCell(context);
-				cells[currentCell].layout(imageStartX, imageStartY, imageStartX
-						+ width, imageStartY + height);
+				cells[currentCell].layout(imageStartX, imageStartY, imageStartX + cellWidth, imageStartY + cellHeight);
 				cells[currentCell].setJigsawImageIndex(currentCell);
 				cells[currentCell].setCellCurrentPosition(currentCell);
-				imageStartX += width;
+				imageStartX += cellWidth;
 				currentCell++;
 			}
 			imageStartX = 0;
-			imageStartY += height;
+			imageStartY += cellHeight;
 		}
 		cells[currentCell] = new JigsawCell(context);
-		cells[currentCell].layout((columns - 1) * width, imageStartY, columns
-				* width, imageStartY + height);
+		cells[currentCell].layout((getColumnCount() - 1) * cellWidth, imageStartY, getColumnCount() * cellWidth, imageStartY + cellHeight);
 		cells[currentCell].setJigsawImageIndex(currentCell);
 		cells[currentCell].setCellCurrentPosition(currentCell);
 		emptyCellIndex = currentCell;
+	}
+
+	/**
+	 * 
+	 */
+	private void showImageChooserDialog() {
+		// TODO Auto-generated method stub
+
 	}
 
 	/*
@@ -111,12 +116,9 @@ public class JigsawBoardView extends View {
 		for (int i = 0; i < cells.length; i++) {
 			p1.setColor(Color.RED);
 			if (jigsawCellImages[cells[i].getJigsawImageIndex()] != null)
-				canvas.drawBitmap(jigsawCellImages[cells[i]
-						.getJigsawImageIndex()], cells[i].getLeft(), cells[i]
-						.getTop(), p1);
+				canvas.drawBitmap(jigsawCellImages[cells[i].getJigsawImageIndex()], cells[i].getLeft(), cells[i].getTop(), p1);
 
-			canvas.drawRect(cells[i].getLeft(), cells[i].getTop(), cells[i]
-					.getRight(), cells[i].getBottom(), p1);
+			canvas.drawRect(cells[i].getLeft(), cells[i].getTop(), cells[i].getRight(), cells[i].getBottom(), p1);
 			/*
 			 * canvas.drawText("C-" + i + " P:" + cells[i].getCurrentPosition(),
 			 * cells[i].getLeft() + 2, cells[i].getTop() + 10, p1);
@@ -139,9 +141,7 @@ public class JigsawBoardView extends View {
 	public void initBoard(boolean shuffleCells) {
 		if (isBoardInitialized)
 			return;// Board is already initialized
-		setting = new JigsawSetting(context, getWidth() - 5, getWidth() - 5);
-		int cellCount = setting.getBoardColumnCount()
-				* setting.getBoardRowCount() + 1;
+		int cellCount = getColumnCount() * getRowCount() + 1;
 		cells = new JigsawCell[cellCount];
 		jigsawCellImages = new Bitmap[cellCount];
 		prepareJigsawBoardImage();
@@ -167,7 +167,14 @@ public class JigsawBoardView extends View {
      * 
      */
 	public void shuffleCells() {
-		shuffleCells(setting.getShuffleCount());
+		shuffleCells(getShuffleCount());
+	}
+
+	/**
+	 * @return
+	 */
+	public int getShuffleCount() {
+		return cellShuffleCount;
 	}
 
 	/**
@@ -190,15 +197,14 @@ public class JigsawBoardView extends View {
 	 */
 	public int findClickedCellIndex(final float x, final float y) {
 		for (int i = 0; i < cells.length; i++)
-			if (cells[i].getLeft() < x && cells[i].getRight() > x
-					&& cells[i].getTop() < y && cells[i].getBottom() > y) {
+			if (cells[i].getLeft() < x && cells[i].getRight() > x && cells[i].getTop() < y && cells[i].getBottom() > y) {
 				clickedCellIndex = i;
 				return i;
 			}
 		return -1;
 	}
 
-	/**
+	/**		int tempImageIndex = cells[cell1].getJigsawImageIndex();
      * 
      */
 	public boolean onTouchEvent(MotionEvent event) {
@@ -209,8 +215,7 @@ public class JigsawBoardView extends View {
 			handelClick(cellIndex);
 		invalidate();
 		if (isGameOver())
-			new AlertDialog.Builder(context).setMessage("GAme Over").setTitle(
-					"U Rocks").setNegativeButton("OK ", null).show();
+			new AlertDialog.Builder(context).setMessage("GAme Over").setTitle("U Rocks").setNegativeButton("OK ", null).show();
 		return false;
 	}
 
@@ -241,8 +246,8 @@ public class JigsawBoardView extends View {
 		// + cells[clickedCellIndex].getCurrentPosition()
 		// + "\n Empty=" + emptyCellIndex).setNegativeButton("Ok",
 		// null).show();
-		int columns = setting.getBoardColumnCount();
-		int rows = setting.getBoardRowCount();
+		int columns = getColumnCount();
+		int rows = getRowCount();
 
 		if (clickedCellIndex == emptyCellIndex) {
 			return;
@@ -288,8 +293,9 @@ public class JigsawBoardView extends View {
 				checkEmptyCellSide(clickedCellIndex, "UDR");
 			}
 		}// First Column Clicked END
-		else if (clickedCellIndex > columns * (rows - 1)
-				&& clickedCellIndex < columns * rows - 1) {// Last Row Clicked
+		else if (clickedCellIndex > columns * (rows - 1) && clickedCellIndex < columns * rows - 1) {// Last
+																									// Row
+																									// Clicked
 			// possible Empty cell side can be Left,Right,or Top...first and
 			// last cell clicked are already checked
 			// new
@@ -335,7 +341,7 @@ public class JigsawBoardView extends View {
 	}
 
 	public int getTopRightCellIndex() {
-		return setting.getBoardColumnCount();
+		return columnCount;
 	}
 
 	public int getTopLeftCellIndex() {
@@ -347,7 +353,8 @@ public class JigsawBoardView extends View {
 	}
 
 	public int getBottomLeftCellIndex() {
-		return setting.getBoardColumnCount() * (setting.getBoardRowCount() - 1);
+		return columnCount * (rowCount - 1);
+
 	}
 
 	/**
@@ -365,8 +372,7 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public boolean isCellIsInLastRow(int cellIndex) {
-		return cellIndex >= getBottomLeftCellIndex()
-				&& cellIndex <= getBottomRightCellIndex();
+		return cellIndex >= getBottomLeftCellIndex() && cellIndex <= getBottomRightCellIndex();
 	}
 
 	/**
@@ -376,8 +382,7 @@ public class JigsawBoardView extends View {
 	 */
 	public Boolean isCellIsInFirstColumn(int cellIndex) {
 
-		return (cellIndex % setting.getBoardColumnCount() == 0)
-				&& emptyCellIndex != getLastCellIndex();
+		return (cellIndex % columnCount == 0) && emptyCellIndex != getLastCellIndex();
 	}
 
 	/**
@@ -386,8 +391,7 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public boolean isCellIsInLastColumn(int cellIndex) {
-		return cellIndex % setting.getBoardColumnCount() == 2
-				|| cellIndex == getLastCellIndex();
+		return cellIndex % columnCount == 2 || cellIndex == getLastCellIndex();
 	}
 
 	/**
@@ -396,7 +400,7 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public boolean isCellIsInFirstRow(int cellIndex) {
-		return cellIndex < setting.getBoardColumnCount();
+		return cellIndex < columnCount;
 	}
 
 	/**
@@ -470,7 +474,7 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public boolean isEmptyCellIsOnUp(int clickedCellIndex) {
-		return (clickedCellIndex - setting.getBoardColumnCount()) == emptyCellIndex;
+		return (clickedCellIndex - columnCount) == emptyCellIndex;
 	}
 
 	/**
@@ -479,7 +483,7 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public boolean isEmptyCellIsOnDown(final int clickedCellIndex) {
-		return (clickedCellIndex + setting.getBoardColumnCount()) == emptyCellIndex;
+		return (clickedCellIndex + columnCount) == emptyCellIndex;
 	}
 
 	/**
@@ -491,7 +495,7 @@ public class JigsawBoardView extends View {
 
 		// + setting.getBoardColumnCount());
 
-		int moveToIndex = currentCellIndex + setting.getBoardColumnCount();
+		int moveToIndex = currentCellIndex + columnCount;
 		swapCellsImageIndex(currentCellIndex, moveToIndex);
 
 	}
@@ -501,7 +505,7 @@ public class JigsawBoardView extends View {
 	 * @param currentCellIndex
 	 */
 	public void moveUp(int currentCellIndex) {
-		int moveToIndex = currentCellIndex - setting.getBoardColumnCount();
+		int moveToIndex = currentCellIndex - columnCount;
 		swapCellsImageIndex(currentCellIndex, moveToIndex);
 
 	}
@@ -590,7 +594,7 @@ public class JigsawBoardView extends View {
 		if (getLastCellIndex() == currentCellIndex)
 			return currentCellIndex - 1;
 		else
-			return currentCellIndex - setting.getBoardColumnCount();
+			return currentCellIndex - columnCount;
 	}
 
 	/**
@@ -602,7 +606,7 @@ public class JigsawBoardView extends View {
 		if (get2ndLastCellIndex() == currentCellIndex)
 			return currentCellIndex + 1;
 		else
-			return currentCellIndex + setting.getBoardColumnCount();
+			return currentCellIndex + columnCount;
 	}
 
 	/**
@@ -642,8 +646,7 @@ public class JigsawBoardView extends View {
 	 */
 	public boolean moveEmptyCellDown() {
 		if (canEmptyCellMoveDown()) {
-			swapCellsImageIndex(emptyCellIndex,
-					getDownCellIndex(emptyCellIndex));
+			swapCellsImageIndex(emptyCellIndex, getDownCellIndex(emptyCellIndex));
 			invalidate();
 			return true;
 		}
@@ -657,8 +660,7 @@ public class JigsawBoardView extends View {
 
 	public boolean moveEmptyCellLeft() {
 		if (canEmptyCellMoveLeft()) {
-			swapCellsImageIndex(emptyCellIndex,
-					getLeftCellIndex(emptyCellIndex));
+			swapCellsImageIndex(emptyCellIndex, getLeftCellIndex(emptyCellIndex));
 			invalidate();
 			return true;
 		}
@@ -667,12 +669,11 @@ public class JigsawBoardView extends View {
 
 	/**
 	 * 
-	 * @return true if move is successfull false otherwise
+	 * @return true if move is successful false otherwise
 	 */
 	public boolean moveEmptyCellRight() {
 		if (canEmptyCellMoveRight()) {
-			swapCellsImageIndex(emptyCellIndex,
-					getRightCellIndex(emptyCellIndex));
+			swapCellsImageIndex(emptyCellIndex, getRightCellIndex(emptyCellIndex));
 			invalidate();
 			return true;
 		}
@@ -680,8 +681,48 @@ public class JigsawBoardView extends View {
 	}
 
 	public void playInvalidMoveSound() {
-//		new AlertDialog.Builder(context).setMessage("Wrong Move Sound")
-//				.setNegativeButton("OK", null).show();
 
+	}
+
+	public void setColumnCount(int cCount, boolean redraw) {
+		if (columnCount != cCount) {
+			columnCount = cCount;
+			if (redraw)
+				invalidate();
+		}
+	}
+
+	public void setColumnCount(int cCount) {
+		setColumnCount(cCount, false);
+	}
+
+	public void setRowCount(int rCount, boolean redraw) {
+		if (rowCount != rCount) {
+			rowCount = rCount;
+			if (redraw)
+				invalidate();
+		}
+	}
+
+	public void setRowCount(int rCount) {
+		setRowCount(rCount, false);
+	}
+
+	public int getColumnCount() {
+		return columnCount;
+	}
+
+	public int getRowCount() {
+		return rowCount;
+	}
+
+	private void load(Context context, AttributeSet attrs, int defStyle) {
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.JigsawBoardView, defStyle, 0);
+
+		final int rows = a.getInteger(R.styleable.JigsawBoardView_rows_count, Integer.parseInt(getResources().getString(R.string.jigsaw_baord_default_rows)));
+		final int columns = a.getInteger(R.styleable.JigsawBoardView_columns_count, Integer.parseInt(getResources().getString(R.string.jigsaw_baord_default_columns)));
+		setRowCount(rows, false);
+		setColumnCount(columns, false);
+		a.recycle();
 	}
 }

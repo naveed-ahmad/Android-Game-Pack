@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="wrap_content" android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jigsaw="http://schemas.android.com/apk/res/com.nav.gamepack"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-  <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
-      android:id="@+id/jigsawBoard"
-      android:layout_width="wrap_content"
-      android:layout_height="368dp"
-       >
+    <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
+        android:id="@+id/jigsawBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="368dp"
+        jigsaw:columns_count="@string/jigsaw_baord_default_columns"
+        jigsaw:rows_count="@string/jigsaw_baord_default_rows" >
+    </com.nav.gamepack.puzzle.jigsaw.JigsawBoardView>
 
-  </com.nav.gamepack.puzzle.jigsaw.JigsawBoardView>
-    
 </LinearLayout>

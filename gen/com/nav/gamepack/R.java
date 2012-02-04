@@ -13,6 +13,30 @@ public final class R {
         public static final int slide_left_slow=0x7f040001;
     }
     public static final class attr {
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int columns_count=0x7f010001;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int rows_count=0x7f010000;
+    }
+    public static final class color {
+        public static final int black=0x7f050004;
+        public static final int solid_blue=0x7f050001;
+        public static final int solid_green=0x7f050002;
+        public static final int solid_red=0x7f050000;
+        public static final int solid_yellow=0x7f050003;
+        public static final int white=0x7f050005;
     }
     public static final class drawable {
         public static final int arrow_left_gs_normal=0x7f020000;
@@ -23,6 +47,7 @@ public final class R {
         public static final int arrow_right_norml_small=0x7f020005;
         public static final int arrow_right_pressed=0x7f020006;
         public static final int arrow_right_pressed_small=0x7f020007;
+        public static final int blue=0x7f020055;
         public static final int btn_circle_parrot_green_normal=0x7f020008;
         public static final int bubble1=0x7f020009;
         public static final int button_circle_sky_bnormal=0x7f02000a;
@@ -44,6 +69,7 @@ public final class R {
         public static final int dice3=0x7f02001a;
         public static final int five=0x7f02001b;
         public static final int four=0x7f02001c;
+        public static final int green=0x7f020056;
         public static final int home_background=0x7f02001d;
         public static final int icon=0x7f02001e;
         public static final int icon_jigsaw_normal=0x7f02001f;
@@ -93,29 +119,34 @@ public final class R {
         public static final int piece_ludo_red=0x7f02004b;
         public static final int piece_ludo_yellow=0x7f02004c;
         public static final int previous_btn_back_big=0x7f02004d;
+        public static final int red=0x7f020054;
+        public static final int screen_background_black=0x7f020058;
         public static final int six=0x7f02004e;
         public static final int three=0x7f02004f;
+        public static final int translucent_background=0x7f020059;
+        public static final int transparent_background=0x7f02005a;
         public static final int tree=0x7f020050;
         public static final int tree2=0x7f020051;
         public static final int tree3=0x7f020052;
         public static final int two=0x7f020053;
+        public static final int yellow=0x7f020057;
     }
     public static final class id {
-        public static final int button1=0x7f070004;
-        public static final int button2=0x7f070005;
-        public static final int group1=0x7f07000d;
-        public static final int imageView1=0x7f070008;
-        public static final int imageViewCloudMediumAnimated=0x7f070007;
-        public static final int imageViewCloudSmallAnimated=0x7f070006;
-        public static final int imageViewMyJigsaw=0x7f070009;
-        public static final int jigsaw=0x7f07000e;
-        public static final int jigsawBoard=0x7f070003;
-        public static final int menu_back=0x7f07000c;
-        public static final int menu_jigsaw_setting=0x7f07000a;
-        public static final int menu_save_game=0x7f07000b;
-        public static final int seekBarJigsawBoardRows=0x7f070001;
-        public static final int txtViewJigsawBoardRowsCount=0x7f070002;
-        public static final int txtViewRowsMsg=0x7f070000;
+        public static final int button1=0x7f080004;
+        public static final int button2=0x7f080005;
+        public static final int group1=0x7f08000d;
+        public static final int imageView1=0x7f080008;
+        public static final int imageViewCloudMediumAnimated=0x7f080007;
+        public static final int imageViewCloudSmallAnimated=0x7f080006;
+        public static final int imageViewMyJigsaw=0x7f080009;
+        public static final int jigsaw=0x7f08000e;
+        public static final int jigsawBoard=0x7f080003;
+        public static final int menu_back=0x7f08000c;
+        public static final int menu_jigsaw_setting=0x7f08000a;
+        public static final int menu_save_game=0x7f08000b;
+        public static final int seekBarJigsawBoardRows=0x7f080001;
+        public static final int txtViewJigsawBoardRowsCount=0x7f080002;
+        public static final int txtViewRowsMsg=0x7f080000;
     }
     public static final class layout {
         public static final int jigsaw_setting=0x7f030000;
@@ -123,19 +154,64 @@ public final class R {
         public static final int main=0x7f030002;
     }
     public static final class menu {
-        public static final int jigsaw_activity_menu=0x7f060000;
-        public static final int main=0x7f060001;
+        public static final int jigsaw_activity_menu=0x7f070000;
+        public static final int main=0x7f070001;
     }
     public static final class string {
-        public static final int app_name=0x7f050001;
-        public static final int back=0x7f050008;
-        public static final int hello=0x7f050000;
-        public static final int jigsaw_baord_default_columns=0x7f050005;
-        public static final int jigsaw_baord_default_rows=0x7f050004;
-        public static final int jigsaw_baord_max_rows_and_columns=0x7f050006;
-        public static final int jigwas_setting_column_lbl=0x7f050003;
-        public static final int jigwas_setting_rows_lbl=0x7f050002;
-        public static final int save_game=0x7f050009;
-        public static final int setting_lbl=0x7f050007;
+        public static final int app_name=0x7f060001;
+        public static final int back=0x7f060008;
+        public static final int hello=0x7f060000;
+        public static final int jigsaw_baord_default_columns=0x7f060005;
+        public static final int jigsaw_baord_default_rows=0x7f060004;
+        public static final int jigsaw_baord_max_rows_and_columns=0x7f060006;
+        public static final int jigwas_setting_column_lbl=0x7f060003;
+        public static final int jigwas_setting_rows_lbl=0x7f060002;
+        public static final int save_game=0x7f060009;
+        public static final int setting_lbl=0x7f060007;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a JigsawBoardView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #JigsawBoardView_columns_count com.nav.gamepack:columns_count}</code></td><td></td></tr>
+           <tr><td><code>{@link #JigsawBoardView_rows_count com.nav.gamepack:rows_count}</code></td><td></td></tr>
+           </table>
+           @see #JigsawBoardView_columns_count
+           @see #JigsawBoardView_rows_count
+         */
+        public static final int[] JigsawBoardView = {
+            0x7f010000, 0x7f010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.nav.gamepack.R.attr#columns_count}
+          attribute's value can be found in the {@link #JigsawBoardView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:columns_count
+        */
+        public static final int JigsawBoardView_columns_count = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.nav.gamepack.R.attr#rows_count}
+          attribute's value can be found in the {@link #JigsawBoardView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:rows_count
+        */
+        public static final int JigsawBoardView_rows_count = 0;
+    };
 }
