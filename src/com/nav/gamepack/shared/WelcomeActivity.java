@@ -24,6 +24,7 @@ import android.view.animation.Animation;
 public class WelcomeActivity extends Activity {
 	ImageView imageViewCloudMediumAnimated,imageViewCloudSmallAnimated;
 	Animation slideLeftSlowAnimation,slideLeftFastAnimation;
+	AnimationDrawable myJigsawAnim;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -49,6 +50,10 @@ public class WelcomeActivity extends Activity {
 	if(hasFocus){
 		imageViewCloudMediumAnimated.startAnimation(slideLeftSlowAnimation);
 		imageViewCloudSmallAnimated.startAnimation(slideLeftFastAnimation);
+		ImageView im=(ImageView)findViewById(R.id.imageViewMyJigsaw);
+		im.setBackgroundResource(R.drawable.jigsaw_walking);
+		myJigsawAnim = (AnimationDrawable) im.getBackground();
+		myJigsawAnim.start();
 		
 	}
 	}

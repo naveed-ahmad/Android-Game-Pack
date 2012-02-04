@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -18,6 +19,7 @@ import android.view.View;
  */
 
 public class JigsawBoardView extends View {
+	private final String TAG="JigsawBoardView";
 	private JigsawSetting setting;
 	private Bitmap[] jigsawCellImages;
 	private boolean isBoardInitialized;
@@ -57,14 +59,20 @@ public class JigsawBoardView extends View {
 	public void prepareJigsawBoardImage() {
 		Bitmap jigsawImage = setting.getJigwasImage();
 		setting.prepareJigwasCellDimension();
-		int width = setting.getJigsawCellWidth();
-		int height = setting.getJigsawCellHeight();
 		int rows = setting.getBoardRowCount();
 		int columns = setting.getBoardColumnCount();
+		int width = setting.getJigsawCellWidth();
+		int height = setting.getJigsawCellHeight();
+		Log.i(TAG,"Board width="+setting.getJigsawBoardWidth()+" Board height="+setting.getJigsawBoardHeight());
+		Log.i(TAG,"rows="+setting.getBoardRowCount()+" columns="+setting.getBoardColumnCount());
+		Log.i(TAG,"Cellwidth="+setting.getJigsawCellWidth()+" cell height="+setting.getJigsawCellHeight());
+		
 		int imageStartX = 0, imageStartY = 5;
 		int currentCell = 0;
-		for (int column = 0; column < columns; column++) {
-			for (int row = 0; row < rows; row++) {
+		for (int row = 0; row < rows; row++) {
+			for (int column = 0; column< columns;column++) {
+				Log.i(TAG,"Croping column+"+column+" row="+row+ "startX="+imageStartX+" startY="+imageStartY);
+				
 				jigsawCellImages[currentCell] = Bitmap.createBitmap(
 						jigsawImage, imageStartX, imageStartY - 5, width,
 						height);

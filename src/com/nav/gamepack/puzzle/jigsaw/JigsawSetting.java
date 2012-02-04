@@ -35,7 +35,7 @@ public class JigsawSetting extends View {
 	public JigsawSetting(Context context, int boardWidth, int boardHeight) {
 		super(context);
 		defaultShuffleCount = 14;
-		defaultBoardRowCount =3;
+		defaultBoardRowCount =6;
 			defaultBoardColumnCount = 3;
 		boardColumnCount = boardRowCount = 0;
 		playSoundOnInvalidMove=true;
@@ -55,7 +55,7 @@ public class JigsawSetting extends View {
 			// TODO Show Select Image View//
 			currentJigwasImage = Bitmap.createScaledBitmap(BitmapFactory
 					.decodeStream(getResources().openRawResource(
-							R.drawable.arrow_left_gs_normal)), jigsawBoardWidth,
+							R.drawable.image)), jigsawBoardWidth,
 					jigsawBoardHeight, true);
 
 		}
