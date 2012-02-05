@@ -4,9 +4,10 @@
     <string name="app_name">My Jigsaw</string>
     <string name="jigwas_setting_rows_lbl">Rows:</string>
     <string name="jigwas_setting_column_lbl">Column</string>
-    <string name="jigsaw_baord_default_rows">3</string>
-    <string name="jigsaw_baord_default_columns">3</string>
+    <string name="jigsaw_baord_default_rows">4</string>
+    <string name="jigsaw_baord_default_columns">4</string>
     <string name="jigsaw_baord_max_rows_and_columns">10</string>
+    <string name="jigsaw_baord_cell_shuffle_count">10</string>
     <string name="setting_lbl">Setting</string>
     <string name="back">Back</string>
     <string name="save_game">Save</string>

@@ -20,7 +20,19 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
+        public static final int cell_shuffle_count=0x7f010002;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
         public static final int columns_count=0x7f010001;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int jigsaw_image=0x7f010003;
         /** <p>Must be an integer value, such as "<code>100</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -47,7 +59,7 @@ containing a value of this type.
         public static final int arrow_right_norml_small=0x7f020005;
         public static final int arrow_right_pressed=0x7f020006;
         public static final int arrow_right_pressed_small=0x7f020007;
-        public static final int blue=0x7f020055;
+        public static final int blue=0x7f020057;
         public static final int btn_circle_parrot_green_normal=0x7f020008;
         public static final int bubble1=0x7f020009;
         public static final int button_circle_sky_bnormal=0x7f02000a;
@@ -62,96 +74,107 @@ containing a value of this type.
         public static final int cloud1=0x7f020013;
         public static final int cloud2=0x7f020014;
         public static final int cloud3=0x7f020015;
-        public static final int cross_red_normal=0x7f020016;
-        public static final int cross_red_pressed=0x7f020017;
-        public static final int dice1=0x7f020018;
-        public static final int dice2=0x7f020019;
-        public static final int dice3=0x7f02001a;
-        public static final int five=0x7f02001b;
-        public static final int four=0x7f02001c;
-        public static final int green=0x7f020056;
-        public static final int home_background=0x7f02001d;
-        public static final int icon=0x7f02001e;
-        public static final int icon_jigsaw_normal=0x7f02001f;
-        public static final int icon_jigsaw_normal_light=0x7f020020;
-        public static final int icon_jigsaw_pressed=0x7f020021;
-        public static final int icon_ludo_normal=0x7f020022;
-        public static final int icon_ludo_normal_light=0x7f020023;
-        public static final int icon_ludo_pressed=0x7f020024;
-        public static final int image=0x7f020025;
-        public static final int jigsaw1=0x7f020026;
-        public static final int jigsaw10=0x7f020027;
-        public static final int jigsaw11=0x7f020028;
-        public static final int jigsaw12=0x7f020029;
-        public static final int jigsaw13=0x7f02002a;
-        public static final int jigsaw14=0x7f02002b;
-        public static final int jigsaw15=0x7f02002c;
-        public static final int jigsaw16=0x7f02002d;
-        public static final int jigsaw17=0x7f02002e;
-        public static final int jigsaw18=0x7f02002f;
-        public static final int jigsaw19=0x7f020030;
-        public static final int jigsaw2=0x7f020031;
-        public static final int jigsaw20=0x7f020032;
-        public static final int jigsaw21=0x7f020033;
-        public static final int jigsaw22=0x7f020034;
-        public static final int jigsaw23=0x7f020035;
-        public static final int jigsaw24=0x7f020036;
-        public static final int jigsaw25=0x7f020037;
-        public static final int jigsaw26=0x7f020038;
-        public static final int jigsaw27=0x7f020039;
-        public static final int jigsaw28=0x7f02003a;
-        public static final int jigsaw29=0x7f02003b;
-        public static final int jigsaw3=0x7f02003c;
-        public static final int jigsaw30=0x7f02003d;
-        public static final int jigsaw4=0x7f02003e;
-        public static final int jigsaw5=0x7f02003f;
-        public static final int jigsaw6=0x7f020040;
-        public static final int jigsaw7=0x7f020041;
-        public static final int jigsaw8=0x7f020042;
-        public static final int jigsaw9=0x7f020043;
-        public static final int jigsaw_walking=0x7f020044;
-        public static final int my_jigsaw_character=0x7f020045;
-        public static final int next_btn_back_big=0x7f020046;
-        public static final int ok_normal=0x7f020047;
-        public static final int ok_pressed=0x7f020048;
-        public static final int one=0x7f020049;
-        public static final int piece_ludo_blue=0x7f02004a;
-        public static final int piece_ludo_red=0x7f02004b;
-        public static final int piece_ludo_yellow=0x7f02004c;
-        public static final int previous_btn_back_big=0x7f02004d;
-        public static final int red=0x7f020054;
-        public static final int screen_background_black=0x7f020058;
-        public static final int six=0x7f02004e;
-        public static final int three=0x7f02004f;
-        public static final int translucent_background=0x7f020059;
-        public static final int transparent_background=0x7f02005a;
-        public static final int tree=0x7f020050;
-        public static final int tree2=0x7f020051;
-        public static final int tree3=0x7f020052;
-        public static final int two=0x7f020053;
-        public static final int yellow=0x7f020057;
+        public static final int cross_btn_back=0x7f020016;
+        public static final int cross_red_normal=0x7f020017;
+        public static final int cross_red_pressed=0x7f020018;
+        public static final int dice1=0x7f020019;
+        public static final int dice2=0x7f02001a;
+        public static final int dice3=0x7f02001b;
+        public static final int five=0x7f02001c;
+        public static final int four=0x7f02001d;
+        public static final int green=0x7f020058;
+        public static final int home_background=0x7f02001e;
+        public static final int icon=0x7f02001f;
+        public static final int icon_jigsaw_normal=0x7f020020;
+        public static final int icon_jigsaw_normal_light=0x7f020021;
+        public static final int icon_jigsaw_pressed=0x7f020022;
+        public static final int icon_ludo_normal=0x7f020023;
+        public static final int icon_ludo_normal_light=0x7f020024;
+        public static final int icon_ludo_pressed=0x7f020025;
+        public static final int image=0x7f020026;
+        public static final int jigsaw1=0x7f020027;
+        public static final int jigsaw10=0x7f020028;
+        public static final int jigsaw11=0x7f020029;
+        public static final int jigsaw12=0x7f02002a;
+        public static final int jigsaw13=0x7f02002b;
+        public static final int jigsaw14=0x7f02002c;
+        public static final int jigsaw15=0x7f02002d;
+        public static final int jigsaw16=0x7f02002e;
+        public static final int jigsaw17=0x7f02002f;
+        public static final int jigsaw18=0x7f020030;
+        public static final int jigsaw19=0x7f020031;
+        public static final int jigsaw2=0x7f020032;
+        public static final int jigsaw20=0x7f020033;
+        public static final int jigsaw21=0x7f020034;
+        public static final int jigsaw22=0x7f020035;
+        public static final int jigsaw23=0x7f020036;
+        public static final int jigsaw24=0x7f020037;
+        public static final int jigsaw25=0x7f020038;
+        public static final int jigsaw26=0x7f020039;
+        public static final int jigsaw27=0x7f02003a;
+        public static final int jigsaw28=0x7f02003b;
+        public static final int jigsaw29=0x7f02003c;
+        public static final int jigsaw3=0x7f02003d;
+        public static final int jigsaw30=0x7f02003e;
+        public static final int jigsaw4=0x7f02003f;
+        public static final int jigsaw5=0x7f020040;
+        public static final int jigsaw6=0x7f020041;
+        public static final int jigsaw7=0x7f020042;
+        public static final int jigsaw8=0x7f020043;
+        public static final int jigsaw9=0x7f020044;
+        public static final int jigsaw_walking=0x7f020045;
+        public static final int my_jigsaw_character=0x7f020046;
+        public static final int next_btn_back_big=0x7f020047;
+        public static final int ok_normal=0x7f020048;
+        public static final int ok_pressed=0x7f020049;
+        public static final int one=0x7f02004a;
+        public static final int piece_ludo_blue=0x7f02004b;
+        public static final int piece_ludo_red=0x7f02004c;
+        public static final int piece_ludo_yellow=0x7f02004d;
+        public static final int previous_btn_back_big=0x7f02004e;
+        public static final int red=0x7f020056;
+        public static final int screen_background_black=0x7f02005a;
+        public static final int six=0x7f02004f;
+        public static final int three=0x7f020050;
+        public static final int toast_frame=0x7f020051;
+        public static final int translucent_background=0x7f02005b;
+        public static final int transparent_background=0x7f02005c;
+        public static final int tree=0x7f020052;
+        public static final int tree2=0x7f020053;
+        public static final int tree3=0x7f020054;
+        public static final int two=0x7f020055;
+        public static final int yellow=0x7f020059;
     }
     public static final class id {
-        public static final int button1=0x7f080004;
-        public static final int button2=0x7f080005;
-        public static final int group1=0x7f08000d;
-        public static final int imageView1=0x7f080008;
-        public static final int imageViewCloudMediumAnimated=0x7f080007;
-        public static final int imageViewCloudSmallAnimated=0x7f080006;
-        public static final int imageViewMyJigsaw=0x7f080009;
-        public static final int jigsaw=0x7f08000e;
-        public static final int jigsawBoard=0x7f080003;
-        public static final int menu_back=0x7f08000c;
-        public static final int menu_jigsaw_setting=0x7f08000a;
-        public static final int menu_save_game=0x7f08000b;
-        public static final int seekBarJigsawBoardRows=0x7f080001;
-        public static final int txtViewJigsawBoardRowsCount=0x7f080002;
-        public static final int txtViewRowsMsg=0x7f080000;
+        public static final int button1=0x7f080008;
+        public static final int button2=0x7f08000e;
+        public static final int group1=0x7f080015;
+        public static final int imageView1=0x7f080002;
+        public static final int imageView2=0x7f080007;
+        public static final int imageViewCloudMediumAnimated=0x7f080010;
+        public static final int imageViewCloudSmallAnimated=0x7f08000f;
+        public static final int imageViewMyJigsaw=0x7f080011;
+        public static final int jigsaw=0x7f080016;
+        public static final int jigsawBoard=0x7f08000d;
+        public static final int linearLayout1=0x7f080006;
+        public static final int linearLayout2=0x7f080009;
+        public static final int linearLayoutLeft=0x7f080004;
+        public static final int linearLayoutTop=0x7f080001;
+        public static final int menu_back=0x7f080014;
+        public static final int menu_jigsaw_setting=0x7f080012;
+        public static final int menu_save_game=0x7f080013;
+        public static final int scrollViewLeft=0x7f080003;
+        public static final int scrollViewRight=0x7f080005;
+        public static final int scrollViewTop=0x7f080000;
+        public static final int seekBarJigsawBoardRows=0x7f08000b;
+        public static final int txtViewJigsawBoardRowsCount=0x7f08000c;
+        public static final int txtViewRowsMsg=0x7f08000a;
     }
     public static final class layout {
-        public static final int jigsaw_setting=0x7f030000;
-        public static final int jigsawboard=0x7f030001;
-        public static final int main=0x7f030002;
+        public static final int image_chooser=0x7f030000;
+        public static final int jigsaw_setting=0x7f030001;
+        public static final int jigsawboard=0x7f030002;
+        public static final int main=0x7f030003;
     }
     public static final class menu {
         public static final int jigsaw_activity_menu=0x7f070000;
@@ -159,15 +182,16 @@ containing a value of this type.
     }
     public static final class string {
         public static final int app_name=0x7f060001;
-        public static final int back=0x7f060008;
+        public static final int back=0x7f060009;
         public static final int hello=0x7f060000;
+        public static final int jigsaw_baord_cell_shuffle_count=0x7f060007;
         public static final int jigsaw_baord_default_columns=0x7f060005;
         public static final int jigsaw_baord_default_rows=0x7f060004;
         public static final int jigsaw_baord_max_rows_and_columns=0x7f060006;
         public static final int jigwas_setting_column_lbl=0x7f060003;
         public static final int jigwas_setting_rows_lbl=0x7f060002;
-        public static final int save_game=0x7f060009;
-        public static final int setting_lbl=0x7f060007;
+        public static final int save_game=0x7f06000a;
+        public static final int setting_lbl=0x7f060008;
     }
     public static final class styleable {
         /** Attributes that can be used with a JigsawBoardView.
@@ -176,15 +200,33 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #JigsawBoardView_cell_shuffle_count com.nav.gamepack:cell_shuffle_count}</code></td><td></td></tr>
            <tr><td><code>{@link #JigsawBoardView_columns_count com.nav.gamepack:columns_count}</code></td><td></td></tr>
+           <tr><td><code>{@link #JigsawBoardView_jigsaw_image com.nav.gamepack:jigsaw_image}</code></td><td></td></tr>
            <tr><td><code>{@link #JigsawBoardView_rows_count com.nav.gamepack:rows_count}</code></td><td></td></tr>
            </table>
+           @see #JigsawBoardView_cell_shuffle_count
            @see #JigsawBoardView_columns_count
+           @see #JigsawBoardView_jigsaw_image
            @see #JigsawBoardView_rows_count
          */
         public static final int[] JigsawBoardView = {
-            0x7f010000, 0x7f010001
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003
         };
+        /**
+          <p>This symbol is the offset where the {@link com.nav.gamepack.R.attr#cell_shuffle_count}
+          attribute's value can be found in the {@link #JigsawBoardView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:cell_shuffle_count
+        */
+        public static final int JigsawBoardView_cell_shuffle_count = 2;
         /**
           <p>This symbol is the offset where the {@link com.nav.gamepack.R.attr#columns_count}
           attribute's value can be found in the {@link #JigsawBoardView} array.
@@ -199,6 +241,16 @@ containing a value of this type.
           @attr name android:columns_count
         */
         public static final int JigsawBoardView_columns_count = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.nav.gamepack.R.attr#jigsaw_image}
+          attribute's value can be found in the {@link #JigsawBoardView} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name android:jigsaw_image
+        */
+        public static final int JigsawBoardView_jigsaw_image = 3;
         /**
           <p>This symbol is the offset where the {@link com.nav.gamepack.R.attr#rows_count}
           attribute's value can be found in the {@link #JigsawBoardView} array.

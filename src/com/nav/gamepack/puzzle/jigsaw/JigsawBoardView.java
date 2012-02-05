@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,14 +27,69 @@ import android.view.View;
 public class JigsawBoardView extends View {
 	private final String TAG = "JigsawBoardView";
 	private Bitmap[] jigsawCellImages;
-	Bitmap jigsawOrigionalImage;
+	Bitmap jigsawOrigionalImage, jigsawScalledImage;
 	private boolean isBoardInitialized;
 	private JigsawCell[] cells;
 	private Context context;
 	private int emptyCellIndex;
 	private JigsawBoardKeyListener jigsawCellClickListener;
 	private int clickedCellIndex;
-	private int rowCount, columnCount, cellShuffleCount;
+	private int rowCount, columnCount, cellShuffleCount, cellHeight, cellWidth, mSize;
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		mSize = Math.min(getMeasuredWidth(), getMeasuredHeight());
+		getJigsawScalledImage(mSize);
+		prepareJigsawCellSize();
+		setMeasuredDimension(mSize, mSize + cellHeight);
+	}
+
+	/**
+	 * 
+	 */
+	private void prepareJigsawCellSize() {
+		setCelWidth(jigsawScalledImage.getWidth() / getColumnCount());
+		setCellHeight(jigsawScalledImage.getHeight() / getRowCount());
+
+	}
+
+	/**
+	 * @param i
+	 */
+	private void setCellHeight(int height) {
+		cellHeight = height;
+
+	}
+
+	/**
+	 * @param i
+	 */
+	private void setCelWidth(int width) {
+		cellWidth = width;
+
+	}
+
+	/**
+	 * @param jigsawCellClickListener2
+	 * @param mWidth
+	 * @param mWidth2
+	 */
+	private Bitmap getScaleImage(Bitmap origionalImage, int mWidth, int mHeight) {
+		return Bitmap.createScaledBitmap(origionalImage, mWidth, mHeight, true);
+	}
+
+	public Bitmap getJigsawScalledImage(int size) {
+
+		if (jigsawOrigionalImage == null) {
+			// TODO Show Select Image View//
+			jigsawOrigionalImage = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)), getWidth(), getHeight(), true);
+
+		}
+
+		jigsawScalledImage = getScaleImage(jigsawOrigionalImage, size, size);
+		return jigsawScalledImage;
+	}
 
 	public JigsawBoardView(Context context) {
 		this(context, null);
@@ -47,7 +103,6 @@ public class JigsawBoardView extends View {
 		this.context = context;
 		load(context, attrs, defStyle);
 		isBoardInitialized = false;
-		cellShuffleCount = 10;
 		jigsawCellClickListener = new JigsawBoardKeyListener(this);
 		setOnKeyListener(jigsawCellClickListener);
 		setFocusableInTouchMode(true);
@@ -64,17 +119,18 @@ public class JigsawBoardView extends View {
 	public void prepareJigsawBoardImage() {
 		if (jigsawOrigionalImage == null) {
 			showImageChooserDialog();
-			return;
+		
 		}
+		Bitmap img=	getJigsawScalledImage(mSize);
+
 
 		int imageStartX = 0, imageStartY = 5;
 		int currentCell = 0;
-		int cellWidth = 3, cellHeight = 3;
 		for (int row = 0; row < getRowCount(); row++) {
 			for (int column = 0; column < getColumnCount(); column++) {
 				Log.i(TAG, "Croping column+" + column + " row=" + row + "startX=" + imageStartX + " startY=" + imageStartY);
 
-				jigsawCellImages[currentCell] = Bitmap.createBitmap(jigsawOrigionalImage, imageStartX, imageStartY - 5, cellWidth, cellHeight);
+				jigsawCellImages[currentCell] = Bitmap.createBitmap(img, imageStartX, imageStartY - 5, cellWidth, cellHeight);
 				cells[currentCell] = new JigsawCell(context);
 				cells[currentCell].layout(imageStartX, imageStartY, imageStartX + cellWidth, imageStartY + cellHeight);
 				cells[currentCell].setJigsawImageIndex(currentCell);
@@ -96,7 +152,6 @@ public class JigsawBoardView extends View {
 	 * 
 	 */
 	private void showImageChooserDialog() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -204,9 +259,10 @@ public class JigsawBoardView extends View {
 		return -1;
 	}
 
-	/**		int tempImageIndex = cells[cell1].getJigsawImageIndex();
-     * 
-     */
+	/**
+	 * int tempImageIndex = cells[cell1].getJigsawImageIndex();
+	 * 
+	 */
 	public boolean onTouchEvent(MotionEvent event) {
 		int cellIndex = findClickedCellIndex(event.getX(), event.getY());
 		// TODO handle Click should return true if any cell is swap
@@ -718,11 +774,19 @@ public class JigsawBoardView extends View {
 
 	private void load(Context context, AttributeSet attrs, int defStyle) {
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.JigsawBoardView, defStyle, 0);
+		cellShuffleCount = a.getInteger(R.styleable.JigsawBoardView_cell_shuffle_count, Integer.parseInt(getResources().getString(R.string.jigsaw_baord_cell_shuffle_count)));
 
 		final int rows = a.getInteger(R.styleable.JigsawBoardView_rows_count, Integer.parseInt(getResources().getString(R.string.jigsaw_baord_default_rows)));
 		final int columns = a.getInteger(R.styleable.JigsawBoardView_columns_count, Integer.parseInt(getResources().getString(R.string.jigsaw_baord_default_columns)));
+
 		setRowCount(rows, false);
 		setColumnCount(columns, false);
+
+		final int jigsaw_image_id = a.getResourceId(R.styleable.JigsawBoardView_jigsaw_image, 0);
+		final Bitmap jigsawImg = BitmapFactory.decodeResource(getResources(), jigsaw_image_id);
+		if (jigsawImg != null) {
+			jigsawOrigionalImage = jigsawImg;
+		}
 		a.recycle();
 	}
 }

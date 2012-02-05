@@ -10,7 +10,6 @@ public class GamePackActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JigsawBoardView board=new JigsawBoardView(this);
-        setContentView(board);
+        setContentView(R.layout.jigsawboard);
     }
 }

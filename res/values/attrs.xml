@@ -3,6 +3,8 @@
     <declare-styleable name="JigsawBoardView">
         <attr name="rows_count" format="integer"/>
         <attr name="columns_count" format="integer" />
+        <attr name="cell_shuffle_count" format="integer"/>
+        <attr name="jigsaw_image" format="reference"/>
     </declare-styleable>
  
 </resources>

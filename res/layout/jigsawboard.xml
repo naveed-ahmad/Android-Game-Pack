@@ -7,10 +7,11 @@
 
     <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
         android:id="@+id/jigsawBoard"
-        android:layout_width="wrap_content"
-        android:layout_height="368dp"
-        jigsaw:columns_count="@string/jigsaw_baord_default_columns"
-        jigsaw:rows_count="@string/jigsaw_baord_default_rows" >
-    </com.nav.gamepack.puzzle.jigsaw.JigsawBoardView>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        jigsaw:cell_shuffle_count="1"
+        jigsaw:columns_count="4"
+        jigsaw:jigsaw_image="@drawable/image"
+        jigsaw:rows_count="4" />
 
 </LinearLayout>
