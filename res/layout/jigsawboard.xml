@@ -5,13 +5,18 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
-        android:id="@+id/jigsawBoard"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        jigsaw:cell_shuffle_count="1"
-        jigsaw:columns_count="4"
-        jigsaw:jigsaw_image="@drawable/image"
-        jigsaw:rows_count="4" />
+<!--     <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView -->
+<!--         android:id="@+id/jigsawBoard" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         jigsaw:cell_shuffle_count="1" -->
+<!--         jigsaw:columns_count="4" -->
+<!--         jigsaw:jigsaw_image="@drawable/home_background" -->
+<!--         jigsaw:rows_count="4" /> -->
+
+    <com.nav.gamepack.puzzle.jigsaw.DNDJigsawBoardView
+        android:id="@+id/dNDJigsawBoardView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

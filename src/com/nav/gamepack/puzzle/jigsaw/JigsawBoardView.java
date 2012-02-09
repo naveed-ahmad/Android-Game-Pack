@@ -782,7 +782,7 @@ public class JigsawBoardView extends View {
 		setRowCount(rows, false);
 		setColumnCount(columns, false);
 
-		final int jigsaw_image_id = a.getResourceId(R.styleable.JigsawBoardView_jigsaw_image, 0);
+		final int jigsaw_image_id = a.getResourceId(R.styleable.JigsawBoardView_jigsaw_image,-1);
 		final Bitmap jigsawImg = BitmapFactory.decodeResource(getResources(), jigsaw_image_id);
 		if (jigsawImg != null) {
 			jigsawOrigionalImage = jigsawImg;

@@ -3,28 +3,27 @@
  */
 package com.nav.gamepack.puzzle.jigsaw.jigsawCell;
 
+import com.nav.gamepack.R;
+
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Path.Direction;
 import android.graphics.Rect;
+import android.graphics.Path.Direction;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import com.nav.gamepack.R;
-
 /**
  * @author naveed
- *
+ * 
  */
-public class CircleJigsawCell extends JigsawCells{
-	final String TAG="DIamondJigsawCell";
+public class BrickJigsawCell extends JigsawCells {
+	final String TAG="DiamondJigsawCell";
 
 	/**
 	 * @param context
 	 */
-	public CircleJigsawCell(Context context) {
+	public BrickJigsawCell(Context context) {
 		this(context, null);
 	}
 
@@ -32,7 +31,7 @@ public class CircleJigsawCell extends JigsawCells{
 	 * @param context
 	 * @param attrs
 	 */
-	public CircleJigsawCell(Context context, AttributeSet attrs) {
+	public BrickJigsawCell(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
@@ -41,17 +40,20 @@ public class CircleJigsawCell extends JigsawCells{
 	 * @param attrs
 	 * @param defStyle
 	 */
-	public CircleJigsawCell(Context context, AttributeSet attrs, int defStyle) {
+	public BrickJigsawCell(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		
+		generateBoundryPath();
 	}
 
 	@Override
-	public void generateBoundryPath() {
-		//a circular shape
+	protected void generateBoundryPath() {
+		//...|**************|
+		//...|..............|
+		//...|..............|
+		//...|______________|
+		
 		setBackgroundBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.home_background)));
-		mBoundryPath.addCircle(getBoundaryMiddleX(),getBoundaryMiddleY(), 50, Direction.CW);
+		mBoundryPath.addRect(new RectF(mBoundryRect), Direction.CCW);
 		Log.i(TAG,"sBoundry Info left:"+mBoundryRect.left+" right:"+mBoundryRect.right+ "top="+ mBoundryRect.top+ "bottom="+mBoundryRect.bottom+ "middleX="+getBoundaryMiddleX()+" middleY="+getBoundaryMiddleY());
 	}
-
 }

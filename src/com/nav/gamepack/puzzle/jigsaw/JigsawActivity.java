@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,10 +28,15 @@ public class JigsawActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.main);
+        setContentView(R.layout.main);
 	}
-
+/* (non-Javadoc)
+ * @see android.app.Activity#onWindowFocusChanged(boolean)
+ */
+@Override
+public void onWindowFocusChanged(boolean hasFocus) {
+	super.onWindowFocusChanged(hasFocus);
+}
 	public void showSettingDialog() {
 		if (settingDialog == null) {
 

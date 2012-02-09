@@ -11,4 +11,11 @@
     <string name="setting_lbl">Setting</string>
     <string name="back">Back</string>
     <string name="save_game">Save</string>
+    <string name="lbl_gallery">Gallery</string>
+    <string name="lbl_camera">Camera</string>
+    <string name="lbl_find_image">Search</string>
+    
+    
+    
+    
 </resources>

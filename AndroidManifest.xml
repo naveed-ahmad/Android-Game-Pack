@@ -12,19 +12,26 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <activity
-            android:name=".shared.WelcomeActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity android:name=".puzzle.jigsaw.JigsawActivity" >
-           
-        </activity>
-        <activity android:name="GamePackActivity">
-            
-             <intent-filter>
+            android:name="GamePackActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".shared.WelcomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".puzzle.jigsaw.JigsawActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".puzzle.jigsaw.ImageChooserActivity"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
