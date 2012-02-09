@@ -6,12 +6,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -24,19 +26,30 @@ import android.widget.TextView;
 
 public class JigsawActivity extends Activity {
 	AlertDialog settingDialog;
+	Bitmap img;
+
+	public JigsawActivity(Bitmap im) {
+		img = im;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+		JigsawBoardView jbv=new JigsawBoardView(this);
+		jbv.setImage(img);
+        setContentView(jbv,new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 	}
-/* (non-Javadoc)
- * @see android.app.Activity#onWindowFocusChanged(boolean)
- */
-@Override
-public void onWindowFocusChanged(boolean hasFocus) {
-	super.onWindowFocusChanged(hasFocus);
-}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onWindowFocusChanged(boolean)
+	 */
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+	}
+
 	public void showSettingDialog() {
 		if (settingDialog == null) {
 

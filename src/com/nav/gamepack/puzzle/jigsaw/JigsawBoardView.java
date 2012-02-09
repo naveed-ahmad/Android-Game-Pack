@@ -789,4 +789,12 @@ public class JigsawBoardView extends View {
 		}
 		a.recycle();
 	}
+
+	/**
+	 * @param img
+	 */
+	public void setImage(Bitmap img) {
+		jigsawOrigionalImage=img;
+		
+	}
 }

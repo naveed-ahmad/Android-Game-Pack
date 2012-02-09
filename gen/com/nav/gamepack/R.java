@@ -147,35 +147,37 @@ containing a value of this type.
         public static final int yellow=0x7f02005a;
     }
     public static final class id {
+        public static final int btnBack=0x7f08000e;
         public static final int btnCamera=0x7f08000a;
         public static final int btnDeleteImage=0x7f08000c;
         public static final int btnGallery=0x7f080009;
         public static final int btnSearchImage=0x7f08000b;
         public static final int btnSelectImage=0x7f08000d;
-        public static final int button1=0x7f080012;
-        public static final int button2=0x7f080013;
-        public static final int dNDJigsawBoardView1=0x7f080011;
-        public static final int group1=0x7f08001b;
-        public static final int imageView1=0x7f080016;
-        public static final int imageViewCloudMediumAnimated=0x7f080015;
-        public static final int imageViewCloudSmallAnimated=0x7f080014;
-        public static final int imageViewMyJigsaw=0x7f080017;
+        public static final int button1=0x7f080013;
+        public static final int button2=0x7f080014;
+        public static final int dNDJigsawBoardView1=0x7f080012;
+        public static final int group1=0x7f08001d;
+        public static final int imageView1=0x7f080017;
+        public static final int imageViewCloudMediumAnimated=0x7f080016;
+        public static final int imageViewCloudSmallAnimated=0x7f080015;
+        public static final int imageViewMyJigsaw=0x7f080018;
         public static final int imgViewSelectedImage=0x7f080006;
-        public static final int jigsaw=0x7f08001c;
+        public static final int jigsaw=0x7f08001e;
+        public static final int jigsawBoardView1=0x7f080019;
         public static final int linearLayout1=0x7f080005;
         public static final int linearLayoutButtons=0x7f080008;
         public static final int linearLayoutLeft=0x7f080003;
         public static final int linearLayoutSelectButtons=0x7f080007;
         public static final int linearLayoutTop=0x7f080001;
-        public static final int menu_back=0x7f08001a;
-        public static final int menu_jigsaw_setting=0x7f080018;
-        public static final int menu_save_game=0x7f080019;
+        public static final int menu_back=0x7f08001c;
+        public static final int menu_jigsaw_setting=0x7f08001a;
+        public static final int menu_save_game=0x7f08001b;
         public static final int scrollViewLeft=0x7f080002;
         public static final int scrollViewRight=0x7f080004;
         public static final int scrollViewTop=0x7f080000;
-        public static final int seekBarJigsawBoardRows=0x7f08000f;
-        public static final int txtViewJigsawBoardRowsCount=0x7f080010;
-        public static final int txtViewRowsMsg=0x7f08000e;
+        public static final int seekBarJigsawBoardRows=0x7f080010;
+        public static final int txtViewJigsawBoardRowsCount=0x7f080011;
+        public static final int txtViewRowsMsg=0x7f08000f;
     }
     public static final class layout {
         public static final int image_chooser=0x7f030000;

@@ -112,7 +112,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/cross_btn_back"
-            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btnSelectImage"
+            android:layout_marginRight="15dp"
              />
 
         <Button
@@ -122,6 +123,15 @@
             android:background="@drawable/ok_btn_back"
             android:gravity="right"
             android:layout_alignParentRight="true"
+             />
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/arrow_left_gs_normal"
              />
 
     </RelativeLayout>

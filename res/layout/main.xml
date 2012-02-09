@@ -58,4 +58,11 @@
         android:layout_toLeftOf="@+id/imageViewCloudSmallAnimated"
          />
 
+    <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
+        android:id="@+id/jigsawBoardView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        
+        />
+
 </RelativeLayout>
