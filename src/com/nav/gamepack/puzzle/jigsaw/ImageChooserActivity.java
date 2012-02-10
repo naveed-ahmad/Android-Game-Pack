@@ -145,4 +145,90 @@ public class ImageChooserActivity extends Activity {
 			selectedImage = photo;
 		}
 	}
+	
+//	
+//	
+//	/**
+//	 * Async task for loading the images from the SD card.
+//	 */
+//	class LoadImagesFromSDCard extends AsyncTask<Object, LoadedImage, Object> {
+//	    /**
+//	     * Load images from SD Card in the background, and display each image on the screen.
+//	     * @see android.os.AsyncTask#doInBackground(Params[])
+//	     */
+//	    @Override
+//	    protected Object doInBackground(Object... params) {
+//	        // setProgressBarIndeterminateVisibility(true);
+//	        Bitmap bitmap = null;
+//	        Bitmap newBitmap = null;
+//	        Uri uri = null;
+//
+//	        // Set up an array of the Thumbnail Image ID column we want
+//	        String[] projection = { MediaStore.Images.Thumbnails._ID };
+//	        // Create the cursor pointing to the SDCard
+//	        Cursor cursor = managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, // Which columns to return
+//	                null, // Return all rows
+//	                null, null);
+//	        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
+//	        int size = cursor.getCount();
+//	        // If size is 0, there are no images on the SD Card.
+//	        if (size == 0) {
+//	            // No Images available, post some message to the user
+//	        }
+//
+//	        // This will remember ACTUAL positions with existing bitmaps!
+//	        mRealBitmapsIndexes = new ArrayList<Integer>();
+//
+//	        int imageID = 0;
+//	        boolean run = true;
+//	        for (int i = 0; i < size; i++) {                
+//	            try {
+//	                if(cursor != null && !cursor.isClosed() && run){ //if the user quits before all the images are loaded, the cursor will be closed 
+//	                    cursor.moveToPosition(i);  
+//	                    imageID = cursor.getInt(columnIndex);
+//	                    uri = Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, "" + imageID);
+//	                    //temp
+//	                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+//
+//	                    if (bitmap != null) {
+//	                        mRealBitmapsIndexes.add(i);
+//	                        newBitmap = Bitmap.createScaledBitmap(bitmap, GRID_IMG_WIDTH, GRID_IMG_HEIGHT, true);
+//	                        bitmap.recycle();
+//	                        if (newBitmap != null) {
+//	                            publishProgress(new LoadedImage(newBitmap));
+//	                        }
+//	                    }
+//	                }
+//	            } catch (OutOfMemoryError e) {
+//	                run = false;
+//	                Toast.makeText(LoadImagesViaGridActivity.this, R.string.lowMemoryErrorUnableDisplImages, Toast.LENGTH_LONG).show();
+//	            }
+//	            catch (Exception e) {
+//	                e.printStackTrace();
+//	                //Toast.makeText(LoadImagesViaGridActivity.this, R.string.errorUnableDisplImages, Toast.LENGTH_LONG).show();
+//	            }
+//	        }
+//	        if(cursor != null && !cursor.isClosed())
+//	            cursor.close();
+//	        return null;
+//	    }
+//
+//	    /**
+//	     * Add a new LoadedImage in the images grid.
+//	     * @param value The image.
+//	     */
+//	    @Override
+//	    public void onProgressUpdate(Bitmap... value) {
+//	        //addImage(value);
+//	    }
+//
+//	    /**
+//	     * Set the visibility of the progress bar to false.
+//	     * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+//	     */
+//	    protected void onPostExecute(Object result) {
+//	        setProgressBarIndeterminateVisibility(false);
+//	    }
+//	}
+
 }
