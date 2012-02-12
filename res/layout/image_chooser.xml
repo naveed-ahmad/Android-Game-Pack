@@ -1,139 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <utils.CustomHorizontalScrollView
-        android:id="@+id/scrollViewTop"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:scrollbars="none" >
-
-        <LinearLayout
-            android:id="@+id/linearLayoutTop"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal" >
-        </LinearLayout>
-    </utils.CustomHorizontalScrollView>
-
-    <ScrollView
-        android:id="@+id/scrollViewLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:scrollbars="none" >
-
-        <LinearLayout
-            android:id="@+id/linearLayoutLeft"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        </LinearLayout>
-    </ScrollView>
-
-    <ScrollView
-        android:id="@+id/scrollViewRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:scrollbars="none" >
-        >
-
-        <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        </LinearLayout>
-    </ScrollView>
-
-    <ImageView
-        android:id="@+id/imgViewSelectedImage"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/scrollViewTop"
-        android:layout_toLeftOf="@+id/scrollViewRight"
-        android:layout_toRightOf="@+id/scrollViewLeft"
-        android:layout_above="@+id/linearLayoutSelectButtons"
-        android:src="@drawable/blue" />
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
     <LinearLayout
-        android:id="@+id/linearLayoutButtons"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/toast_frame"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        
-         >
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/btnGallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_gallery" 
-            android:layout_weight=".3"
-            />
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </TabWidget>
 
-        <Button
-            android:id="@+id/btnCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_camera"
-            android:layout_weight=".3"
-             />
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
 
-        <Button
-            android:id="@+id/btnSearchImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_find_image" 
-            android:layout_weight=".3"
-            />
+            <FrameLayout
+                android:id="@+id/gtabContentViewGalleryStyles"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
 
+                <RelativeLayout
+                    android:id="@+id/garlleryStyleStylish"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <Button
+                        android:id="@+id/button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="71dp"
+                        android:layout_marginTop="42dp"
+                        android:text="stylish" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/garlleryStyleGrid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <Button
+                        android:id="@+id/button1a"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="71dp"
+                        android:layout_marginTop="42dp"
+                        android:text="grid" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/garlleryStyleSlideShow"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+                </RelativeLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/gtabContentViewCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/gtabContentSearch"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/txtViewSearchFromGoogle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search Your Image from Web"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutGoogleWrapper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp" >
+
+                    <EditText
+                        android:id="@+id/editTextSearchImgFromGoogle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".6" />
+
+                    <Button
+                        android:id="@+id/btnSearchImgFromGoogle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:drawableLeft="@drawable/ic_menu_search" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnSearchImgFromMobile"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_menu_search"
+                    android:text="Search Image Form Mobile" />
+
+                <Button
+                    android:id="@+id/btnBrowseImgFromMobile"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/browse_image"
+                    android:text="Browse Image From Mobile" />
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/linearLayoutSelectButtons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/linearLayoutButtons"
-        android:layout_alignLeft="@+id/imgViewSelectedImage"
-        android:layout_toLeftOf="@+id/scrollViewRight"
-         >
-
-        <Button
-            android:id="@+id/btnDeleteImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/cross_btn_back"
-            android:layout_toLeftOf="@+id/btnSelectImage"
-            android:layout_marginRight="15dp"
-             />
-
-        <Button
-            android:id="@+id/btnSelectImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ok_btn_back"
-            android:gravity="right"
-            android:layout_alignParentRight="true"
-             />
-
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/arrow_left_gs_normal"
-             />
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</TabHost>
