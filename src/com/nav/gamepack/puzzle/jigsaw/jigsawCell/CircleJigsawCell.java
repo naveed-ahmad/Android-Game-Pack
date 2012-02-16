@@ -49,7 +49,7 @@ public class CircleJigsawCell extends JigsawCells{
 	@Override
 	public void generateBoundryPath() {
 		//a circular shape
-		setBackgroundBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.home_background)));
+	//	setBackgroundBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.home_background)));
 		mBoundryPath.addCircle(getBoundaryMiddleX(),getBoundaryMiddleY(), 50, Direction.CW);
 		Log.i(TAG,"sBoundry Info left:"+mBoundryRect.left+" right:"+mBoundryRect.right+ "top="+ mBoundryRect.top+ "bottom="+mBoundryRect.bottom+ "middleX="+getBoundaryMiddleX()+" middleY="+getBoundaryMiddleY());
 	}

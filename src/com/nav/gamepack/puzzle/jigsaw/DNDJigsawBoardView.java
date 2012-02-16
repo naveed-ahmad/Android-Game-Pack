@@ -65,7 +65,7 @@ public class DNDJigsawBoardView extends View {
 	}
 	
 	private void generateJigsawCells() {
-		Bitmap jigsawOrigionalImage = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)), 500, 500, true);
+		//Bitmap jigsawOrigionalImage = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)), 500, 500, true);
 
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -75,7 +75,7 @@ public class DNDJigsawBoardView extends View {
 				Random r=new Random();
 				int x=i*r.nextInt(60),y=i*r.nextInt(60);
 				cell.layout(x,y,x+100, y+100);
-				cell.setBackgroundBitmap(jigsawOrigionalImage);
+			//	cell.setBackgroundBitmap(jigsawOrigionalImage);
 				cells.add(cell);
 			}
 		}

@@ -83,7 +83,7 @@ public class JigsawBoardView extends View {
 
 		if (jigsawOrigionalImage == null) {
 			// TODO Show Select Image View//
-			jigsawOrigionalImage = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)), getWidth(), getHeight(), true);
+			//jigsawOrigionalImage = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)), getWidth(), getHeight(), true);
 
 		}
 

@@ -2,67 +2,108 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/home_background"
+    android:background="@drawable/home_bk"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/button1"
+    <ImageView
+        android:id="@+id/imgViewCloudSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="39dp"
-        android:layout_marginRight="28dp"
-        android:background="@drawable/next_btn_back_big" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="50dp"
-        android:background="@drawable/previous_btn_back_big" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/clouds_small"
+        android:visibility="visible" />
 
     <ImageView
-        android:id="@+id/imageViewCloudSmallAnimated"
+        android:id="@+id/imgViewCloudMedium1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/cloud1" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/clouds_medium"
+        android:visibility="visible" />
 
     <ImageView
-        android:id="@+id/imageViewCloudMediumAnimated"
+        android:id="@+id/imgViewCloudMedium2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="103dp"
-        android:src="@drawable/cloud3" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/clouds_medium2"
+        android:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/imageViewCloudMediumAnimated"
-        android:layout_marginLeft="22dp"
-        android:src="@drawable/bubble1" />
-
-    <ImageView
-        android:id="@+id/imageViewMyJigsaw"
-        android:layout_width="70dp"
-        android:layout_height="170dp"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_marginBottom="14dp"
-        android:layout_toLeftOf="@+id/imageViewCloudSmallAnimated"
-         />
-
-    <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
-        android:id="@+id/jigsawBoardView1"
+    <SlidingDrawer
+        android:id="@+id/slidingDrawerGameMenu"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        
-        />
+        android:layout_height="144dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="30dp"
+        android:content="@+id/slidingDrawerContent"
+        android:handle="@+id/slidingDrawerHandle"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/slidingDrawerContent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/sliding_drawer_bk"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <Button
+                android:id="@+id/btnStartGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/btn_green_bg"
+                android:text="Start Game"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/slidingDrawerContent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="10dp" >
+
+                <Button
+                    android:id="@+id/btnHelp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/btn_blue_bg"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:text="Help" />
+
+                <Button
+                    android:id="@+id/btnAboutUs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_blue_bg"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:text="About Us" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/slidingDrawerHandle"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/sliding_drawer_handler_open" />
+    </SlidingDrawer>
+
+    <ImageView
+        android:id="@+id/animImgViewTree1"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="89dp" />
 
 </RelativeLayout>

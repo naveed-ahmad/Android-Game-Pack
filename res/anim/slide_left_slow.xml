@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="false" >
 
-<set xmlns:android="http://schemas.android.com/apk/res/android" android:shareInterpolator="false">
-    <translate android:fromXDelta="40%p" 
-        android:toXDelta="-99%p"
-        android:duration="12000" 
+    <translate
+        android:duration="25000"
+        android:fromXDelta="60%p"
         android:repeatCount="infinite"
-        />
-    <!--  <scale
+        android:toXDelta="-60%p" />
+    <!--
+    <scale
         android:interpolator="@android:anim/accelerate_decelerate_interpolator"
         android:fromXScale="1.0"
         android:toXScale="1.4"
@@ -35,5 +37,7 @@
            android:pivotY="50%"
            android:startOffset="700"
            android:duration="400" />
-    </set>-->
+    </set>
+    -->
+
 </set>

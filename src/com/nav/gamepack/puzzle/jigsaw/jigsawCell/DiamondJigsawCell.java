@@ -53,7 +53,7 @@ public class DiamondJigsawCell extends JigsawCells {
 		Rect r = new Rect(140, 140, 250, 250);
 		setBoundaryRect(r);
 
-		setBackgroundBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.home_background)));
+		//setBackgroundBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.home_background)));
 		mBoundryPath.moveTo(getBoundaryMiddleX(), mBoundryRect.top);//0
 		mBoundryPath.lineTo(mBoundryRect.left, getBoundaryMiddleY());//1
 		mBoundryPath.lineTo(getBoundaryMiddleX(), mBoundryRect.bottom);//2

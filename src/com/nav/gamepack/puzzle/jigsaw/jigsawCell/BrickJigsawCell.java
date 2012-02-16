@@ -52,7 +52,7 @@ public class BrickJigsawCell extends JigsawCells {
 		//...|..............|
 		//...|______________|
 		
-		setBackgroundBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.home_background)));
+		//setBackgroundBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.home_background)));
 		mBoundryPath.addRect(new RectF(mBoundryRect), Direction.CCW);
 		Log.i(TAG,"sBoundry Info left:"+mBoundryRect.left+" right:"+mBoundryRect.right+ "top="+ mBoundryRect.top+ "bottom="+mBoundryRect.bottom+ "middleX="+getBoundaryMiddleX()+" middleY="+getBoundaryMiddleY());
 	}
