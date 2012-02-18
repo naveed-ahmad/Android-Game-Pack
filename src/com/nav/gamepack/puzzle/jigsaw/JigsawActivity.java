@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,31 +26,20 @@ import android.widget.TextView;
  */
 
 public class JigsawActivity extends Activity {
+	private static String TAG = "JigsawActivity";
 	AlertDialog settingDialog;
 	Bitmap img;
-
-	public JigsawActivity(Bitmap im) {
-		img = im;
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		JigsawBoardView jbv=new JigsawBoardView(this);
-		jbv.setImage(img);
-        setContentView(jbv,new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
+		setContentView(R.layout.jigsaw_game);
+		Intent i=new Intent();
+		Log.i(TAG,"Getting user setting");
+		i.setClass(JigsawActivity.this,JigsawSettingActivity.class);
+		startActivityForResult(i,1005);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onWindowFocusChanged(boolean)
-	 */
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-	}
-
+ 
 	public void showSettingDialog() {
 		if (settingDialog == null) {
 

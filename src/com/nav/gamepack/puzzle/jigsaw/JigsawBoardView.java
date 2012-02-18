@@ -81,11 +81,11 @@ public class JigsawBoardView extends View {
 
 	public Bitmap getJigsawScalledImage(int size) {
 
-		if (jigsawOrigionalImage == null) {
-			// TODO Show Select Image View//
-			//jigsawOrigionalImage = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)), getWidth(), getHeight(), true);
-
-		}
+//		if (jigsawOrigionalImage == null) {
+//			// TODO Show Select Image View//
+//			//jigsawOrigionalImage = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)), getWidth(), getHeight(), true);
+//
+//		}
 
 		jigsawScalledImage = getScaleImage(jigsawOrigionalImage, size, size);
 		return jigsawScalledImage;
@@ -122,7 +122,7 @@ public class JigsawBoardView extends View {
 		
 		}
 		Bitmap img=	getJigsawScalledImage(mSize);
-
+		prepareJigsawCellSize();
 
 		int imageStartX = 0, imageStartY = 5;
 		int currentCell = 0;
@@ -190,11 +190,14 @@ public class JigsawBoardView extends View {
 		}
 	}
 
+	public void initBoard(boolean shuffleCells) {
+		initBoard(shuffleCells,false);
+	}
 	/*
 	 * initialize game..crop jigsaw image.prepar cells.and draw cells
 	 */
-	public void initBoard(boolean shuffleCells) {
-		if (isBoardInitialized)
+	public void initBoard(boolean shuffleCells,Boolean force) {
+		if (isBoardInitialized && !force)
 			return;// Board is already initialized
 		int cellCount = getColumnCount() * getRowCount() + 1;
 		cells = new JigsawCell[cellCount];
@@ -795,6 +798,5 @@ public class JigsawBoardView extends View {
 	 */
 	public void setImage(Bitmap img) {
 		jigsawOrigionalImage=img;
-		
 	}
 }

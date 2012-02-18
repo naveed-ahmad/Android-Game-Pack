@@ -3,6 +3,7 @@
     xmlns:jigsaw="http://schemas.android.com/apk/res/com.nav.gamepack"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/btn_blue_bg"
     android:orientation="vertical"
     android:padding="2dp" >
 
@@ -14,10 +15,10 @@
         android:padding="2dp" >
 
         <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
-            android:id="@+id/jigsawBoardView1"
+            android:id="@+id/jigsawBoardViewDemo"
             android:layout_width="208dp"
             android:layout_height="208dp"
-            jigsaw:jigsaw_image="@drawable/home_bk" />
+            jigsaw:jigsaw_image="@drawable/defafult_jigsaw_image" />
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,36 +28,43 @@
             android:padding="2dp" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/txtViewRows"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rows"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/btnChangeRows"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Change Rows" />
+                android:background="@drawable/btn_green_bg"
+                android:text="Change Rows" 
+                android:layout_margin="3dp"
+                />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/txtViewColumns"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Column"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/btnChangeColumns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/btn_green_bg"
+                android:layout_margin="3dp"
                 android:text="Change Columns" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btnRandomizeCell"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="Randomize" />
+                android:background="@drawable/btn_green_bg"
+                android:layout_margin="3dp"
+                android:text="Randomize Cells" />
         </LinearLayout>
     </LinearLayout>
 
@@ -80,10 +88,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/btn_blue_bg"
-                android:text="Change Picture" />
+                android:text="Change Picture"
+                 />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/btnChangePicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_blue_bg"
@@ -105,11 +114,10 @@
                 android:text="Back" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/btnStartGame"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="@drawable/btn_green_bg"
-                android:enabled="false"
                 android:text="Start Game!!" />
         </LinearLayout>
 

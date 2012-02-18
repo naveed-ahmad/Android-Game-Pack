@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, GamePackActivity!</string>
     <string name="app_name">My Jigsaw</string>
     <string name="jigwas_setting_rows_lbl">Rows:</string>
     <string name="jigwas_setting_column_lbl">Column</string>
@@ -14,6 +13,10 @@
     <string name="lbl_gallery">Gallery</string>
     <string name="lbl_camera">Camera</string>
     <string name="lbl_find_image">Search</string>
+    <string name="welcome_activity_lbl">My Jigsaw</string>
+    <string name="image_chooser_activity_lbl">Select An Image</string>
+    <string name="jigsaw_setting_activity_lbl">Jigsaw Setting</string>
+    
     
     
     

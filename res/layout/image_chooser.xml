@@ -20,49 +20,63 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 
-            <FrameLayout
-                android:id="@+id/gtabContentViewGalleryStyles"
+            <RelativeLayout
+                android:id="@+id/gallryStyles"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" >
 
-                <RelativeLayout
-                    android:id="@+id/garlleryStyleStylish"
+                <ViewFlipper
+                    android:id="@+id/gtabContentViewGalleryStyles"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" >
 
-                    <Button
-                        android:id="@+id/button1"
+                    <GridView
+                        android:id="@+id/gallryStyleGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:numColumns="3" >
+                    </GridView>
+
+                    <com.nav.gamepack.shared.InfiniteGallery
+                        android:id="@+id/gallryStyleSlideShow"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" >
+                    </com.nav.gamepack.shared.InfiniteGallery>
+
+                    <ListView
+                        android:id="@+id/gallryStyleListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                    </ListView>
+                </ViewFlipper>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/bottom_bar"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <ImageButton
+                        android:id="@+id/imgBtnGallryStyleSlideshow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="71dp"
-                        android:layout_marginTop="42dp"
-                        android:text="stylish" />
-                </RelativeLayout>
+                        android:src="@drawable/ic_tab_camera_unselected" />
 
-                <RelativeLayout
-                    android:id="@+id/garlleryStyleGrid"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
-
-                    <Button
-                        android:id="@+id/button1a"
+                    <ImageButton
+                        android:id="@+id/imgBtnGallryStyleGrid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="71dp"
-                        android:layout_marginTop="42dp"
-                        android:text="grid" />
-                </RelativeLayout>
+                        android:src="@drawable/ic_tab_camera_unselected" />
 
-                <RelativeLayout
-                    android:id="@+id/garlleryStyleSlideShow"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
-                </RelativeLayout>
-            </FrameLayout>
+                    <ImageButton
+                        android:id="@+id/imgBtnGallryStyleList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_tab_camera_unselected" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/gtabContentViewCamera"
@@ -110,14 +124,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_menu_search"
-                    android:text="Search Image Form Mobile" />
-
-                <Button
-                    android:id="@+id/btnBrowseImgFromMobile"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/browse_image"
-                    android:text="Browse Image From Mobile" />
+                    android:text="Select Form Mobile" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
