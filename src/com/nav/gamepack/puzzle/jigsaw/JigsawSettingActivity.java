@@ -72,6 +72,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	 * 
 	 */
 	private void initlizeDialogs() {
+		Log.i(TAG,"Init Dialogs");
 		LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		final View cellSizeChooserView = layoutInflater.inflate(R.layout.board_cell_size_chooser, null);
 		seekBarCellSize = (SeekBar) cellSizeChooserView.findViewById(R.id.seekBarBoardCellCount);
@@ -83,22 +84,22 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		seekBarCellSize.setOnSeekBarChangeListener(this);
 
 		dlgChangeCellSize = new AlertDialog.Builder(this).setView(cellSizeChooserView).setPositiveButton("OK", null).setNegativeButton("Cancel", null).create();
-		dlgChangeCellSize.setOnShowListener(new DialogInterface.OnShowListener() {
-			public void onShow(DialogInterface dialotextg) {
-				Button b = dlgChangeCellSize.getButton(AlertDialog.BUTTON_POSITIVE);
-				b.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View view) {
-						dlgChangeCellSize.dismiss();
-						if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("r"))
-							jigsawBoard.setRowCount(Integer.parseInt(txtViewSizeCount.getText().toString()));
-						else if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("c"))
-							jigsawBoard.setColumnCount(Integer.parseInt(txtViewSizeCount.getText().toString()));
-						jigsawBoard.initBoard(true, true);
-						jigsawBoard.invalidate();
-					}
-				});
-			}
-		});
+//		dlgChangeCellSize.setOnShowListener(new DialogInterface.OnShowListener() {
+//			public void onShow(DialogInterface dialotextg) {
+//				Button b = dlgChangeCellSize.getButton(AlertDialog.BUTTON_POSITIVE);
+//				b.setOnClickListener(new View.OnClickListener() {
+//					public void onClick(View view) {
+//						dlgChangeCellSize.dismiss();
+//						if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("r"))
+//							jigsawBoard.setRowCount(Integer.parseInt(txtViewSizeCount.getText().toString()));
+//						else if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("c"))
+//							jigsawBoard.setColumnCount(Integer.parseInt(txtViewSizeCount.getText().toString()));
+//						jigsawBoard.initBoard(true, true);
+//						jigsawBoard.invalidate();
+//					}
+//				});
+//			}
+//		});
 
 	}
 
@@ -161,14 +162,49 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	 */
 	private void showChangeCellSizeDialogFor(String s) {
 		dlgChangeCellSize.setTitle("Choose Number of " + s);
+		dlgChangeCellSize.show();
+		if(true)
+		return;
 		Log.i(TAG, "Opening change board cell count for " + s);
+        LinearLayout lnrlayoutCustomSize = (LinearLayout) dlgChangeCellSize.findViewById(R.id.lnrLayouCustomCellSize);
+				
 		if (s.equalsIgnoreCase("rows")) {
 			chkBoxSameSize.setText("Also Update Columns");
 			txtViewSizeCount.setTag("r");
+			int rows=jigsawBoard.getRowCount();
+			if(rows>10)
+			{	
+				editTextCustomSize.setText(rows+"");
+				//lnrlayoutCustomSize.setVisibility(View.VISIBLE);
+			}
+			else
+			{	
+				//lnrlayoutCustomSize.setVisibility(View.GONE);
+				seekBarCellSize.setProgress(rows);
+			}
+			txtViewSizeCount.setText(rows+"");
+			
 		} else {
 			chkBoxSameSize.setText("Also Update Rows");
 			txtViewSizeCount.setTag("c");
+			
+			int columns=jigsawBoard.getColumnCount();
+			if(columns>10)
+			{	
+				//lnrlayoutCustomSize.setVisibility(View.VISIBLE);
+				editTextCustomSize.setText(columns+"");
+			}
+			else
+			{	
+				//lnrlayoutCustomSize.setVisibility(View.GONE);
+				seekBarCellSize.setProgress(columns);
+			}
+			
+			txtViewSizeCount.setText(jigsawBoard.getColumnCount());
+			seekBarCellSize.setProgress(jigsawBoard.getColumnCount());
+			
 		}
+		
 		dlgChangeCellSize.show();
 	}
 
@@ -177,7 +213,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		if (progress < 3)
 			seekBar.setProgress(3);
 		LinearLayout lnrlayoutCustomSize = (LinearLayout) dlgChangeCellSize.findViewById(R.id.lnrLayouCustomCellSize);
-		;
+		
 
 		if (progress == 10)
 			lnrlayoutCustomSize.setVisibility(View.VISIBLE);
