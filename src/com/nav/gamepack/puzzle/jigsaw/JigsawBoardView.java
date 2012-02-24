@@ -27,7 +27,7 @@ import android.view.View;
 public class JigsawBoardView extends View {
 	private final String TAG = "JigsawBoardView";
 	private Bitmap[] jigsawCellImages;
-	Bitmap jigsawOrigionalImage, jigsawScalledImage;
+	Bitmap jigsawOrigionalImage, jigsawScaledImage;
 	private boolean isBoardInitialized;
 	private JigsawCell[] cells;
 	private Context context;
@@ -51,8 +51,8 @@ public class JigsawBoardView extends View {
 	 * 
 	 */
 	private void prepareJigsawCellSize() {
-		setCelWidth(jigsawScalledImage.getWidth() / getColumnCount());
-		setCellHeight(jigsawScalledImage.getHeight() / getRowCount());
+		setCelWidth(jigsawScaledImage.getWidth() / getColumnCount());
+		setCellHeight(jigsawScaledImage.getHeight() / getRowCount());
 
 	}
 
@@ -91,8 +91,16 @@ public class JigsawBoardView extends View {
 		//
 		// }
 
-		jigsawScalledImage = getScaleImage(jigsawOrigionalImage, size, size);
-		return jigsawScalledImage;
+		jigsawScaledImage = getScaleImage(jigsawOrigionalImage, size, size);
+		return jigsawScaledImage;
+	}
+
+	public Bitmap getJigsawScaledImage() {
+		// TODO: check if scaled image is null scale it with size(which may be
+		// unknown at that point)
+		return jigsawScaledImage;
+		// = getScaleImage(jigsawOrigionalImage, size, size);
+		// return jigsawScaledImage;
 	}
 
 	public JigsawBoardView(Context context) {
@@ -166,11 +174,11 @@ public class JigsawBoardView extends View {
 	 */
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		if(jigsawOrigionalImage==null)
-		{
-		canvas.drawText("Please select image",10, 10, new Paint());
+		if (jigsawOrigionalImage == null) {
+			canvas.drawText("Please select image", 10, 10, new Paint());
 			return;
-		}		if (!isBoardInitialized)
+		}
+		if (!isBoardInitialized)
 			initBoard(true);
 
 		Paint p1 = new Paint();
@@ -813,6 +821,13 @@ public class JigsawBoardView extends View {
 	 * @return
 	 */
 	public Bitmap getJigsawImage() {
-		return jigsawScalledImage;
+		return jigsawOrigionalImage;
+	}
+
+	/**
+	 * @return
+	 */
+	public JigsawCell[] getJIgsawCells() {
+		return cells;
 	}
 }

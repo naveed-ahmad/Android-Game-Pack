@@ -42,7 +42,7 @@ import android.widget.Toast;
  * @author naveed
  * 
  */
-public class JigsawSettingActivity extends Activity implements OnClickListener, OnSeekBarChangeListener, OnFocusChangeListener {
+public class JigsawSettingActivity extends Activity implements OnClickListener, OnSeekBarChangeListener {
 	private static String TAG = "JigsawSettingActivity";
 	private static int GET_IMAGE_REQUEST_IDENTIFIER = 1005;
 	private Button btnRandomizeCells, btnChangeRowCount, btnChangeColumnCount, btnStartGame, btnChoosePicture, btnViewImage;
@@ -95,7 +95,6 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		txtViewSizeCount = (TextView) cellSizeChooserView.findViewById(R.id.txtViewCellSize);
 		chkBoxSameSize = (CheckBox) cellSizeChooserView.findViewById(R.id.checkBoarSameSize);
 		editTextCustomSize = (EditText) cellSizeChooserView.findViewById(R.id.editTextCustomSize);
-		editTextCustomSize.setOnFocusChangeListener(this);
 
 		seekBarCellSize.setOnSeekBarChangeListener(this);
 		editTextCustomSize.setOnKeyListener(new OnKeyListener() {
@@ -122,19 +121,16 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 							editTextCustomSize.startAnimation(shakeAnimation);
 						else {
 							dlgChangeCellSize.dismiss();
-							if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("r"))
-							{	
+							if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("r")) {
 								jigsawBoard.setRowCount(cellCount);
-							    if(chkBoxSameSize.isChecked())
-							    	jigsawBoard.setColumnCount(cellCount);
-							}
-							else if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("c"))
-							{
+								if (chkBoxSameSize.isChecked())
+									jigsawBoard.setColumnCount(cellCount);
+							} else if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("c")) {
 								jigsawBoard.setColumnCount(cellCount);
-								 if(chkBoxSameSize.isChecked())
-								    	jigsawBoard.setRowCount(cellCount);
+								if (chkBoxSameSize.isChecked())
+									jigsawBoard.setRowCount(cellCount);
 							}
-								jigsawBoard.initBoard(true, true);
+							jigsawBoard.initBoard(true, true);
 							jigsawBoard.invalidate();
 						}
 					}
@@ -142,12 +138,6 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 			}
 		});
 
-	}
-
-	@Override
-	public void onFocusChange(View view, boolean focused) {
-		if (view.getId() == editTextCustomSize.getId() && !focused)
-			txtViewSizeCount.setText(editTextCustomSize.getText().toString());
 	}
 
 	@Override
@@ -175,18 +165,17 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	private void endActivityWithResult() {
 		Log.i(TAG, "Reterning selected image");
 		Intent resultIntent = new Intent();
-		String msg;
-		if (jigsawImage == null)
-			msg = "sss";
-		else
-			msg = ":)";
-		new AlertDialog.Builder(this).setMessage(msg).show();
-
-		resultIntent.putExtra("image", jigsawImage);
+		resultIntent.putExtra("image", jigsawBoard.getJigsawImage());
+		resultIntent.putExtra("rowsCount", jigsawBoard.getRowCount());
+		resultIntent.putExtra("rowsColumnsCount", jigsawBoard.getColumnCount());
+		resultIntent.putExtra("jigsawCellMap", jigsawBoard.getJIgsawCells());
+		
 		if (getParent() == null)
 			setResult(Activity.RESULT_OK, resultIntent);
 		else
 			getParent().setResult(Activity.RESULT_OK, resultIntent);
+
+		// new AlertDialog.Builder(this).setMessage(msg).show();
 
 		finish();
 	}
@@ -225,7 +214,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		View dlgView = layoutInflater.inflate(R.layout.image_item, null);
 		AlertDialog dlgJigsawImg = new AlertDialog.Builder(this).setTitle("Jigsaw Image").setPositiveButton("Back", null).setView(dlgView).create();
 		ImageView imgView = (ImageView) dlgView.findViewById(R.id.imageItem);
-		imgView.setImageBitmap(jigsawBoard.getJigsawImage());
+		imgView.setImageBitmap(jigsawBoard.getJigsawScaledImage());
 		dlgJigsawImg.show();
 	}
 
