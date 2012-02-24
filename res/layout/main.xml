@@ -113,9 +113,8 @@
         android:id="@+id/imgViewJigsawWalking"
         android:layout_width="60dp"
         android:layout_height="100dp"
-        android:layout_alignBottom="@+id/animImgViewTree"
-        android:layout_marginLeft="26dp"
-        android:layout_toRightOf="@+id/imgViewCloudMediumSlow"
+        android:layout_below="@+id/animImgViewTree"
+        android:layout_toRightOf="@+id/imgViewCloudSmallFast"
         android:background="@drawable/jigsaw_walking_bk" />
 
 </RelativeLayout>

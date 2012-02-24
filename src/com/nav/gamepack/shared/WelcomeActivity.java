@@ -3,6 +3,8 @@
  */
 package com.nav.gamepack.shared;
 
+import java.util.Random;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.MonthDisplayHelper;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -42,6 +45,7 @@ import com.nav.gamepack.R;
 import com.nav.gamepack.R.id;
 import com.nav.gamepack.puzzle.jigsaw.ImageChooserActivity;
 import com.nav.gamepack.puzzle.jigsaw.JigsawActivity;
+import com.nav.gamepack.puzzle.jigsaw.JigsawSettingActivity;
 
 import android.view.animation.Animation;
 
@@ -53,7 +57,7 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 	private final int CHOOSE_IMAGE_CODE = 36;
 	private final String TAG = "WelcomeActivity";
 	private ImageView imgViewCloudMediumSlow, imgViewCloudMediumNormal, imgViewCloudSmallFast, imgViewAnimTree, imgViewJigsawWalking;
-	private Animation cloudMediumAnimationNormal, cloudMediumAnimationSlow, cloudSmallAnimationFast, jigsawWalkingAnimation;
+	private Animation jigsawJumpAnimation, cloudMediumAnimationNormal, cloudMediumAnimationSlow, cloudSmallAnimationFast, jigsawWalkingAnimation;
 	private View.OnClickListener btnClickListner;
 	AnimationDrawable jigsawWalkingFrameAnimation;
 	private RelativeLayout.LayoutParams waterDroplayoutParams;
@@ -62,7 +66,7 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 	TranslateAnimation trnsAnimCloudSlow;
 	private RelativeLayout rltvLayoutBoundry;
 
-	Boolean isAnimationRunning;
+	Boolean isAnimationRunning, isJigsawJumpAnimEnabled;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -87,12 +91,11 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 		cloudMediumAnimationSlow = AnimationUtils.loadAnimation(this, R.anim.slide_left_slow_cloud);
 		cloudMediumAnimationNormal = AnimationUtils.loadAnimation(this, R.anim.slide_left_normal_cloud);
 		cloudSmallAnimationFast = AnimationUtils.loadAnimation(this, R.anim.slide_left_fast_cloud);
-
+		jigsawJumpAnimation = AnimationUtils.loadAnimation(this, R.anim.jigsaw_jump);
 		// waterDropFallAnimation = AnimationUtils.loadAnimation(this,
 		// R.anim.water_drop_fall_down);
 		jigsawWalkingAnimation = AnimationUtils.loadAnimation(this, R.anim.jigsaw_walk);
 		waterDroplayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
 		imgViewCloudMediumSlow = (ImageView) findViewById(R.id.imgViewCloudMediumSlow);
 		imgViewCloudMediumNormal = (ImageView) findViewById(R.id.imgViewCloudMediumNormal);
 		imgViewCloudSmallFast = (ImageView) findViewById(R.id.imgViewCloudSmallFast);
@@ -105,8 +108,8 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 		// cloudMedium1.getTop(), cloudMedium1.getTop());
 		// trnsAnimCloudSlow.setDuration(5000);
 		// trnsAnimCloudSlow.setFillAfter(true);
-
 		isAnimationRunning = true;
+		isJigsawJumpAnimEnabled = false;
 	}
 
 	/**
@@ -118,20 +121,27 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 			public void onClick(View v) {
 				if (v.getId() == btnStartGame.getId()) {
 					Intent intentStartGame = new Intent();
-					intentStartGame.setClass(WelcomeActivity.this, JigsawActivity.class);
+					intentStartGame.setClass(WelcomeActivity.this, JigsawSettingActivity.class);
 					startActivity(intentStartGame);
 				} else if (v.getId() == btnHelp.getId())
 					showHelpDialog();
 				else if (v.getId() == btnAboutUs.getId())
 					showAboutUsDialog();
+				else if (v.getId() == imgViewJigsawWalking.getId()) {
+					if (isJigsawJumpAnimEnabled)
+						playJigsawJumpAnimation();
+				}
 
 			}
 		};
+		jigsawWalkingAnimation.setAnimationListener(this);
+		imgViewJigsawWalking.setOnClickListener(btnClickListner);
 		btnAboutUs.setOnClickListener(btnClickListner);
 		btnHelp.setOnClickListener(btnClickListner);
 		btnStartGame.setOnClickListener(btnClickListner);
 		rltvLayoutBoundry.setOnTouchListener(this);
 		jigsawWalkingAnimation.setAnimationListener(this);
+		imgViewAnimTree.setOnTouchListener(this);
 	}
 
 	/*
@@ -166,12 +176,14 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 				frameAnimation.start();
 			}
 		});
-		imgViewJigsawWalking.post(new Runnable() {
-			public void run() {
-				jigsawWalkingFrameAnimation.start();
-			}
-		});
-		imgViewJigsawWalking.startAnimation(jigsawWalkingAnimation);
+		if (!isJigsawJumpAnimEnabled) {
+			imgViewJigsawWalking.post(new Runnable() {
+				public void run() {
+					jigsawWalkingFrameAnimation.start();
+				}
+			});
+			imgViewJigsawWalking.startAnimation(jigsawWalkingAnimation);
+		}
 		isAnimationRunning = true;
 	}
 
@@ -183,14 +195,18 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 		jigsawWalkingFrameAnimation.stop();
 	}
 
-	private void playWaterDropFallAnimation(int x, int y) {
-		Log.i(TAG, "Start animation for  water fall X=" + x + ", y=" + y);
+	private void playWaterDropFallAnimation(int x, int y, int animLenght, int delayOffSet) {
+		playWaterDropFallAnimation(x, x, y, animLenght, delayOffSet);
+	}
+
+	private void playWaterDropFallAnimation(int startX, int endX, int startY, int animVertLength, int delayOffSet) {
+		Log.i(TAG, "Start animation for  water fall X=" + startX + ", y=" + startY);
 		final ImageView imgViewWaterDrop = new ImageView(this);
 		imgViewWaterDrop.setBackgroundResource(R.drawable.water_drop);
 
 		// rltvLayoutBoundry.addView(imgViewWaterDrop, waterDroplayoutParams);
 		this.addContentView(imgViewWaterDrop, waterDroplayoutParams);
-		Animation waterDropAnim = new TranslateAnimation(x, x, y, y + 400);
+		Animation waterDropAnim = new TranslateAnimation(startX, endX, startY, startY + animVertLength);
 		waterDropAnim.setDuration(2000);
 		waterDropAnim.setInterpolator(new AccelerateInterpolator(1.0f));
 		// waterDropAnim.setAnimationListener(new AnimationListener() {
@@ -208,8 +224,69 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 		// }
 		// }
 		// });
-
+		waterDropAnim.setStartOffset(delayOffSet);
 		imgViewWaterDrop.startAnimation(waterDropAnim);
+	}
+
+	private void playSeedAnimation(int x, int y, int animLength) {
+		Log.i(TAG, "Start animation for seed fall X=" + x + ", y=" + y);
+		final ImageView imgViewSeed = new ImageView(this);
+		Random r = new Random();
+		final RelativeLayout.LayoutParams seedLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		if (r.nextInt(3) == 1)
+			imgViewSeed.setBackgroundResource(R.drawable.seed);
+		else
+			imgViewSeed.setBackgroundResource(R.drawable.seed_orange);
+
+		this.addContentView(imgViewSeed, seedLayoutParams);
+		imgViewSeed.setKeepScreenOn(false);
+
+		final Animation seedDropAnim = new TranslateAnimation(x, x, y, y + animLength);
+
+		seedDropAnim.setDuration(1000);
+		seedDropAnim.setInterpolator(new AccelerateInterpolator(1.0f));
+		seedDropAnim.setFillAfter(true);
+
+		final Animation fadeOutAnim = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+		fadeOutAnim.setFillAfter(true);
+		//
+		// seedDropAnim.setAnimationListener(new AnimationListener() {
+		// @Override
+		// public void onAnimationStart(Animation anim) {
+		//
+		// }
+		//
+		// @Override
+		// public void onAnimationRepeat(Animation anim) {
+		//
+
+		// }
+		//
+		// @Override
+		// public void onAnimationEnd(Animation anim) {
+		// // seedLayoutParams.setMargins(-100, 0, 0, 0);
+		// // imgViewSeed.startAnimation(fadeOutAnim);
+		//
+		// }
+		// });
+
+		// waterDropAnim.setAnimationListener(new AnimationListener() {
+		// public void onAnimationStart(Animation arg0) {
+		// }
+		//
+		// public void onAnimationRepeat(Animation arg0) {
+		// }
+		//
+		// public void onAnimationEnd(Animation arg0) {
+		// try {
+		// rltvLayoutBoundry.removeView(imgViewWaterDrop);
+		// } catch (Exception e) {
+		// Log.e(TAG, "Error while removing waterDrop", e);
+		// }
+		// }
+		// });
+
+		imgViewSeed.startAnimation(seedDropAnim);
 	}
 
 	/*
@@ -219,58 +296,85 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 	 * android.view.MotionEvent)
 	 */
 	@Override
-	public boolean onTouch(View arg0, MotionEvent touchArgs) {
+	public boolean onTouch(View view, MotionEvent touchArgs) {
+		if (touchArgs.getAction() == MotionEvent.ACTION_DOWN)
+			return true;
 		boolean clickHandled = false;
 		int touchPositionX = (int) touchArgs.getX();
 		int toucPositionY = (int) touchArgs.getY();
+		int animStartX;
 
 		Transformation transformation = new Transformation();
 		float[] matrix = new float[9];
 
-		// check if click on imgViewCloudMediumNormal
-		cloudMediumAnimationNormal.getTransformation(AnimationUtils.currentAnimationTimeMillis(), transformation);
-		transformation.getMatrix().getValues(matrix);
-		int clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudMediumNormal.getLeft();
-		int clickOffsetRight = clickOffsetLeft + imgViewCloudMediumNormal.getWidth();
-		int imgTop = imgViewCloudMediumNormal.getTop();
-		int imgBottom = imgViewCloudMediumNormal.getBottom();
-
-		if (clickOffsetLeft < touchPositionX && clickOffsetRight > touchPositionX && toucPositionY >= imgTop && toucPositionY <= imgBottom) {
-			Log.i(TAG, "Playing waterdrop animation for cloudMediumAnimationNormal");
+		int clickOffsetLeft;
+		int clickOffsetRight;
+		int imgTop;
+		int imgBottom;
+		int viewId = view.getId();
+		if (viewId == imgViewAnimTree.getId()) {
+			// playSeedAnimation(touchPositionX, toucPositionY,
+			// imgViewAnimTree.getHeight()); //having issue in fadeout seed so
+			// lets delay it
 			clickHandled = true;
-			playWaterDropFallAnimation((clickOffsetRight + clickOffsetLeft) / 2, toucPositionY);
+		} else if (viewId == rltvLayoutBoundry.getId()) {
+			// check if click on imgViewCloudMediumNormal
+			cloudMediumAnimationNormal.getTransformation(AnimationUtils.currentAnimationTimeMillis(), transformation);
+			transformation.getMatrix().getValues(matrix);
+			clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudMediumNormal.getLeft();
+			clickOffsetRight = clickOffsetLeft + imgViewCloudMediumNormal.getWidth();
+			imgTop = imgViewCloudMediumNormal.getTop();
+			imgBottom = imgViewCloudMediumNormal.getBottom();
+
+			if (clickOffsetLeft < touchPositionX && clickOffsetRight > touchPositionX && toucPositionY >= imgTop && toucPositionY <= imgBottom) {
+				Log.i(TAG, "Playing waterdrop animation for cloudMediumAnimationNormal");
+				clickHandled = true;
+				animStartX = (clickOffsetRight + clickOffsetLeft) / 2;
+				playWaterDropFallAnimation(animStartX, animStartX + 15, toucPositionY, 400, 0);
+				playWaterDropFallAnimation(animStartX + 10, animStartX + 30, toucPositionY, 410, 100);
+				playWaterDropFallAnimation(animStartX - 15, animStartX - 40, toucPositionY, 405, 250);
+			}
+
+			// check if click on imgViewCloudMediumSlow
+			cloudMediumAnimationSlow.getTransformation(AnimationUtils.currentAnimationTimeMillis(), transformation);
+			transformation.getMatrix().getValues(matrix);
+			imgTop = imgViewCloudMediumSlow.getTop();
+			imgBottom = imgViewCloudMediumSlow.getBottom();
+
+			clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudMediumSlow.getLeft();
+			clickOffsetRight = clickOffsetLeft + imgViewCloudMediumSlow.getWidth();
+
+			if (clickOffsetLeft < touchPositionX && clickOffsetRight > touchPositionX && toucPositionY >= imgTop && toucPositionY <= imgBottom && toucPositionY >= imgTop && toucPositionY <= imgBottom) {
+				Log.i(TAG, "Playing waterdrop animation for cloudMediumAnimationSlow");
+				clickHandled = true;
+				animStartX = (clickOffsetRight + clickOffsetLeft) / 2;
+				playWaterDropFallAnimation(animStartX, animStartX + 15, toucPositionY, 400, 0);
+				playWaterDropFallAnimation(animStartX + 10, animStartX + 30, toucPositionY, 410, 100);
+				playWaterDropFallAnimation(animStartX - 15, animStartX - 40, toucPositionY, 405, 250);
+			}
+
+			// check if click on imgViewCloudSmallFast
+			cloudSmallAnimationFast.getTransformation(AnimationUtils.currentAnimationTimeMillis(), transformation);
+			transformation.getMatrix().getValues(matrix);
+			imgTop = imgViewCloudSmallFast.getTop();
+			imgBottom = imgViewCloudSmallFast.getBottom();
+			clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudSmallFast.getLeft();
+			clickOffsetRight = clickOffsetLeft + imgViewCloudSmallFast.getWidth();
+
+			if (clickOffsetLeft < touchPositionX && clickOffsetRight > touchPositionX && toucPositionY >= imgTop && toucPositionY <= imgBottom) {
+				Log.i(TAG, "Playing waterdrop animation for imgViewCloudSmallFast");
+				clickHandled = true;
+				animStartX = (clickOffsetRight + clickOffsetLeft) / 2;
+				playWaterDropFallAnimation(animStartX, animStartX + 15, toucPositionY, 400, 0);
+				playWaterDropFallAnimation(animStartX + 10, animStartX + 30, toucPositionY, 410, 100);
+				playWaterDropFallAnimation(animStartX - 15, animStartX - 40, toucPositionY, 405, 250);
+			}
 		}
-
-		// check if click on imgViewCloudMediumSlow
-		cloudMediumAnimationSlow.getTransformation(AnimationUtils.currentAnimationTimeMillis(), transformation);
-		transformation.getMatrix().getValues(matrix);
-		imgTop = imgViewCloudMediumSlow.getTop();
-		imgBottom = imgViewCloudMediumSlow.getBottom();
-
-		clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudMediumSlow.getLeft();
-		clickOffsetRight = clickOffsetLeft + imgViewCloudMediumSlow.getWidth();
-
-		if (clickOffsetLeft < touchPositionX && clickOffsetRight > touchPositionX && toucPositionY >= imgTop && toucPositionY <= imgBottom && toucPositionY >= imgTop && toucPositionY <= imgBottom) {
-			Log.i(TAG, "Playing waterdrop animation for cloudMediumAnimationSlow");
-			clickHandled = true;
-			playWaterDropFallAnimation((clickOffsetRight + clickOffsetLeft) / 2, toucPositionY);
-		}
-
-		// check if click on imgViewCloudSmallFast
-		cloudSmallAnimationFast.getTransformation(AnimationUtils.currentAnimationTimeMillis(), transformation);
-		transformation.getMatrix().getValues(matrix);
-		imgTop = imgViewCloudSmallFast.getTop();
-		imgBottom = imgViewCloudSmallFast.getBottom();
-		clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudSmallFast.getLeft();
-		clickOffsetRight = clickOffsetLeft + imgViewCloudSmallFast.getWidth();
-
-		if (clickOffsetLeft < touchPositionX && clickOffsetRight > touchPositionX && toucPositionY >= imgTop && toucPositionY <= imgBottom) {
-			Log.i(TAG, "Playing waterdrop animation for imgViewCloudSmallFast");
-			clickHandled = true;
-			playWaterDropFallAnimation((clickOffsetRight + clickOffsetLeft) / 2, toucPositionY);
-		}
-
 		return clickHandled;
+	}
+
+	private void playJigsawJumpAnimation() {
+		imgViewJigsawWalking.startAnimation(jigsawJumpAnimation);
 	}
 
 	private void showAboutUsDialog() {
@@ -298,16 +402,20 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 	 */
 	@Override
 	public void onAnimationEnd(Animation anim) {
-		if (anim == jigsawWalkingAnimation) {
-//			imgViewJigsawWalking.clearAnimation();
-//			Transformation transformation = new Transformation();
-//			float[] matrix = new float[9];
-//			jigsawWalkingAnimation.getTransformation(AnimationUtils.currentAnimationTimeMillis(), transformation);
-//			transformation.getMatrix().getValues(matrix);
-//			int clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudMediumNormal.getLeft();
-//			imgViewJigsawWalking.layout((int) matrix[Matrix.MTRANS_X], (int) matrix[Matrix.MTRANS_Y], (int) matrix[Matrix.MTRANS_X] + imgViewJigsawWalking.getWidth(), (int) matrix[Matrix.MTRANS_Y]
-//					+ imgViewJigsawWalking.getHeight());
+		Log.i(TAG, "any animation is end");
+		if (anim.equals(jigsawWalkingAnimation)) {
 			jigsawWalkingFrameAnimation.stop();
+			Log.i(TAG, "jigsaw playing animation end");
+			// Transformation transformation = new Transformation();
+			// float[] matrix = new float[9];
+			// jigsawWalkingAnimation.getTransformation(AnimationUtils.currentAnimationTimeMillis(),
+			// transformation);
+			// transformation.getMatrix().getValues(matrix);
+
+			isJigsawJumpAnimEnabled = true;
+			imgViewJigsawWalking.setBackgroundResource(R.drawable.jigsaw1);
+
+			((RelativeLayout.LayoutParams) imgViewJigsawWalking.getLayoutParams()).bottomMargin = 20;
 		}
 	}
 

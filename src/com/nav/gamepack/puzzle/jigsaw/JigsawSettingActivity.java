@@ -45,7 +45,7 @@ import android.widget.Toast;
 public class JigsawSettingActivity extends Activity implements OnClickListener, OnSeekBarChangeListener {
 	private static String TAG = "JigsawSettingActivity";
 	private static int GET_IMAGE_REQUEST_IDENTIFIER = 1005;
-	private Button btnRandomizeCells, btnChangeRowCount, btnChangeColumnCount, btnStartGame, btnChoosePicture, btnViewImage;
+	private Button btnRandomizeCells, btnChangeRowCount, btnChangeColumnCount, btnStartGame, btnChoosePicture, btnViewImage,btnBack;
 	private AlertDialog dlgChangeCellSize;
 	private SeekBar seekBarCellSize;
 	private TextView txtViewSizeCount, txtViewMoreCell;
@@ -71,6 +71,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		btnChangeColumnCount = (Button) findViewById(R.id.btnChangeColumns);
 		btnStartGame = (Button) findViewById(R.id.btnStartGame);
 		btnChoosePicture = (Button) findViewById(R.id.btnChangePicture);
+		btnBack=(Button)findViewById(R.id.btnBack);
 		jigsawBoard = (JigsawBoardView) findViewById(R.id.jigsawBoardViewDemo);
 		testImgView = (ImageView) findViewById(R.id.imageView1);
 		btnViewImage = (Button) findViewById(R.id.btnViewImage);
@@ -80,6 +81,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		btnStartGame.setOnClickListener(this);
 		btnRandomizeCells.setOnClickListener(this);
 		btnViewImage.setOnClickListener(this);
+		btnBack.setOnClickListener(this);
 		shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
 		layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		initlizeDialogs();
@@ -152,6 +154,8 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 			endActivityWithResult();
 		else if (clickedBtn.getId() == btnViewImage.getId())
 			showJigsawImageDialog();
+		else if(clickedBtn.getId()==btnBack.getId())
+			endActivityWithoutResult();
 		else if (clickedBtn.getId() == btnRandomizeCells.getId()) {
 			jigsawBoard.shuffleCells();
 			jigsawBoard.invalidate();
@@ -177,6 +181,9 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 
 		// new AlertDialog.Builder(this).setMessage(msg).show();
 
+		finish();
+	}
+	private void endActivityWithoutResult(){
 		finish();
 	}
 

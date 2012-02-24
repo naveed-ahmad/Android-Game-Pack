@@ -103,7 +103,7 @@
             android:padding="2dp" >
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/arrow_left_pressed"
