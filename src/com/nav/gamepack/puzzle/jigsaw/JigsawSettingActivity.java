@@ -123,10 +123,18 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 						else {
 							dlgChangeCellSize.dismiss();
 							if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("r"))
+							{	
 								jigsawBoard.setRowCount(cellCount);
+							    if(chkBoxSameSize.isChecked())
+							    	jigsawBoard.setColumnCount(cellCount);
+							}
 							else if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("c"))
+							{
 								jigsawBoard.setColumnCount(cellCount);
-							jigsawBoard.initBoard(true, true);
+								 if(chkBoxSameSize.isChecked())
+								    	jigsawBoard.setRowCount(cellCount);
+							}
+								jigsawBoard.initBoard(true, true);
 							jigsawBoard.invalidate();
 						}
 					}
