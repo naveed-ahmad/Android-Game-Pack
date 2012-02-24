@@ -9,8 +9,14 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MyJigsaw"
+        android:text="My Jigsaw"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Here is free Jigsaw Game!! Enjoy playing jigsaw puzzle with your own picture" />
 
     <TextView
         android:id="@+id/textView2"
@@ -18,5 +24,49 @@
         android:layout_height="wrap_content"
         android:text="Develop By:  Naveed Ahmad"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- Github: https://github.com/naveed-ahmad" />
+
+        <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- About.me: http://about.me/naveed36 :( " />
+    
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- Stackoverflow: http://stackoverflow.com/users/671046/naveed" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- Linkedin: http://www.linkedin.com/in/naveedahmad7vals" />
+    
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact Us:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="If you have any suggestions for android games or would just like to get in touch then please email us at the address below:" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email: dev.inavtech@gmail.com" />
 
 </LinearLayout>

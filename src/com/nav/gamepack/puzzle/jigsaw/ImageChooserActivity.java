@@ -484,7 +484,7 @@ public class ImageChooserActivity extends TabActivity {
 			View view = convertView;
 
 			if (view == null) {
-				view = inflater.inflate(R.layout.itemrender, parent, false);
+				view = inflater.inflate(R.layout.image_item, parent, false);
 			}
 
 			((ImageView) view).setImageBitmap(dataSource.get(position));

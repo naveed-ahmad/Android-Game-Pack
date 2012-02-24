@@ -40,9 +40,11 @@ public class JigsawBoardView extends View {
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		mSize = Math.min(getMeasuredWidth(), getMeasuredHeight());
-		getJigsawScalledImage(mSize);
-		prepareJigsawCellSize();
-		setMeasuredDimension(mSize, mSize + cellHeight);
+		if (jigsawOrigionalImage != null) {
+			getJigsawScalledImage(mSize);
+			prepareJigsawCellSize();
+			setMeasuredDimension(mSize, mSize + cellHeight);
+		}
 	}
 
 	/**
@@ -81,11 +83,13 @@ public class JigsawBoardView extends View {
 
 	public Bitmap getJigsawScalledImage(int size) {
 
-//		if (jigsawOrigionalImage == null) {
-//			// TODO Show Select Image View//
-//			//jigsawOrigionalImage = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)), getWidth(), getHeight(), true);
-//
-//		}
+		// if (jigsawOrigionalImage == null) {
+		// // TODO Show Select Image View//
+		// //jigsawOrigionalImage =
+		// Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)),
+		// getWidth(), getHeight(), true);
+		//
+		// }
 
 		jigsawScalledImage = getScaleImage(jigsawOrigionalImage, size, size);
 		return jigsawScalledImage;
@@ -119,9 +123,9 @@ public class JigsawBoardView extends View {
 	public void prepareJigsawBoardImage() {
 		if (jigsawOrigionalImage == null) {
 			showImageChooserDialog();
-		
+
 		}
-		Bitmap img=	getJigsawScalledImage(mSize);
+		Bitmap img = getJigsawScalledImage(mSize);
 		prepareJigsawCellSize();
 
 		int imageStartX = 0, imageStartY = 5;
@@ -162,7 +166,11 @@ public class JigsawBoardView extends View {
 	 */
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		if (!isBoardInitialized)
+		if(jigsawOrigionalImage==null)
+		{
+		canvas.drawText("Please select image",10, 10, new Paint());
+			return;
+		}		if (!isBoardInitialized)
 			initBoard(true);
 
 		Paint p1 = new Paint();
@@ -191,12 +199,13 @@ public class JigsawBoardView extends View {
 	}
 
 	public void initBoard(boolean shuffleCells) {
-		initBoard(shuffleCells,false);
+		initBoard(shuffleCells, false);
 	}
+
 	/*
 	 * initialize game..crop jigsaw image.prepar cells.and draw cells
 	 */
-	public void initBoard(boolean shuffleCells,Boolean force) {
+	public void initBoard(boolean shuffleCells, Boolean force) {
 		if (isBoardInitialized && !force)
 			return;// Board is already initialized
 		int cellCount = getColumnCount() * getRowCount() + 1;
@@ -785,7 +794,7 @@ public class JigsawBoardView extends View {
 		setRowCount(rows, false);
 		setColumnCount(columns, false);
 
-		final int jigsaw_image_id = a.getResourceId(R.styleable.JigsawBoardView_jigsaw_image,-1);
+		final int jigsaw_image_id = a.getResourceId(R.styleable.JigsawBoardView_jigsaw_image, -1);
 		final Bitmap jigsawImg = BitmapFactory.decodeResource(getResources(), jigsaw_image_id);
 		if (jigsawImg != null) {
 			jigsawOrigionalImage = jigsawImg;
@@ -796,7 +805,14 @@ public class JigsawBoardView extends View {
 	/**
 	 * @param img
 	 */
-	public void setImage(Bitmap img) {
-		jigsawOrigionalImage=img;
+	public void setJigsawImage(Bitmap img) {
+		jigsawOrigionalImage = img;
+	}
+
+	/**
+	 * @return
+	 */
+	public Bitmap getJigsawImage() {
+		return jigsawScalledImage;
 	}
 }

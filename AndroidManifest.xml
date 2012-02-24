@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
@@ -39,9 +39,12 @@
         </activity>
         <activity
             android:name=".puzzle.jigsaw.JigsawSettingActivity"
-            android:label="@string/jigsaw_setting_activity_lbl" >
+            android:label="@string/jigsaw_setting_activity_lbl"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".puzzle.jigsaw.ImageChooserActivity" >
+        <activity
+            android:name=".puzzle.jigsaw.ImageChooserActivity"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

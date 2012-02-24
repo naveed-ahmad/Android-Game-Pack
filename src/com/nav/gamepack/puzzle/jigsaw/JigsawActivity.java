@@ -18,6 +18,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -27,19 +28,22 @@ import android.widget.TextView;
 
 public class JigsawActivity extends Activity {
 	private static String TAG = "JigsawActivity";
+	private static int JIGSAW_SETTING_REQUEST = 4002;
 	AlertDialog settingDialog;
 	Bitmap img;
+	ImageView imgV;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.jigsaw_game);
-		Intent i=new Intent();
-		Log.i(TAG,"Getting user setting");
-		i.setClass(JigsawActivity.this,JigsawSettingActivity.class);
-		startActivityForResult(i,1005);
+		Intent intentJigsawSetting = new Intent();
+		Log.i(TAG, "Getting user setting");
+		
+		intentJigsawSetting.setClass(JigsawActivity.this, JigsawSettingActivity.class);
+		startActivityForResult(intentJigsawSetting, JIGSAW_SETTING_REQUEST);
 	}
- 
+
 	public void showSettingDialog() {
 		if (settingDialog == null) {
 
@@ -86,4 +90,22 @@ public class JigsawActivity extends Activity {
 		return handleMenuCick;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onActivityResult(int, int,
+	 * android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == JIGSAW_SETTING_REQUEST && resultCode == RESULT_OK) {
+			Log.i(TAG, "response form jigsaw setting");
+			// Yeah we have an image lets get it and play jigsaw :)
+			Bitmap img = (Bitmap) data.getParcelableExtra("image");
+			
+			
+		} else
+			super.onActivityResult(requestCode, resultCode, data);
+	}
 }

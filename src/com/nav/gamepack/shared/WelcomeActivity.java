@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nav.gamepack.R;
+import com.nav.gamepack.R.id;
 import com.nav.gamepack.puzzle.jigsaw.ImageChooserActivity;
 import com.nav.gamepack.puzzle.jigsaw.JigsawActivity;
 
@@ -48,21 +49,19 @@ import android.view.animation.Animation;
  * @author naveed
  * 
  */
-public class WelcomeActivity extends Activity implements OnTouchListener {
+public class WelcomeActivity extends Activity implements OnTouchListener, AnimationListener {
 	private final int CHOOSE_IMAGE_CODE = 36;
 	private final String TAG = "WelcomeActivity";
-	private ImageView slidingDrawerHandle, imgViewCloudMediumSlow, imgViewCloudMediumNormal, imgViewCloudSmallFast, imgViewAnimTree;
-	private SlidingDrawer slidingDrawerMenu;
-	private BitmapDrawable imgDrawableHandelClose, imgDrawableHandelOpen;
-	private Animation cloudMediumAnimationNormal, cloudMediumAnimationSlow, cloudSmallAnimationFast;
+	private ImageView imgViewCloudMediumSlow, imgViewCloudMediumNormal, imgViewCloudSmallFast, imgViewAnimTree, imgViewJigsawWalking;
+	private Animation cloudMediumAnimationNormal, cloudMediumAnimationSlow, cloudSmallAnimationFast, jigsawWalkingAnimation;
 	private View.OnClickListener btnClickListner;
-	private Animation waterDropFallAnimation;
+	AnimationDrawable jigsawWalkingFrameAnimation;
 	private RelativeLayout.LayoutParams waterDroplayoutParams;
 	private Button btnStartGame, btnAboutUs, btnHelp;
 	private AnimationDrawable treeAnimation;
 	TranslateAnimation trnsAnimCloudSlow;
 	private RelativeLayout rltvLayoutBoundry;
-	TextView t1, t2, t3;
+
 	Boolean isAnimationRunning;
 
 	/** Called when the activity is first created. */
@@ -70,29 +69,34 @@ public class WelcomeActivity extends Activity implements OnTouchListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		slidingDrawerHandle = (ImageView) findViewById(R.id.slidingDrawerHandle);
-		slidingDrawerMenu = (SlidingDrawer) findViewById(R.id.slidingDrawerGameMenu);
+		// slidingDrawerHandle = (ImageView)
+		// findViewById(R.id.slidingDrawerHandle);
+		// slidingDrawerMenu = (SlidingDrawer)
+		// findViewById(R.id.slidingDrawerGameMenu);
 		btnStartGame = (Button) findViewById(R.id.btnStartGame);
 		btnAboutUs = (Button) findViewById(R.id.btnAboutUs);
 		btnHelp = (Button) findViewById(R.id.btnHelp);
+		imgViewJigsawWalking = (ImageView) findViewById(R.id.imgViewJigsawWalking);
 
-		// slidingDrawerMenu.setOnDrawerOpenListener(this);
-		imgDrawableHandelClose = new BitmapDrawable(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.sliding_drawer_handler_close)));
-		imgDrawableHandelOpen = new BitmapDrawable(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.sliding_drawer_handler_open)));
+		// BitmapDrawable(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.sliding_drawer_handler_close)));
+		// imgDrawableHandelOpen = new
+		// BitmapDrawable(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.sliding_drawer_handler_open)));
 		imgViewAnimTree = (ImageView) findViewById(R.id.animImgViewTree);
 		rltvLayoutBoundry = (RelativeLayout) findViewById(R.id.rltvLayoutBoundryWelcome);
-		treeAnimation = (AnimationDrawable) imgViewAnimTree.getBackground();
-
+		// treeAnimation = (AnimationDrawable) imgViewAnimTree.getBackground();
 		cloudMediumAnimationSlow = AnimationUtils.loadAnimation(this, R.anim.slide_left_slow_cloud);
 		cloudMediumAnimationNormal = AnimationUtils.loadAnimation(this, R.anim.slide_left_normal_cloud);
 		cloudSmallAnimationFast = AnimationUtils.loadAnimation(this, R.anim.slide_left_fast_cloud);
 
-		waterDropFallAnimation = AnimationUtils.loadAnimation(this, R.anim.water_drop_fall_down);
+		// waterDropFallAnimation = AnimationUtils.loadAnimation(this,
+		// R.anim.water_drop_fall_down);
+		jigsawWalkingAnimation = AnimationUtils.loadAnimation(this, R.anim.jigsaw_walk);
 		waterDroplayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
 		imgViewCloudMediumSlow = (ImageView) findViewById(R.id.imgViewCloudMediumSlow);
 		imgViewCloudMediumNormal = (ImageView) findViewById(R.id.imgViewCloudMediumNormal);
 		imgViewCloudSmallFast = (ImageView) findViewById(R.id.imgViewCloudSmallFast);
+		jigsawWalkingFrameAnimation = (AnimationDrawable) imgViewJigsawWalking.getBackground();
 
 		hookupListener();
 		// Display display = getWindowManager().getDefaultDisplay();
@@ -127,6 +131,7 @@ public class WelcomeActivity extends Activity implements OnTouchListener {
 		btnHelp.setOnClickListener(btnClickListner);
 		btnStartGame.setOnClickListener(btnClickListner);
 		rltvLayoutBoundry.setOnTouchListener(this);
+		jigsawWalkingAnimation.setAnimationListener(this);
 	}
 
 	/*
@@ -161,6 +166,12 @@ public class WelcomeActivity extends Activity implements OnTouchListener {
 				frameAnimation.start();
 			}
 		});
+		imgViewJigsawWalking.post(new Runnable() {
+			public void run() {
+				jigsawWalkingFrameAnimation.start();
+			}
+		});
+		imgViewJigsawWalking.startAnimation(jigsawWalkingAnimation);
 		isAnimationRunning = true;
 	}
 
@@ -169,6 +180,7 @@ public class WelcomeActivity extends Activity implements OnTouchListener {
 		imgViewCloudSmallFast.clearAnimation();
 		imgViewCloudMediumNormal.clearAnimation();
 		imgViewCloudMediumSlow.clearAnimation();
+		jigsawWalkingFrameAnimation.stop();
 	}
 
 	private void playWaterDropFallAnimation(int x, int y) {
@@ -252,7 +264,7 @@ public class WelcomeActivity extends Activity implements OnTouchListener {
 		clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudSmallFast.getLeft();
 		clickOffsetRight = clickOffsetLeft + imgViewCloudSmallFast.getWidth();
 
-		if (clickOffsetLeft < touchPositionX && clickOffsetRight > touchPositionX) {
+		if (clickOffsetLeft < touchPositionX && clickOffsetRight > touchPositionX && toucPositionY >= imgTop && toucPositionY <= imgBottom) {
 			Log.i(TAG, "Playing waterdrop animation for imgViewCloudSmallFast");
 			clickHandled = true;
 			playWaterDropFallAnimation((clickOffsetRight + clickOffsetLeft) / 2, toucPositionY);
@@ -271,9 +283,55 @@ public class WelcomeActivity extends Activity implements OnTouchListener {
 	private void showHelpDialog() {
 
 		LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		final View signinView = layoutInflater.inflate(R.layout.about_us, null);
-		AlertDialog settingDialog = new AlertDialog.Builder(this).setView(signinView).setTitle("About Us").setPositiveButton("Back", null).create();
+		final View signinView = layoutInflater.inflate(R.layout.help, null);
+		AlertDialog settingDialog = new AlertDialog.Builder(this).setView(signinView).setTitle("Jigsaw Help").setPositiveButton("Back", null).create();
 		settingDialog.show();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.view.animation.Animation.AnimationListener#onAnimationEnd(android
+	 * .view.animation.Animation)
+	 */
+	@Override
+	public void onAnimationEnd(Animation anim) {
+		if (anim == jigsawWalkingAnimation) {
+//			imgViewJigsawWalking.clearAnimation();
+//			Transformation transformation = new Transformation();
+//			float[] matrix = new float[9];
+//			jigsawWalkingAnimation.getTransformation(AnimationUtils.currentAnimationTimeMillis(), transformation);
+//			transformation.getMatrix().getValues(matrix);
+//			int clickOffsetLeft = (int) matrix[Matrix.MTRANS_X] + imgViewCloudMediumNormal.getLeft();
+//			imgViewJigsawWalking.layout((int) matrix[Matrix.MTRANS_X], (int) matrix[Matrix.MTRANS_Y], (int) matrix[Matrix.MTRANS_X] + imgViewJigsawWalking.getWidth(), (int) matrix[Matrix.MTRANS_Y]
+//					+ imgViewJigsawWalking.getHeight());
+			jigsawWalkingFrameAnimation.stop();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.view.animation.Animation.AnimationListener#onAnimationRepeat(
+	 * android.view.animation.Animation)
+	 */
+	@Override
+	public void onAnimationRepeat(Animation arg0) {
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.view.animation.Animation.AnimationListener#onAnimationStart(android
+	 * .view.animation.Animation)
+	 */
+	@Override
+	public void onAnimationStart(Animation arg0) {
 
 	}
 }

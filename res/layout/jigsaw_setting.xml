@@ -27,13 +27,6 @@
             android:orientation="vertical"
             android:padding="2dp" >
 
-            <TextView
-                android:id="@+id/txtViewRows"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rows"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
             <Button
                 android:id="@+id/btnChangeRows"
                 android:layout_width="match_parent"
@@ -42,13 +35,6 @@
                 android:text="Change Rows" 
                 android:layout_margin="3dp"
                 />
-
-            <TextView
-                android:id="@+id/txtViewColumns"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Column"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <Button
                 android:id="@+id/btnChangeColumns"
@@ -62,9 +48,17 @@
                 android:id="@+id/btnRandomizeCell"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:layout_margin="3dp"
+                android:background="@drawable/btn_green_bg"
+                android:text="Randomize Cells" />
+
+            <Button
+                android:id="@+id/btnViewImage"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:background="@drawable/btn_green_bg"
                 android:layout_margin="3dp"
-                android:text="Randomize Cells" />
+                android:text="View Image" />
         </LinearLayout>
     </LinearLayout>
 
@@ -83,7 +77,7 @@
             android:padding="2dp" >
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/btnChangePicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
@@ -92,11 +86,13 @@
                  />
 
             <Button
-                android:id="@+id/btnChangePicture"
+                android:id="@+id/btnOpenSavedGame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_blue_bg"
-                android:text="Open Game" />
+                android:text="Open Game" 
+                android:enabled="false"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -134,6 +130,13 @@
                 android:layout_height="wrap_content"
                 android:text="Advertisements"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/blue" />
+
         </LinearLayout>
     </LinearLayout>
 
