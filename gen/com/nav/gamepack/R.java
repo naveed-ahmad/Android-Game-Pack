@@ -19,7 +19,9 @@ public final class R {
         public static final int slide_left_normal_cloud=0x7f040007;
         public static final int slide_left_slow_cloud=0x7f040008;
         public static final int slide_up=0x7f040009;
-        public static final int water_drop_fall_down=0x7f04000a;
+        public static final int slidein=0x7f04000a;
+        public static final int slideout=0x7f04000b;
+        public static final int water_drop_fall_down=0x7f04000c;
     }
     public static final class attr {
         /** <p>Must be an integer value, such as "<code>100</code>".
@@ -68,7 +70,7 @@ containing a value of this type.
         public static final int arrow_right_norml_small=0x7f020005;
         public static final int arrow_right_pressed=0x7f020006;
         public static final int arrow_right_pressed_small=0x7f020007;
-        public static final int blue=0x7f02004a;
+        public static final int blue=0x7f02004b;
         public static final int bottom_bar=0x7f020008;
         public static final int browse_image=0x7f020009;
         public static final int btn_blue_bg=0x7f02000a;
@@ -88,7 +90,7 @@ containing a value of this type.
         public static final int cross_red_normal=0x7f020018;
         public static final int cross_red_pressed=0x7f020019;
         public static final int defafult_jigsaw_image=0x7f02001a;
-        public static final int green=0x7f02004b;
+        public static final int green=0x7f02004c;
         public static final int home_bk=0x7f02001b;
         public static final int ic_menu_search=0x7f02001c;
         public static final int ic_tab_camera=0x7f02001d;
@@ -115,8 +117,8 @@ containing a value of this type.
         public static final int ok_normal=0x7f020032;
         public static final int ok_pressed=0x7f020033;
         public static final int previous_btn_back_big=0x7f020034;
-        public static final int red=0x7f020049;
-        public static final int screen_background_black=0x7f02004d;
+        public static final int red=0x7f02004a;
+        public static final int screen_background_black=0x7f02004e;
         public static final int seed=0x7f020035;
         public static final int seed_orange=0x7f020036;
         public static final int select_picture=0x7f020037;
@@ -124,22 +126,23 @@ containing a value of this type.
         public static final int sliding_drawer_handler_close=0x7f020039;
         public static final int sliding_drawer_handler_open=0x7f02003a;
         public static final int sun=0x7f02003b;
-        public static final int toast_frame=0x7f02003c;
-        public static final int translucent_background=0x7f02004e;
-        public static final int transparent_background=0x7f02004f;
-        public static final int tree=0x7f02003d;
-        public static final int tree2=0x7f02003e;
-        public static final int tree3=0x7f02003f;
-        public static final int tree_01=0x7f020040;
-        public static final int tree_02=0x7f020041;
-        public static final int tree_03=0x7f020042;
-        public static final int tree_04=0x7f020043;
-        public static final int tree_05=0x7f020044;
-        public static final int tree_06=0x7f020045;
-        public static final int tree_07=0x7f020046;
-        public static final int tree_anim=0x7f020047;
-        public static final int water_drop=0x7f020048;
-        public static final int yellow=0x7f02004c;
+        public static final int sun_rays=0x7f02003c;
+        public static final int toast_frame=0x7f02003d;
+        public static final int translucent_background=0x7f02004f;
+        public static final int transparent_background=0x7f020050;
+        public static final int tree=0x7f02003e;
+        public static final int tree2=0x7f02003f;
+        public static final int tree3=0x7f020040;
+        public static final int tree_01=0x7f020041;
+        public static final int tree_02=0x7f020042;
+        public static final int tree_03=0x7f020043;
+        public static final int tree_04=0x7f020044;
+        public static final int tree_05=0x7f020045;
+        public static final int tree_06=0x7f020046;
+        public static final int tree_07=0x7f020047;
+        public static final int tree_anim=0x7f020048;
+        public static final int water_drop=0x7f020049;
+        public static final int yellow=0x7f02004d;
     }
     public static final class id {
         public static final int animImgViewTree=0x7f080032;
@@ -162,11 +165,11 @@ containing a value of this type.
         public static final int gallryStyleGrid=0x7f08000f;
         public static final int gallryStyleListView=0x7f080011;
         public static final int gallryStyleSlideShow=0x7f080010;
+        public static final int gallryStyleViewFlipper=0x7f08000e;
         public static final int gallryStyles=0x7f08000d;
         public static final int group1=0x7f080037;
         public static final int gtabContentSearch=0x7f080016;
         public static final int gtabContentViewCamera=0x7f080015;
-        public static final int gtabContentViewGalleryStyles=0x7f08000e;
         public static final int imageItem=0x7f08001c;
         public static final int imageView1=0x7f080027;
         public static final int imgBtnGallryStyleGrid=0x7f080013;

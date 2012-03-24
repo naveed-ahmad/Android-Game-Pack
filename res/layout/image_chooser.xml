@@ -26,7 +26,7 @@
                 android:layout_height="fill_parent" >
 
                 <ViewFlipper
-                    android:id="@+id/gtabContentViewGalleryStyles"
+                    android:id="@+id/gallryStyleViewFlipper"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" >
 
@@ -34,8 +34,13 @@
                         android:id="@+id/gallryStyleGrid"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:numColumns="3" >
-                    </GridView>
+                        android:columnWidth="60dp"
+                        android:gravity="center"
+                        android:horizontalSpacing="10dp"
+                        android:numColumns="3"
+                        android:padding="10dp"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="10dp" />
 
                     <com.nav.gamepack.shared.InfiniteGallery
                         android:id="@+id/gallryStyleSlideShow"

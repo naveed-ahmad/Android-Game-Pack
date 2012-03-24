@@ -54,7 +54,7 @@ import android.view.animation.Animation;
  * 
  */
 public class WelcomeActivity extends Activity implements OnTouchListener, AnimationListener {
-	private final int CHOOSE_IMAGE_CODE = 36;
+	private final int GET_JIGSAW_SETTING_REQUEST = 1032;
 	private final String TAG = "WelcomeActivity";
 	private ImageView imgViewCloudMediumSlow, imgViewCloudMediumNormal, imgViewCloudSmallFast, imgViewAnimTree, imgViewJigsawWalking;
 	private Animation jigsawJumpAnimation, cloudMediumAnimationNormal, cloudMediumAnimationSlow, cloudSmallAnimationFast, jigsawWalkingAnimation;
@@ -120,9 +120,9 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 			@Override
 			public void onClick(View v) {
 				if (v.getId() == btnStartGame.getId()) {
-					Intent intentStartGame = new Intent();
-					intentStartGame.setClass(WelcomeActivity.this, JigsawSettingActivity.class);
-					startActivity(intentStartGame);
+					Intent intentGetJigsawSetting = new Intent();
+					intentGetJigsawSetting.setClass(WelcomeActivity.this, JigsawSettingActivity.class);
+					startActivityForResult(intentGetJigsawSetting, GET_JIGSAW_SETTING_REQUEST);
 				} else if (v.getId() == btnHelp.getId())
 					showHelpDialog();
 				else if (v.getId() == btnAboutUs.getId())
@@ -393,6 +393,18 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode==GET_JIGSAW_SETTING_REQUEST && resultCode == RESULT_OK){
+			Log.i(TAG,"Got jigsaw setting result, starting jigsaw activity with results");
+			data.setClass(WelcomeActivity.this, JigsawActivity.class);
+			startActivity(data);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 	/*
 	 * (non-Javadoc)
 	 * 

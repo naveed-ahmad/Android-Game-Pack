@@ -167,23 +167,28 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	 * 
 	 */
 	private void endActivityWithResult() {
-		Log.i(TAG, "Reterning selected image");
 		Intent resultIntent = new Intent();
-		resultIntent.putExtra("image", jigsawBoard.getJigsawImage());
-		resultIntent.putExtra("rowsCount", jigsawBoard.getRowCount());
+		// resultIntent.putExtra("imageI", jigsawBoard.getJigsawImage());
+		resultIntent.putExtra("rowsCount", jigsawBoard.getRowCount()+"");
 		resultIntent.putExtra("rowsColumnsCount", jigsawBoard.getColumnCount());
-		resultIntent.putExtra("jigsawCellMap", jigsawBoard.getJIgsawCells());
+		resultIntent.putExtra("jigsawCellMap", jigsawBoard.getJigsawCellImageMapping());
 		
-		if (getParent() == null)
+		//if (getParent() == null)
 			setResult(Activity.RESULT_OK, resultIntent);
-		else
-			getParent().setResult(Activity.RESULT_OK, resultIntent);
+		//else
+			//getParent().setResult(Activity.RESULT_OK, resultIntent);
 
 		// new AlertDialog.Builder(this).setMessage(msg).show();
-
+		Log.i(TAG, "finishing setting activity with result");
+		
 		finish();
 	}
 	private void endActivityWithoutResult(){
+		if (getParent() == null)
+			setResult(Activity.RESULT_CANCELED, null);
+		else
+			getParent().setResult(Activity.RESULT_CANCELED, null);
+		Log.i(TAG, "finishing setting activity with out result");
 		finish();
 	}
 

@@ -39,14 +39,13 @@ public class JigsawActivity extends Activity {
 		setContentView(R.layout.jigsaw_game);
 		Intent intentJigsawSetting = new Intent();
 		Log.i(TAG, "Getting user setting");
-		
-		intentJigsawSetting.setClass(JigsawActivity.this, JigsawSettingActivity.class);
-		startActivityForResult(intentJigsawSetting, JIGSAW_SETTING_REQUEST);
+//		
+//		intentJigsawSetting.setClass(JigsawActivity.this, JigsawSettingActivity.class);
+//		startActivityForResult(intentJigsawSetting, JIGSAW_SETTING_REQUEST);
 	}
 
 	public void showSettingDialog() {
 		if (settingDialog == null) {
-
 			LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			final View signinView = layoutInflater.inflate(R.layout.jigsaw_setting, null);
 			settingDialog = new AlertDialog.Builder(this).setView(signinView).setTitle("Login Required").setPositiveButton("Signin", null).create();

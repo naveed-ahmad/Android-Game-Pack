@@ -35,6 +35,7 @@ public class JigsawBoardView extends View {
 	private JigsawBoardKeyListener jigsawCellClickListener;
 	private int clickedCellIndex;
 	private int rowCount, columnCount, cellShuffleCount, cellHeight, cellWidth, mSize;
+	private int[] jigsawCellImageMapings;
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -218,6 +219,7 @@ public class JigsawBoardView extends View {
 			return;// Board is already initialized
 		int cellCount = getColumnCount() * getRowCount() + 1;
 		cells = new JigsawCell[cellCount];
+		jigsawCellImageMapings = new int[cellCount];
 		jigsawCellImages = new Bitmap[cellCount];
 		prepareJigsawBoardImage();
 		if (shuffleCells)
@@ -304,11 +306,13 @@ public class JigsawBoardView extends View {
 		int tempImageIndex = cells[cell1].getJigsawImageIndex();
 		cells[cell1].setJigsawImageIndex(cells[cell2].getJigsawImageIndex());
 		cells[cell2].setJigsawImageIndex(tempImageIndex);
+		
 		if (cells[cell1].getCurrentPosition() == emptyCellIndex)
 			emptyCellIndex = cells[cell2].getCurrentPosition();
 		else if (cells[cell2].getCurrentPosition() == emptyCellIndex)
 			emptyCellIndex = cells[cell1].getCurrentPosition();
-
+		jigsawCellImageMapings[cell1] = cells[cell1].getJigsawImageIndex();
+		jigsawCellImageMapings[cell2] = cells[cell2].getJigsawImageIndex();
 	}
 
 	/**
@@ -829,5 +833,12 @@ public class JigsawBoardView extends View {
 	 */
 	public JigsawCell[] getJIgsawCells() {
 		return cells;
+	}
+
+	/**
+	 * @return
+	 */
+	public int[] getJigsawCellImageMapping() {
+		return jigsawCellImageMapings;
 	}
 }

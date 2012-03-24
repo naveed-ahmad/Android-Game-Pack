@@ -89,7 +89,6 @@
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
                     android:text="About Us" />
-
             </LinearLayout>
         </LinearLayout>
 
@@ -104,17 +103,29 @@
         android:id="@+id/animImgViewTree"
         android:layout_width="100dp"
         android:layout_height="130dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/slidingDrawerGameMenu"
-        android:layout_marginTop="83dp"
+        android:layout_marginBottom="135dp"
+        android:layout_marginLeft="25dp"
+        
         android:background="@drawable/tree_anim" />
 
     <ImageView
         android:id="@+id/imgViewJigsawWalking"
         android:layout_width="60dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/animImgViewTree"
-        android:layout_toRightOf="@+id/imgViewCloudSmallFast"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_toRightOf="@+id/imgViewCloudMediumSlow"
         android:background="@drawable/jigsaw_walking_bk" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/imgViewCloudSmallFast"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/sun" />
 
 </RelativeLayout>
