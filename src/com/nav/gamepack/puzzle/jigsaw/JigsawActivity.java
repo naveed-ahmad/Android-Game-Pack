@@ -32,6 +32,7 @@ public class JigsawActivity extends Activity {
 	AlertDialog settingDialog;
 	Bitmap img;
 	ImageView imgV;
+	public static JigsawActivity _jigsawActivity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,16 @@ public class JigsawActivity extends Activity {
 		setContentView(R.layout.jigsaw_game);
 		Intent intentJigsawSetting = new Intent();
 		Log.i(TAG, "Getting user setting");
-//		
-//		intentJigsawSetting.setClass(JigsawActivity.this, JigsawSettingActivity.class);
-//		startActivityForResult(intentJigsawSetting, JIGSAW_SETTING_REQUEST);
+		//
+		// intentJigsawSetting.setClass(JigsawActivity.this,
+		// JigsawSettingActivity.class);
+		// startActivityForResult(intentJigsawSetting, JIGSAW_SETTING_REQUEST);
+	}
+
+	public static JigsawActivity getActivity() {
+		if (_jigsawActivity == null)
+			_jigsawActivity = new JigsawActivity();
+		return _jigsawActivity;
 	}
 
 	public void showSettingDialog() {
@@ -102,8 +110,7 @@ public class JigsawActivity extends Activity {
 			Log.i(TAG, "response form jigsaw setting");
 			// Yeah we have an image lets get it and play jigsaw :)
 			Bitmap img = (Bitmap) data.getParcelableExtra("image");
-			
-			
+
 		} else
 			super.onActivityResult(requestCode, resultCode, data);
 	}

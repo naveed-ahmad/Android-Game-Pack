@@ -46,6 +46,11 @@
             android:name=".puzzle.jigsaw.ImageChooserActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity 
+            android:name="com.google.ads.AdActivity"
+            >
+        </activity>
+        
     </application>
 
 </manifest>

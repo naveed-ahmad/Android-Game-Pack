@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.nav.gamepack.shared;
 
 import java.util.Random;
@@ -8,17 +5,11 @@ import java.util.Random;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.MonthDisplayHelper;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,21 +19,15 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SlidingDrawer;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nav.gamepack.R;
-import com.nav.gamepack.R.id;
+
 import com.nav.gamepack.puzzle.jigsaw.ImageChooserActivity;
 import com.nav.gamepack.puzzle.jigsaw.JigsawActivity;
 import com.nav.gamepack.puzzle.jigsaw.JigsawSettingActivity;
@@ -393,18 +378,22 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 
 	}
 
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onActivityResult(int, int,
+	 * android.content.Intent)
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode==GET_JIGSAW_SETTING_REQUEST && resultCode == RESULT_OK){
-			Log.i(TAG,"Got jigsaw setting result, starting jigsaw activity with results");
+		if (requestCode == GET_JIGSAW_SETTING_REQUEST && resultCode == RESULT_OK) {
+			Log.i(TAG, "Got jigsaw setting result, starting jigsaw activity with results");
 			data.setClass(WelcomeActivity.this, JigsawActivity.class);
 			startActivity(data);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

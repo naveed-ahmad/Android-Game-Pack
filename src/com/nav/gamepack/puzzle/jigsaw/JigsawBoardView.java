@@ -33,6 +33,8 @@ public class JigsawBoardView extends View {
 	private Context context;
 	private int emptyCellIndex;
 	private JigsawBoardKeyListener jigsawCellClickListener;
+	private JigsawSensorEventListener jigsawSensorEventListener;
+
 	private int clickedCellIndex;
 	private int rowCount, columnCount, cellShuffleCount, cellHeight, cellWidth, mSize;
 	private int[] jigsawCellImageMapings;
@@ -117,7 +119,10 @@ public class JigsawBoardView extends View {
 		load(context, attrs, defStyle);
 		isBoardInitialized = false;
 		jigsawCellClickListener = new JigsawBoardKeyListener(this);
-		setOnKeyListener(jigsawCellClickListener);
+		jigsawSensorEventListener = new JigsawSensorEventListener(this);
+		// setOnKeyListener(jigsawCellClickListener);
+		setOnKeyListener(jigsawSensorEventListener);
+		
 		setFocusableInTouchMode(true);
 	}
 
@@ -306,7 +311,7 @@ public class JigsawBoardView extends View {
 		int tempImageIndex = cells[cell1].getJigsawImageIndex();
 		cells[cell1].setJigsawImageIndex(cells[cell2].getJigsawImageIndex());
 		cells[cell2].setJigsawImageIndex(tempImageIndex);
-		
+
 		if (cells[cell1].getCurrentPosition() == emptyCellIndex)
 			emptyCellIndex = cells[cell2].getCurrentPosition();
 		else if (cells[cell2].getCurrentPosition() == emptyCellIndex)
