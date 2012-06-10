@@ -18,7 +18,7 @@
             android:id="@+id/jigsawBoardViewDemo"
             android:layout_width="208dp"
             android:layout_height="208dp"
-            jigsaw:jigsaw_image="@drawable/defafult_jigsaw_image" />
+            jigsaw:jigsaw_image="@drawable/default_jigsaw_image" />
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -75,6 +75,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="2dp" >
+            <ImageButton
+                android:id="@+id/btnRotateLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_blue_bg"
+                android:src="@drawable/arrow_rotate_anticlockwise" />
+
+            <ImageButton
+                android:id="@+id/btnRotateRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/btn_blue_bg"
+                android:src="@drawable/arrow_rotate_clockwise" />
 
             <Button
                 android:id="@+id/btnChangePicture"
@@ -82,17 +96,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/btn_blue_bg"
-                android:text="Change Picture"
-                 />
+                android:text="Change Picture" />
 
             <Button
                 android:id="@+id/btnOpenSavedGame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_blue_bg"
-                android:text="Open Game" 
                 android:enabled="false"
-                />
+                android:text="Open Game" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp" >
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +121,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="2dp" >
+            android:padding="2dp" 
+            android:gravity="bottom"
+            >
 
             <Button
                 android:id="@+id/btnBack"
@@ -117,27 +140,7 @@
                 android:text="Start Game!!" />
         </LinearLayout>
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:padding="2dp" >
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Advertisements"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/blue" />
-
-        </LinearLayout>
+        
     </LinearLayout>
 
 </LinearLayout>

@@ -65,6 +65,7 @@
                 android:id="@+id/slidingDrawerContent"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:layout_weight="2"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:padding="10dp" >
@@ -100,17 +101,6 @@
     </SlidingDrawer>
 
     <ImageView
-        android:id="@+id/animImgViewTree"
-        android:layout_width="100dp"
-        android:layout_height="130dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="135dp"
-        android:layout_marginLeft="25dp"
-        
-        android:background="@drawable/tree_anim" />
-
-    <ImageView
         android:id="@+id/imgViewJigsawWalking"
         android:layout_width="60dp"
         android:layout_height="100dp"
@@ -127,5 +117,14 @@
         android:layout_alignTop="@+id/imgViewCloudSmallFast"
         android:layout_marginRight="16dp"
         android:src="@drawable/sun" />
+
+    <ImageView
+        android:id="@+id/animImgViewTree"
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        android:layout_alignBottom="@+id/imgViewJigsawWalking"
+        android:layout_marginBottom="77dp"
+        android:layout_toLeftOf="@+id/imgViewCloudMediumSlow"
+        android:background="@drawable/tree_anim" />
 
 </RelativeLayout>

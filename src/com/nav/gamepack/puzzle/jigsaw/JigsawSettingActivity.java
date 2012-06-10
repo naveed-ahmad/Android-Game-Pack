@@ -14,8 +14,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Matrix.ScaleToFit;
 import android.graphics.Path.FillType;
+import android.graphics.Picture;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,6 +33,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -45,7 +50,8 @@ import android.widget.Toast;
 public class JigsawSettingActivity extends Activity implements OnClickListener, OnSeekBarChangeListener {
 	private static String TAG = "JigsawSettingActivity";
 	private static int GET_IMAGE_REQUEST_IDENTIFIER = 1005;
-	private Button btnRandomizeCells, btnChangeRowCount, btnChangeColumnCount, btnStartGame, btnChoosePicture, btnViewImage,btnBack;
+	private Button btnRandomizeCells, btnChangeRowCount, btnChangeColumnCount, btnStartGame, btnChoosePicture, btnViewImage, btnBack;
+	private ImageButton btnRotateLeft, btnRotateRight;
 	private AlertDialog dlgChangeCellSize;
 	private SeekBar seekBarCellSize;
 	private TextView txtViewSizeCount, txtViewMoreCell;
@@ -71,8 +77,9 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		btnChangeColumnCount = (Button) findViewById(R.id.btnChangeColumns);
 		btnStartGame = (Button) findViewById(R.id.btnStartGame);
 		btnChoosePicture = (Button) findViewById(R.id.btnChangePicture);
-		btnBack=(Button)findViewById(R.id.btnBack);
+		btnBack = (Button) findViewById(R.id.btnBack);
 		jigsawBoard = (JigsawBoardView) findViewById(R.id.jigsawBoardViewDemo);
+		jigsawBoard.setCallerActivity(this);
 		testImgView = (ImageView) findViewById(R.id.imageView1);
 		btnViewImage = (Button) findViewById(R.id.btnViewImage);
 		btnChangeColumnCount.setOnClickListener(this);
@@ -84,6 +91,10 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		btnBack.setOnClickListener(this);
 		shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
 		layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+ 		JigsawSetting.getSetting().jigsawImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_jigsaw_image);
+
+		
 		initlizeDialogs();
 	}
 
@@ -97,7 +108,8 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		txtViewSizeCount = (TextView) cellSizeChooserView.findViewById(R.id.txtViewCellSize);
 		chkBoxSameSize = (CheckBox) cellSizeChooserView.findViewById(R.id.checkBoarSameSize);
 		editTextCustomSize = (EditText) cellSizeChooserView.findViewById(R.id.editTextCustomSize);
-
+		btnRotateLeft = (ImageButton) findViewById(R.id.btnRotateLeft);
+		btnRotateRight = (ImageButton) findViewById(R.id.btnRotateRight);
 		seekBarCellSize.setOnSeekBarChangeListener(this);
 		editTextCustomSize.setOnKeyListener(new OnKeyListener() {
 			@Override
@@ -132,14 +144,29 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 								if (chkBoxSameSize.isChecked())
 									jigsawBoard.setRowCount(cellCount);
 							}
-							jigsawBoard.initBoard(true, true);
+							jigsawBoard.initBoard(false,false,false);
 							jigsawBoard.invalidate();
 						}
 					}
 				});
 			}
 		});
+		btnRotateRight.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+				rotateJigsawImage(90);
+
+			}
+		});
+		btnRotateLeft.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				rotateJigsawImage(-90);
+
+			}
+		});
 	}
 
 	@Override
@@ -154,7 +181,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 			endActivityWithResult();
 		else if (clickedBtn.getId() == btnViewImage.getId())
 			showJigsawImageDialog();
-		else if(clickedBtn.getId()==btnBack.getId())
+		else if (clickedBtn.getId() == btnBack.getId())
 			endActivityWithoutResult();
 		else if (clickedBtn.getId() == btnRandomizeCells.getId()) {
 			jigsawBoard.shuffleCells();
@@ -169,21 +196,22 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	private void endActivityWithResult() {
 		Intent resultIntent = new Intent();
 		// resultIntent.putExtra("imageI", jigsawBoard.getJigsawImage());
-		resultIntent.putExtra("rowsCount", jigsawBoard.getRowCount()+"");
+		resultIntent.putExtra("rowsCount", jigsawBoard.getRowCount() + "");
 		resultIntent.putExtra("rowsColumnsCount", jigsawBoard.getColumnCount());
 		resultIntent.putExtra("jigsawCellMap", jigsawBoard.getJigsawCellImageMapping());
-		
-		//if (getParent() == null)
-			setResult(Activity.RESULT_OK, resultIntent);
-		//else
-			//getParent().setResult(Activity.RESULT_OK, resultIntent);
+
+		// if (getParent() == null)
+		setResult(Activity.RESULT_OK, resultIntent);
+		// else
+		// getParent().setResult(Activity.RESULT_OK, resultIntent);
 
 		// new AlertDialog.Builder(this).setMessage(msg).show();
 		Log.i(TAG, "finishing setting activity with result");
-		
+
 		finish();
 	}
-	private void endActivityWithoutResult(){
+
+	private void endActivityWithoutResult() {
 		if (getParent() == null)
 			setResult(Activity.RESULT_CANCELED, null);
 		else
@@ -226,7 +254,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		View dlgView = layoutInflater.inflate(R.layout.image_item, null);
 		AlertDialog dlgJigsawImg = new AlertDialog.Builder(this).setTitle("Jigsaw Image").setPositiveButton("Back", null).setView(dlgView).create();
 		ImageView imgView = (ImageView) dlgView.findViewById(R.id.imageItem);
-		imgView.setImageBitmap(jigsawBoard.getJigsawScaledImage());
+		imgView.setImageBitmap(JigsawSetting.getSetting().jigsawImage);
 		dlgJigsawImg.show();
 	}
 
@@ -234,6 +262,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	 * @param string
 	 */
 	private void showChangeCellSizeDialogFor(String s) {
+		jigsawBoard.initializeSensorListener();
 		dlgChangeCellSize.setTitle("Choose Number of " + s + " For JigsawBoard");
 		dlgChangeCellSize.show();
 
@@ -292,6 +321,27 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
+
+	}
+
+	private void rotateJigsawImage(float rotateDegree) {
+		Matrix transform = new Matrix();
+		Bitmap src = jigsawBoard.getJigsawImage();
+
+		Matrix m = new Matrix();
+		m.preScale(-1, 1);
+
+		Bitmap dst = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, false);
+		Canvas canvas = new Canvas(dst);
+		float xOfCentre = src.getWidth() / 2;
+		float yOfCentre = src.getHeight() / 2;
+		transform.setTranslate(xOfCentre, yOfCentre);
+		transform.preRotate(rotateDegree, src.getWidth() / 2, src.getHeight() / 2);
+		canvas.drawBitmap(src, transform, null);
+		jigsawBoard.setJigsawImage(dst);
+		jigsawBoard.setJigsawImage(JigsawSetting.getSetting().jigsawImage);
+		jigsawBoard.invalidate();
+		src=null;
 
 	}
 }
