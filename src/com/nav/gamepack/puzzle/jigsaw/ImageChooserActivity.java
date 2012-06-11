@@ -6,17 +6,20 @@ package com.nav.gamepack.puzzle.jigsaw;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import utils.NetworkUtils;
 
 import com.nav.gamepack.R;
+import com.nav.gamepack.shared.GoogleImageSearcher;
 import com.nav.gamepack.shared.InfiniteGallery;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -48,7 +51,6 @@ import android.widget.TabHost;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-//"//https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%22jigsaw%22&rsz=8";
 /**
  * @author naveed
  * 
@@ -57,9 +59,9 @@ public class ImageChooserActivity extends TabActivity {
 	private final String TAG = "ImageChooserActivity";
 	private final static String GOOGLE_SEARCH_URL = "//https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&q=";
 	private static final int SELECT_IMAGE_FROM_CAMERA_REQUEST = 1889, SELECT_IMAGE_FROM_GALLERY_REQUEST = 1888;;
+	ProgressDialog dialogLoadingImage;
+	private Button btnSearchImgFromMobile, btnSearchImgFromGoogle;
 
-	private Button btnSearchImgFromMobile, btnSearchImgFromGoogle;// ,
-																	// btnBrowseImgFromMobile;
 	private ImageView imgViewSelectedImage;
 	Bitmap selectedImage;
 	EditText editTextSearchFromGoogle;
@@ -110,11 +112,10 @@ public class ImageChooserActivity extends TabActivity {
 
 		Animation s_in = AnimationUtils.loadAnimation(this, R.anim.slidein);
 		Animation s_out = AnimationUtils.loadAnimation(this, R.anim.slideout);
-		// gallryStyleFlipper.setInAnimation(s_in);
+
 		gallryStyleFlipper.setAnimation(s_in);
 		gallryStyleFlipper.setOutAnimation(s_out);
 
-		// gallryStleSlideShow.setOnItemLongClickListener(longClickListener);
 		imgItemSize = galleryStyleGrid.getWidth() / 3;
 		fileTempSelectedImg = new File(Environment.getExternalStorageDirectory(), "testJIgsawImg.jpg");
 		for (int i = 0; i < getTabWidget().getTabCount(); i++) {
@@ -198,6 +199,8 @@ public class ImageChooserActivity extends TabActivity {
 						Log.i(TAG, "searching image from google, query=" + queryString);
 						if (queryString.length() == 0) {
 							editTextSearchFromGoogle.startAnimation(shakeAnimation);
+						} else {
+							searchImagesFromGoogle(queryString);
 						}
 					} else
 						Log.i(TAG, "unknown btn ..");
@@ -205,11 +208,41 @@ public class ImageChooserActivity extends TabActivity {
 					Log.e(TAG, "Exception send image back to caller ", e);
 				}
 			}
+
+			private void searchImagesFromGoogle(String queryString) {
+				dialogLoadingImage = ProgressDialog.show(getParent(), "Searching Images", "Please wait...", true);
+
+				ArrayList urls = GoogleImageSearcher.getImageURL(queryString);
+				if (urls.size() == 0)
+					Toast.makeText(getApplicationContext(), "No Image found", Toast.LENGTH_LONG);
+				else {
+					dialogLoadingImage.setMessage("Found " + urls.size() + " images...");
+					for (int i = 0; i < urls.size(); i++) {
+						try {
+							dialogLoadingImage.setMessage("Loading " + urls.size() + " of " + i + " image");
+							URL url = new URL(urls.get(i).toString());
+							Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+							addImageToGalleryAdapters(bmp);
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+					}
+				}
+
+				dialogLoadingImage.hide();
+			}
+
 		};
 
 		btnSearchImgFromMobile.setOnClickListener(btnListeners);
 		btnSearchImgFromGoogle.setOnClickListener(btnListeners);
 
+	}
+
+	void addImageToGalleryAdapters(Bitmap bmp) {
+
+		gridImageAdapter.addImage(selectedImage);
+		sliderImageAdapter.addImage(selectedImage);
 	}
 
 	private void init(Context context) {
@@ -367,8 +400,9 @@ public class ImageChooserActivity extends TabActivity {
 				selectedImage = (Bitmap) data.getExtras().get("data");
 
 			}
-			gridImageAdapter.addImage(selectedImage);
-			sliderImageAdapter.addImage(selectedImage);
+			addImageToGalleryAdapters(selectedImage);
+			// gridImageAdapter.addImage(selectedImage);
+			// sliderImageAdapter.addImage(selectedImage);
 
 		} else if (requestCode == SELECT_IMAGE_FROM_GALLERY_REQUEST && resultCode == RESULT_OK) {
 			Log.i(TAG, "Result from gallery");
@@ -378,8 +412,8 @@ public class ImageChooserActivity extends TabActivity {
 			Bitmap mBitmap = null;
 			try {
 				selectedImage = Media.getBitmap(this.getContentResolver(), data.getData());
-				gridImageAdapter.addImage(selectedImage);
-				sliderImageAdapter.addImage(selectedImage);
+				addImageToGalleryAdapters(selectedImage);
+
 			} catch (FileNotFoundException e) {
 				Toast.makeText(this, "file not found", Toast.LENGTH_LONG);
 				e.printStackTrace();
@@ -390,102 +424,6 @@ public class ImageChooserActivity extends TabActivity {
 		}
 	}
 
-	//
-	//
-	// /**
-	// * Async task for loading the images from the SD card.
-	// */
-	// class LoadImagesFromSDCard extends AsyncTask<Object, LoadedImage, Object>
-	// {
-	// /**
-	// * Load images from SD Card in the background, and display each image on
-	// the screen.
-	// * @see android.os.AsyncTask#doInBackground(Params[])
-	// */
-	// @Override
-	// protected Object doInBackground(Object... params) {
-	// // setProgressBarIndeterminateVisibility(true);
-	// Bitmap bitmap = null;
-	// Bitmap newBitmap = null;
-	// Uri uri = null;
-	//
-	// // Set up an array of the Thumbnail Image ID column we want
-	// String[] projection = { MediaStore.Images.Thumbnails._ID };
-	// // Create the cursor pointing to the SDCard
-	// Cursor cursor =
-	// managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-	// projection, // Which columns to return
-	// null, // Return all rows
-	// null, null);
-	// int columnIndex =
-	// cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
-	// int size = cursor.getCount();
-	// // If size is 0, there are no images on the SD Card.
-	// if (size == 0) {
-	// // No Images available, post some message to the user
-	// }
-	//
-	// // This will remember ACTUAL positions with existing bitmaps!
-	// mRealBitmapsIndexes = new ArrayList<Integer>();
-	//
-	// int imageID = 0;
-	// boolean run = trTabActivityue;
-	// for (int i = 0; i < size; i++) {
-	// try {
-	// if(cursor != null && !cursor.isClosed() && run){ //if the user quits
-	// before all the images are loaded, the cursor will be closed
-	// cursor.moveToPosition(i);
-	// imageID = cursor.getInt(columnIndex);
-	// uri =
-	// Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-	// "" + imageID);
-	// //temp
-	// bitmap =
-	// BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-	//
-	// if (bitmap != null) {
-	// mRealBitmapsIndexes.add(i);
-	// newBitmap = Bitmap.createScaledBitmap(bitmap, GRID_IMG_WIDTH,
-	// GRID_IMG_HEIGHT, true);
-	// bitmap.recycle();
-	// if (newBitmap != null) {
-	// publishProgress(new LoadedImage(newBitmap));
-	// }
-	// }
-	// }
-	// } catch (OutOfMemoryError e) {
-	// run = false;
-	// Toast.makeText(LoadImagesViaGridActivity.this,
-	// R.string.lowMemoryErrorUnableDisplImages, Toast.LENGTH_LONG).show();
-	// }
-	// catch (Exception e) {
-	// e.printStackTrace();
-	// //Toast.makeText(LoadImagesViaGridActivity.this,
-	// R.string.errorUnableDisplImages, Toast.LENGTH_LONG).show();
-	// }
-	// }
-	// if(cursor != null && !cursor.isClosed())
-	// cursor.close();
-	// return null;
-	// }
-	//
-	// /**
-	// * Add a new LoadedImage in the images grid.
-	// * @param value The image.
-	// */
-	// @Override
-	// public void onProgressUpdate(Bitmap... value) {
-	// //addImage(value);
-	// }
-	//
-	// /**
-	// * Set the visibility of the progress bar to false.
-	// * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-	// */
-	// protected void onPostExecute(Object result) {
-	// setProgressBarIndeterminateVisibility(false);
-	// }
-	// }
 	protected void showCamera() {
 		try {
 			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
