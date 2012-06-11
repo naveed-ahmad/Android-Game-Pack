@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import utils.NetworkUtils;
 
@@ -15,26 +14,19 @@ import com.nav.gamepack.R;
 import com.nav.gamepack.shared.InfiniteGallery;
 
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.widget.Gallery;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
-import android.telephony.gsm.GsmCellLocation;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +36,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,11 +43,8 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
-import android.widget.TabWidget;
-import android.widget.TabHost.OnTabChangeListener;
-import android.widget.TextView;
+
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -78,13 +66,15 @@ public class ImageChooserActivity extends TabActivity {
 	Animation shakeAnimation;
 	TabHost mTabHost;
 	ArrayList<Bitmap> gallrayImageList;
-	ImageAdapter adapterImageList;
+	GridImageAdapter gridImageAdapter;
+	SliderImageAdapter sliderImageAdapter;
 	InfiniteGallery galleryStyleSlideShow;
-	ListView galleryStyleList;
+	// ListView galleryStyleList;
 	GridView galleryStyleGrid;
 	Uri mImageUri;
 	File fileTempSelectedImg;
-	ImageButton imgBtnGallryStyleSlideshow, imgBtnGallryStyleGrid, imgBtnGallryStyleList;
+	ImageButton imgBtnGallryStyleSlideshow, imgBtnGallryStyleGrid;// ,
+																	// imgBtnGallryStyleList;
 	private int imgItemSize;
 	ViewFlipper gallryStyleFlipper;
 	OnClickListener galleryStyleClickListener;
@@ -102,26 +92,27 @@ public class ImageChooserActivity extends TabActivity {
 
 		imgBtnGallryStyleSlideshow = (ImageButton) findViewById(R.id.imgBtnGallryStyleSlideshow);
 		imgBtnGallryStyleGrid = (ImageButton) findViewById(R.id.imgBtnGallryStyleGrid);
-		imgBtnGallryStyleList = (ImageButton) findViewById(R.id.imgBtnGallryStyleList);
+		// imgBtnGallryStyleList = (ImageButton)
+		// findViewById(R.id.imgBtnGallryStyleList);
 
 		galleryStyleSlideShow = (InfiniteGallery) findViewById(R.id.gallryStyleSlideShow);
-		galleryStyleList = (ListView) findViewById(R.id.gallryStyleListView);
+		// galleryStyleList = (ListView) findViewById(R.id.gallryStyleListView);
 		galleryStyleGrid = (GridView) findViewById(R.id.gallryStyleGrid);
 
-		adapterImageList = new ImageAdapter(this);
+		gridImageAdapter = new GridImageAdapter(this);
+		sliderImageAdapter = new SliderImageAdapter(this);
 
-		galleryStyleSlideShow.setAdapter(adapterImageList);
-		galleryStyleList.setAdapter(adapterImageList);
-		galleryStyleGrid.setAdapter(adapterImageList);
+		galleryStyleSlideShow.setAdapter(sliderImageAdapter);
+		// galleryStyleList.setAdapter(adapterImageList);
+		galleryStyleGrid.setAdapter(gridImageAdapter);
 
-		gallryStyleFlipper = (ViewFlipper) findViewById(R.id.gallryStyleViewFlipper);
 		gallryStyleFlipper = (ViewFlipper) findViewById(R.id.gallryStyleViewFlipper);
 
 		Animation s_in = AnimationUtils.loadAnimation(this, R.anim.slidein);
 		Animation s_out = AnimationUtils.loadAnimation(this, R.anim.slideout);
 		// gallryStyleFlipper.setInAnimation(s_in);
 		gallryStyleFlipper.setAnimation(s_in);
-		// gallryStyleFlipper.setOutAnimation(s_out);
+		gallryStyleFlipper.setOutAnimation(s_out);
 
 		// gallryStleSlideShow.setOnItemLongClickListener(longClickListener);
 		imgItemSize = galleryStyleGrid.getWidth() / 3;
@@ -151,13 +142,15 @@ public class ImageChooserActivity extends TabActivity {
 					Log.i(TAG, "click on Grid style");
 					gallryStyleFlipper.setDisplayedChild(0);
 
-				} else if (clickedBtn.getId() == imgBtnGallryStyleList.getId()) {
-					Log.i(TAG, "click on List style");
-					gallryStyleFlipper.setDisplayedChild(1);
 				} else if (clickedBtn.getId() == imgBtnGallryStyleSlideshow.getId()) {
 					Log.i(TAG, "click on Gallery style");
-					gallryStyleFlipper.setDisplayedChild(2);
+					gallryStyleFlipper.setDisplayedChild(1);
 				}
+				// else if (clickedBtn.getId() == imgBtnGallryStyleList.getId())
+				// {
+				// Log.i(TAG, "click on List style");
+				// gallryStyleFlipper.setDisplayedChild(1);
+				// }
 
 			}
 		};
@@ -166,18 +159,18 @@ public class ImageChooserActivity extends TabActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View clickedImgView, int arg2, long arg3) {
 				Log.i(TAG, "User has select an image :) finally");
-				selectedImage = adapterImageList.getImage((Integer) clickedImgView.getTag());
+				selectedImage = gridImageAdapter.getImage((Integer) clickedImgView.getTag());
 				finishWithResult();
 
 			}
 
 		};
 		imgBtnGallryStyleSlideshow.setOnClickListener(galleryStyleClickListener);
-		imgBtnGallryStyleList.setOnClickListener(galleryStyleClickListener);
+		// imgBtnGallryStyleList.setOnClickListener(galleryStyleClickListener);
 		imgBtnGallryStyleGrid.setOnClickListener(galleryStyleClickListener);
 
 		galleryStyleSlideShow.setOnItemClickListener(galleryImageClickListener);
-		galleryStyleList.setOnItemClickListener(galleryImageClickListener);
+		// galleryStyleList.setOnItemClickListener(galleryImageClickListener);
 		galleryStyleGrid.setOnItemClickListener(galleryImageClickListener);
 
 		mTabHost.setCurrentTabByTag("tab_gallery");
@@ -374,7 +367,8 @@ public class ImageChooserActivity extends TabActivity {
 				selectedImage = (Bitmap) data.getExtras().get("data");
 
 			}
-			adapterImageList.addImage(selectedImage);
+			gridImageAdapter.addImage(selectedImage);
+			sliderImageAdapter.addImage(selectedImage);
 
 		} else if (requestCode == SELECT_IMAGE_FROM_GALLERY_REQUEST && resultCode == RESULT_OK) {
 			Log.i(TAG, "Result from gallery");
@@ -384,7 +378,8 @@ public class ImageChooserActivity extends TabActivity {
 			Bitmap mBitmap = null;
 			try {
 				selectedImage = Media.getBitmap(this.getContentResolver(), data.getData());
-				adapterImageList.addImage(selectedImage);
+				gridImageAdapter.addImage(selectedImage);
+				sliderImageAdapter.addImage(selectedImage);
 			} catch (FileNotFoundException e) {
 				Toast.makeText(this, "file not found", Toast.LENGTH_LONG);
 				e.printStackTrace();
@@ -505,21 +500,21 @@ public class ImageChooserActivity extends TabActivity {
 
 	}
 
-	public class ImageAdapter extends BaseAdapter {
-		private LayoutInflater inflater = null;
+	public class GalleryImageAdapter extends BaseAdapter {
 
-		private int itemLayoutId;
-		private ArrayList<Bitmap> dataSource;
+		protected LayoutInflater inflater = null;
 
-		public ImageAdapter(Context c) {
+		protected int itemLayoutId;
+		protected ArrayList<Bitmap> dataSource;
+
+		public GalleryImageAdapter(Context c) {
 			inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			dataSource = new ArrayList<Bitmap>();
 		}
 
 		public void addImage(Bitmap img) {
-			// Bitmap.createScaledBitmap(img,imgItemSize,imgItemSize, true);
 			dataSource.add(img);
-			adapterImageList.notifyDataSetChanged();
+			notifyDataSetChanged();
 		}
 
 		public Bitmap getImage(int position) {
@@ -543,14 +538,68 @@ public class ImageChooserActivity extends TabActivity {
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = convertView;
+			ImageView imageView;
 
-			if (view == null) {
-				view = inflater.inflate(R.layout.image_item, parent, false);
+			if (convertView == null) { // if it's not recycled, initialize some
+										// attributes
+				imageView = new ImageView(getApplicationContext());
+				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+			} else {
+				imageView = (ImageView) convertView;
 			}
-			view.setTag(position);
-			((ImageView) view).setImageBitmap(dataSource.get(position));
-			return view;
+			((ImageView) imageView).setImageBitmap(dataSource.get(position));
+			imageView.setTag(position);
+			// if (view == null) {
+			// view = inflater.inflate(R.layout.gallery_image, parent, false);
+			// }
+			// view.setTag(position);
+			// ((ImageView) view).setImageBitmap(dataSource.get(position));
+			return imageView;
+			//
+		}
+	}
+
+	public class SliderImageAdapter extends GalleryImageAdapter {
+		public SliderImageAdapter(Context c) {
+			super(c);
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ImageView imageView;
+
+			if (convertView == null) { // if it's not recycled, initialize some
+										// attributes
+				imageView = (ImageView) inflater.inflate(R.layout.slideshow_image_item, parent, false);
+
+			} else {
+				imageView = (ImageView) convertView;
+			}
+			((ImageView) imageView).setImageBitmap(dataSource.get(position));
+			imageView.setTag(position);
+
+			return imageView;
+		}
+	}
+
+	public class GridImageAdapter extends GalleryImageAdapter {
+		public GridImageAdapter(Context c) {
+			super(c);
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ImageView imageView;
+
+			if (convertView == null) { // if it's not recycled, initialize some
+										// attributes
+				imageView = new ImageView(getApplicationContext());
+				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+			} else {
+				imageView = (ImageView) convertView;
+			}
+			((ImageView) imageView).setImageBitmap(dataSource.get(position));
+			imageView.setTag(position);
+
+			return imageView;
 		}
 	}
 

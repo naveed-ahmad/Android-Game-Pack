@@ -28,17 +28,18 @@
                 <ViewFlipper
                     android:id="@+id/gallryStyleViewFlipper"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/linearLayout1" >
 
                     <GridView
                         android:id="@+id/gallryStyleGrid"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:columnWidth="60dp"
+                        android:columnWidth="90dp"
                         android:gravity="center"
                         android:horizontalSpacing="10dp"
-                        android:numColumns="3"
-                        android:padding="10dp"
+                        android:numColumns="auto_fit"
+                        android:padding="5dp"
                         android:stretchMode="columnWidth"
                         android:verticalSpacing="10dp" />
 
@@ -47,12 +48,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" >
                     </com.nav.gamepack.shared.InfiniteGallery>
-
-                    <ListView
-                        android:id="@+id/gallryStyleListView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-                    </ListView>
+    
                 </ViewFlipper>
 
                 <LinearLayout
@@ -67,19 +63,13 @@
                         android:id="@+id/imgBtnGallryStyleSlideshow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_tab_camera_unselected" />
+                        android:src="@drawable/gallery_slider_2" />
 
                     <ImageButton
                         android:id="@+id/imgBtnGallryStyleGrid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_tab_camera_unselected" />
-
-                    <ImageButton
-                        android:id="@+id/imgBtnGallryStyleList"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_tab_camera_unselected" />
+                        android:src="@drawable/gallary_grid_style" />
                 </LinearLayout>
             </RelativeLayout>
 

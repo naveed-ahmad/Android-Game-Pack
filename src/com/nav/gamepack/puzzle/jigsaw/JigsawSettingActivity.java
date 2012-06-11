@@ -253,7 +253,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	}
 
 	private void showJigsawImageDialog(String s) {
-		View dlgView = layoutInflater.inflate(R.layout.image_item, null);
+		View dlgView = layoutInflater.inflate(R.layout.slideshow_image_item, null);
 		AlertDialog dlgJigsawImg = new AlertDialog.Builder(this).setTitle("Jigsaw Image").setPositiveButton("Back", null).setView(dlgView).create();
 		ImageView imgView = (ImageView) dlgView.findViewById(R.id.imageItem);
 		imgView.setImageBitmap(JigsawSetting.getSetting().jigsawImage);
