@@ -30,8 +30,7 @@ public class JigsawActivity extends Activity {
 	private static String TAG = "JigsawActivity";
 	private static int JIGSAW_SETTING_REQUEST = 4002;
 	AlertDialog settingDialog;
-	Bitmap img;
-	ImageView imgV;
+	JigsawSetting setting;
 	public static JigsawActivity _jigsawActivity;
 
 	@Override
@@ -40,10 +39,9 @@ public class JigsawActivity extends Activity {
 		setContentView(R.layout.jigsaw_game);
 		Intent intentJigsawSetting = new Intent();
 		Log.i(TAG, "Getting user setting");
-		//
-		// intentJigsawSetting.setClass(JigsawActivity.this,
-		// JigsawSettingActivity.class);
-		// startActivityForResult(intentJigsawSetting, JIGSAW_SETTING_REQUEST);
+        
+		intentJigsawSetting.setClass(JigsawActivity.this, JigsawSettingActivity.class);
+		startActivityForResult(intentJigsawSetting, JIGSAW_SETTING_REQUEST);
 	}
 
 	public static JigsawActivity getActivity() {

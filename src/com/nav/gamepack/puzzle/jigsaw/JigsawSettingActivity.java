@@ -94,7 +94,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		setting = JigsawSetting.getSetting();
-		setting.enableTouch=true;
+		setting.enableTouch = true;
 		setting.jigsawImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_jigsaw_image);
 		jigsawBoard.setSetting(setting);
 		initlizeDialogs();
@@ -120,7 +120,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 				return false;
 			}
 		});
-		
+
 		dlgChangeCellSize = new AlertDialog.Builder(this).setView(cellSizeChooserView).setPositiveButton("OK", null).setNegativeButton("Cancel", null).create();
 		dlgChangeCellSize.setOnShowListener(new DialogInterface.OnShowListener() {
 			public void onShow(DialogInterface dialotextg) {
@@ -181,7 +181,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		else if (clickedBtn.getId() == btnStartGame.getId())
 			endActivityWithResult();
 		else if (clickedBtn.getId() == btnViewImage.getId())
-			showJigsawImageDialog();
+			showJigsawImageDialog("Jigsaw Imge");
 		else if (clickedBtn.getId() == btnBack.getId())
 			endActivityWithoutResult();
 		else if (clickedBtn.getId() == btnRandomizeCells.getId()) {
@@ -251,12 +251,13 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 			super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void showJigsawImageDialog() {
+	private void showJigsawImageDialog(String s) {
 		View dlgView = layoutInflater.inflate(R.layout.image_item, null);
 		AlertDialog dlgJigsawImg = new AlertDialog.Builder(this).setTitle("Jigsaw Image").setPositiveButton("Back", null).setView(dlgView).create();
 		ImageView imgView = (ImageView) dlgView.findViewById(R.id.imageItem);
 		imgView.setImageBitmap(JigsawSetting.getSetting().jigsawImage);
 		dlgJigsawImg.show();
+		dlgJigsawImg.setTitle(s);
 	}
 
 	/**
@@ -326,28 +327,40 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	}
 
 	private void rotateJigsawImage(float rotateDegree) {
+		btnRotateLeft.setEnabled(false);
+		btnRotateRight.setEnabled(false);
+
 		Matrix transform = new Matrix();
-		Bitmap src = jigsawBoard.getJigsawImage();
+		Bitmap src = setting.jigsawImage;
 
 		Matrix m = new Matrix();
 
-//		Bitmap dst = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, false);
-//		Canvas canvas = new Canvas(dst);
-//		float xOfCentre = src.getWidth() / 2;
-//		float yOfCentre = src.getHeight() / 2;
-//		transform.setTranslate(xOfCentre, yOfCentre);
-//		transform.preRotate(rotateDegree, src.getWidth() / 2, src.getHeight() / 2);
-//		canvas.drawBitmap(src, transform, null);
+		// Bitmap dst = Bitmap.createBitmap(src, 0, 0, src.getWidth(),
+		// src.getHeight(), m, false);
+		// Canvas canvas = new Canvas(dst);
+		// float xOfCentre = src.getWidth() / 2;
+		// float yOfCentre = src.getHeight() / 2;
+		// transform.setTranslate(xOfCentre, yOfCentre);
+		// transform.preRotate(rotateDegree, src.getWidth() / 2, src.getHeight()
+		// / 2);
+		// canvas.drawBitmap(src, transform, null);
 		m.postRotate(rotateDegree);
-		
-		// create a new bitmap from the original using the matrix to transform the result
-		setting.jigsawImage = Bitmap.createBitmap(src , 0, 0, src.getWidth(),src .getHeight(), m, true);
-		
-		//jigsawBoard.setJigsawImage(dst);
+		try {
+			// create a new bitmap from the original using the matrix to
+			// transform
+			// the result
+			setting.jigsawImage = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, true);
+		} catch (OutOfMemoryError e) {
+			Toast.makeText(this, "Sorry we can't rotate this image", Toast.LENGTH_LONG);
+		}
+		src = null;
+		// jigsawBoard.setJigsawImage(dst);
 		jigsawBoard.setSetting(setting);
 		jigsawBoard.initBoard();
+		jigsawBoard.invalidate();
 		
-		src = null;
+		btnRotateLeft.setEnabled(true);
+		btnRotateRight.setEnabled(true);
 
 	}
 }

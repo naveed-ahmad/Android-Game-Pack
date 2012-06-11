@@ -42,7 +42,7 @@ public class JigsawBoardView extends View {
 	private int[] jigsawCellImageMapings;
 	Activity callerActivity;
 	Boolean isImageCropped;
-	private JigsawSetting setting;
+	JigsawSetting setting;
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -90,16 +90,7 @@ public class JigsawBoardView extends View {
 	}
 
 	public Bitmap getJigsawScalledImage(int size) {
-
-		// if (jigsawOrigionalImage == null) {
-		// // TODO Show Select Image View//
-		// //jigsawOrigionalImage =
-		// Bitmap.createScaledBitmap(BitmapFactory.decodeStream(getResources().openRawResource(R.drawable.image)),
-		// getWidth(), getHeight(), true);
-		//
-		// }
-
-		jigsawScaledImage = getScaleImage(jigsawOrigionalImage, size, size);
+		jigsawScaledImage = getScaleImage(setting.jigsawImage, size, size);
 		return jigsawScaledImage;
 	}
 
@@ -121,11 +112,12 @@ public class JigsawBoardView extends View {
 
 	private void init(final Context context, AttributeSet attrs, int defStyle) {
 		this.context = context;
+		setting = JigsawSetting.getSetting();
 		load(context, attrs, defStyle);
 		isBoardInitialized = false;
-		// jigsawCellClickListener = new JigsawBoardKeyListener(this);
 		jigsawSensorEventListener = new JigsawSensorEventListener(this);
 		isImageCropped = false;
+
 		setFocusableInTouchMode(true);
 	}
 
@@ -138,9 +130,8 @@ public class JigsawBoardView extends View {
 	 * 
 	 */
 	public void prepareJigsawBoardImage() {
-		if (jigsawOrigionalImage == null) {
+		if (setting.jigsawImage == null) {
 			showImageChooserDialog();
-
 		}
 		Bitmap img = getJigsawScalledImage(mSize);
 		prepareJigsawCellSize();
@@ -194,6 +185,8 @@ public class JigsawBoardView extends View {
 		Paint p1 = new Paint();
 		p1.setStyle(Style.STROKE);
 		p1.setColor(Color.RED);
+		Log.i(TAG, "Drawing board and image cropped " + isImageCropped.toString());
+
 		if (isImageCropped) {
 			for (int i = 0; i < cells.length; i++) {
 				p1.setColor(Color.RED);
@@ -227,8 +220,8 @@ public class JigsawBoardView extends View {
 
 	public void initBoard(boolean cropImage, boolean shuffleCells, Boolean force) {
 
-		if (isBoardInitialized && !force)
-			return;// Board is already initialized
+		// if (isBoardInitialized && !force)
+		// return;// Board is already initialized
 		int cellCount = getColumnCount() * getRowCount() + 1;
 		cells = new JigsawCell[cellCount];
 		jigsawCellImageMapings = new int[cellCount];
@@ -792,6 +785,7 @@ public class JigsawBoardView extends View {
 	}
 
 	public void setColumnCount(int cCount, boolean redraw) {
+		setting.columnCount = cCount;
 		if (columnCount != cCount) {
 			columnCount = cCount;
 			if (redraw)
@@ -804,6 +798,7 @@ public class JigsawBoardView extends View {
 	}
 
 	public void setRowCount(int rCount, boolean redraw) {
+		setting.rowCount = rCount;
 		if (rowCount != rCount) {
 			rowCount = rCount;
 			if (redraw)
@@ -816,11 +811,11 @@ public class JigsawBoardView extends View {
 	}
 
 	public int getColumnCount() {
-		return columnCount;
+		return setting.columnCount;
 	}
 
 	public int getRowCount() {
-		return rowCount;
+		return setting.rowCount;
 	}
 
 	private void load(Context context, AttributeSet attrs, int defStyle) {
@@ -893,8 +888,14 @@ public class JigsawBoardView extends View {
 	/**
 	 * @param setting
 	 */
-	public void setSetting(JigsawSetting setting) {
-     this.setting =setting;
-		
+	public void setSetting(JigsawSetting _setting) {
+		this.setting = _setting;
+	}
+
+	/**
+	 * 
+	 */
+	public void initBoard() {
+		initBoard(setting.cropImage, setting.shuffleCells, true);
 	}
 }

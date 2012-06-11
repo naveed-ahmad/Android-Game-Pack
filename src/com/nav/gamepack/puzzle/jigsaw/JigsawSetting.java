@@ -15,6 +15,7 @@ public class JigsawSetting {
 	Boolean enableTouch;
 	Bitmap jigsawImage;
 	Boolean shuffleCells, cropImage;
+
 	private static JigsawSetting setting;
 	int rowCount, columnCount;
 
@@ -25,7 +26,8 @@ public class JigsawSetting {
 		rowCount = columnCount = 4;
 		enableTouch = enableKeyPad = true;
 		accelerometerSupported = enableAccelerometer = false;
-		shuffleCells = cropImage = false;
+		shuffleCells = false;
+		cropImage = true;
 	}
 
 	/**
