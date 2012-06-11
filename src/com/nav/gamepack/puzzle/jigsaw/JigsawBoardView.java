@@ -42,6 +42,7 @@ public class JigsawBoardView extends View {
 	private int[] jigsawCellImageMapings;
 	Activity callerActivity;
 	Boolean isImageCropped;
+	private JigsawSetting setting;
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -887,5 +888,13 @@ public class JigsawBoardView extends View {
 	 */
 	public void setCallerActivity(Activity _callerActivity) {
 		callerActivity = _callerActivity;
+	}
+
+	/**
+	 * @param setting
+	 */
+	public void setSetting(JigsawSetting setting) {
+     this.setting =setting;
+		
 	}
 }

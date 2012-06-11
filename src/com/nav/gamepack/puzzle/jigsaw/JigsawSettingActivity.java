@@ -63,6 +63,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	View cellSizeChooserView;
 	LayoutInflater layoutInflater;
 	Animation shakeAnimation;
+	JigsawSetting setting;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +92,11 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		btnBack.setOnClickListener(this);
 		shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
 		layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
- 		JigsawSetting.getSetting().jigsawImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_jigsaw_image);
 
-		
+		setting = JigsawSetting.getSetting();
+		setting.enableTouch=true;
+		setting.jigsawImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_jigsaw_image);
+		jigsawBoard.setSetting(setting);
 		initlizeDialogs();
 	}
 
@@ -118,6 +120,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 				return false;
 			}
 		});
+		
 		dlgChangeCellSize = new AlertDialog.Builder(this).setView(cellSizeChooserView).setPositiveButton("OK", null).setNegativeButton("Cancel", null).create();
 		dlgChangeCellSize.setOnShowListener(new DialogInterface.OnShowListener() {
 			public void onShow(DialogInterface dialotextg) {
@@ -144,7 +147,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 								if (chkBoxSameSize.isChecked())
 									jigsawBoard.setRowCount(cellCount);
 							}
-							jigsawBoard.initBoard(false,false,false);
+							jigsawBoard.initBoard(true, false, true);
 							jigsawBoard.invalidate();
 						}
 					}
@@ -160,11 +163,9 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 			}
 		});
 		btnRotateLeft.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View arg0) {
 				rotateJigsawImage(-90);
-
 			}
 		});
 	}
@@ -329,19 +330,24 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		Bitmap src = jigsawBoard.getJigsawImage();
 
 		Matrix m = new Matrix();
-		m.preScale(-1, 1);
 
-		Bitmap dst = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, false);
-		Canvas canvas = new Canvas(dst);
-		float xOfCentre = src.getWidth() / 2;
-		float yOfCentre = src.getHeight() / 2;
-		transform.setTranslate(xOfCentre, yOfCentre);
-		transform.preRotate(rotateDegree, src.getWidth() / 2, src.getHeight() / 2);
-		canvas.drawBitmap(src, transform, null);
-		jigsawBoard.setJigsawImage(dst);
-		jigsawBoard.setJigsawImage(JigsawSetting.getSetting().jigsawImage);
-		jigsawBoard.invalidate();
-		src=null;
+//		Bitmap dst = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, false);
+//		Canvas canvas = new Canvas(dst);
+//		float xOfCentre = src.getWidth() / 2;
+//		float yOfCentre = src.getHeight() / 2;
+//		transform.setTranslate(xOfCentre, yOfCentre);
+//		transform.preRotate(rotateDegree, src.getWidth() / 2, src.getHeight() / 2);
+//		canvas.drawBitmap(src, transform, null);
+		m.postRotate(rotateDegree);
+		
+		// create a new bitmap from the original using the matrix to transform the result
+		setting.jigsawImage = Bitmap.createBitmap(src , 0, 0, src.getWidth(),src .getHeight(), m, true);
+		
+		//jigsawBoard.setJigsawImage(dst);
+		jigsawBoard.setSetting(setting);
+		jigsawBoard.initBoard();
+		
+		src = null;
 
 	}
 }
