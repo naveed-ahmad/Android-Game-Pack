@@ -149,7 +149,6 @@ containing a value of this type.
     public static final class id {
         public static final int animImgViewTree=0x7f080035;
         public static final int btnAboutUs=0x7f080032;
-        public static final int btnBack=0x7f080027;
         public static final int btnChangeColumns=0x7f080020;
         public static final int btnChangePicture=0x7f080025;
         public static final int btnChangeRows=0x7f08001f;
@@ -160,7 +159,7 @@ containing a value of this type.
         public static final int btnRotateRight=0x7f080024;
         public static final int btnSearchImgFromGoogle=0x7f08001a;
         public static final int btnSearchImgFromMobile=0x7f08001b;
-        public static final int btnStartGame=0x7f080028;
+        public static final int btnStartGame=0x7f080027;
         public static final int btnViewImage=0x7f080022;
         public static final int checkBoarSameSize=0x7f08000b;
         public static final int dNDJigsawBoardView1=0x7f080029;
@@ -186,6 +185,7 @@ containing a value of this type.
         public static final int jigsaw=0x7f08003a;
         public static final int jigsawBoardView1=0x7f08001d;
         public static final int jigsawBoardViewDemo=0x7f08001e;
+        public static final int linearLayout1=0x7f080028;
         public static final int linearLayoutAdvertisementBoardSize=0x7f08000c;
         public static final int linearLayoutGoogleWrapper=0x7f080018;
         public static final int lnrLayouCustomCellSize=0x7f080005;

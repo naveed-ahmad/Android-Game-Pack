@@ -105,9 +105,14 @@ public class WelcomeActivity extends Activity implements OnTouchListener, Animat
 			@Override
 			public void onClick(View v) {
 				if (v.getId() == btnStartGame.getId()) {
-					Intent intentGetJigsawSetting = new Intent();
-					intentGetJigsawSetting.setClass(WelcomeActivity.this, JigsawSettingActivity.class);
-					startActivityForResult(intentGetJigsawSetting, GET_JIGSAW_SETTING_REQUEST);
+//					Intent intentGetJigsawSetting = new Intent();
+//					intentGetJigsawSetting.setClass(WelcomeActivity.this, JigsawSettingActivity.class);
+//					startActivityForResult(intentGetJigsawSetting, GET_JIGSAW_SETTING_REQUEST);
+//					
+					Intent intentStartJigsawGame = new Intent();
+					intentStartJigsawGame.setClass(WelcomeActivity.this, JigsawActivity.class);
+					startActivity(intentStartJigsawGame);
+					
 				} else if (v.getId() == btnHelp.getId())
 					showHelpDialog();
 				else if (v.getId() == btnAboutUs.getId())

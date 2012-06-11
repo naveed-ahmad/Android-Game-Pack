@@ -165,12 +165,12 @@ public class ImageChooserActivity extends TabActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View clickedImgView, int arg2, long arg3) {
-				Log.i(TAG,"User has select an image :) finally");
+				Log.i(TAG, "User has select an image :) finally");
 				selectedImage = adapterImageList.getImage((Integer) clickedImgView.getTag());
 				finishWithResult();
-				
+
 			}
-			
+
 		};
 		imgBtnGallryStyleSlideshow.setOnClickListener(galleryStyleClickListener);
 		imgBtnGallryStyleList.setOnClickListener(galleryStyleClickListener);

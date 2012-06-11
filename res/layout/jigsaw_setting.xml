@@ -15,10 +15,10 @@
         android:padding="2dp" >
 
         <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
-            android:id="@+id/jigsawBoardViewDemo"
-            android:layout_width="208dp"
-            android:layout_height="208dp"
-            jigsaw:jigsaw_image="@drawable/default_jigsaw_image" />
+        android:id="@+id/jigsawBoardViewDemo"
+        android:layout_width="208dp"
+        android:layout_height="208dp"
+        jigsaw:jigsaw_image="@drawable/default_jigsaw_image" />
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,17 +31,16 @@
                 android:id="@+id/btnChangeRows"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_green_bg"
-                android:text="Change Rows" 
                 android:layout_margin="3dp"
-                />
+                android:background="@drawable/btn_green_bg"
+                android:text="Change Rows" />
 
             <Button
                 android:id="@+id/btnChangeColumns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_green_bg"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_green_bg"
                 android:text="Change Columns" />
 
             <Button
@@ -56,8 +55,8 @@
                 android:id="@+id/btnViewImage"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@drawable/btn_green_bg"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_green_bg"
                 android:text="View Image" />
         </LinearLayout>
     </LinearLayout>
@@ -75,6 +74,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="2dp" >
+
             <ImageButton
                 android:id="@+id/btnRotateLeft"
                 android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                 android:id="@+id/btnRotateRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:background="@drawable/btn_blue_bg"
                 android:src="@drawable/arrow_rotate_clockwise" />
 
@@ -94,6 +94,7 @@
                 android:id="@+id/btnChangePicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/btn_blue_bg"
                 android:text="Change Picture" />
@@ -105,42 +106,46 @@
                 android:background="@drawable/btn_blue_bg"
                 android:enabled="false"
                 android:text="Open Game" />
-
         </LinearLayout>
-        
+
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:gravity="bottom"
             android:orientation="horizontal"
             android:padding="2dp" >
+
+            <!-- <Button -->
+            <!-- android:id="@+id/btnBack" -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="fill_parent" -->
+            <!-- android:drawableLeft="@drawable/arrow_left_pressed" -->
+            <!-- android:text="Back" /> -->
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnStartGame"
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/btn_green_bg"
+            android:text="Start Game!!" />
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="2dp" 
-            android:gravity="bottom"
-            >
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/btnBack"
+            <TextView
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/arrow_left_pressed"
-                android:text="Back" />
-
-            <Button
-                android:id="@+id/btnStartGame"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/btn_green_bg"
-                android:text="Start Game!!" />
+                android:layout_height="wrap_content"
+                android:text="Google AdScen view here"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            
         </LinearLayout>
 
-        
     </LinearLayout>
 
 </LinearLayout>

@@ -50,7 +50,8 @@ import android.widget.Toast;
 public class JigsawSettingActivity extends Activity implements OnClickListener, OnSeekBarChangeListener {
 	private static String TAG = "JigsawSettingActivity";
 	private static int GET_IMAGE_REQUEST_IDENTIFIER = 1005;
-	private Button btnRandomizeCells, btnChangeRowCount, btnChangeColumnCount, btnStartGame, btnChoosePicture, btnViewImage, btnBack;
+	private Button btnRandomizeCells, btnChangeRowCount, btnChangeColumnCount, btnStartGame, btnChoosePicture, btnViewImage;// ,
+																															// btnBack;
 	private ImageButton btnRotateLeft, btnRotateRight;
 	private AlertDialog dlgChangeCellSize;
 	private SeekBar seekBarCellSize;
@@ -78,7 +79,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		btnChangeColumnCount = (Button) findViewById(R.id.btnChangeColumns);
 		btnStartGame = (Button) findViewById(R.id.btnStartGame);
 		btnChoosePicture = (Button) findViewById(R.id.btnChangePicture);
-		btnBack = (Button) findViewById(R.id.btnBack);
+		// btnBack = (Button) findViewById(R.id.btnBack);
 		jigsawBoard = (JigsawBoardView) findViewById(R.id.jigsawBoardViewDemo);
 		jigsawBoard.setCallerActivity(this);
 		testImgView = (ImageView) findViewById(R.id.imageView1);
@@ -89,7 +90,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		btnStartGame.setOnClickListener(this);
 		btnRandomizeCells.setOnClickListener(this);
 		btnViewImage.setOnClickListener(this);
-		btnBack.setOnClickListener(this);
+		// btnBack.setOnClickListener(this);
 		shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
 		layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -182,8 +183,8 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 			endActivityWithResult();
 		else if (clickedBtn.getId() == btnViewImage.getId())
 			showJigsawImageDialog("Jigsaw Imge");
-		else if (clickedBtn.getId() == btnBack.getId())
-			endActivityWithoutResult();
+		// else if (clickedBtn.getId() == btnBack.getId())
+		// endActivityWithoutResult();
 		else if (clickedBtn.getId() == btnRandomizeCells.getId()) {
 			jigsawBoard.shuffleCells();
 			jigsawBoard.invalidate();
@@ -242,10 +243,10 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		if (requestCode == GET_IMAGE_REQUEST_IDENTIFIER && resultCode == RESULT_OK) {
 			// Yeah we have an image lets get it and play jigsaw :)
 			Bitmap img = (Bitmap) data.getParcelableExtra("image");
-			jigsawBoard.setJigsawImage(img);
-			jigsawBoard.initBoard(true, true);
-			jigsawImage = img;
-			testImgView.setImageBitmap(img);
+			setting.jigsawImage = img;
+			jigsawBoard.setSetting(setting);
+			jigsawBoard.initBoard();
+
 			Toast.makeText(this, "new image in setting", Toast.LENGTH_LONG);
 		} else
 			super.onActivityResult(requestCode, resultCode, data);
@@ -358,7 +359,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		jigsawBoard.setSetting(setting);
 		jigsawBoard.initBoard();
 		jigsawBoard.invalidate();
-		
+
 		btnRotateLeft.setEnabled(true);
 		btnRotateRight.setEnabled(true);
 
