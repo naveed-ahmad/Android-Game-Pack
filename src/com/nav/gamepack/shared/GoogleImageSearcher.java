@@ -23,11 +23,11 @@ import android.util.Log;
 public class GoogleImageSearcher {
 	// "//https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%22jigsaw%22&rsz=8";
 
-	public static final String googleSearchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&q=";
+	public static final String googleSearchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=2&q=";
 	private static final String TAG = "GoogleImageSearchder";
 
-	public static ArrayList<Bitmap> getImageURL(String searchString) {
-		ArrayList<Bitmap> imageUrlList = new ArrayList<Bitmap>();
+	public ArrayList getImageURL(String searchString) {
+		ArrayList imageUrlList = new ArrayList();
 		JsonParser responseParser;
 		HttpGet httpGet;
 		HttpClient httpClient = new DefaultHttpClient();

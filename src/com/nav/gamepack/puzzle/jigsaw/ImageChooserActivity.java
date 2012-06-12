@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,9 +64,7 @@ public class ImageChooserActivity extends TabActivity {
 	private Button btnSearchImgFromMobile, btnSearchImgFromGoogle;
 
 	private ImageView imgViewSelectedImage;
-	Bitmap selectedImage;
 	EditText editTextSearchFromGoogle;
-	Animation shakeAnimation;
 	TabHost mTabHost;
 	ArrayList<Bitmap> gallrayImageList;
 	GridImageAdapter gridImageAdapter;
@@ -73,11 +72,9 @@ public class ImageChooserActivity extends TabActivity {
 	InfiniteGallery galleryStyleSlideShow;
 	// ListView galleryStyleList;
 	GridView galleryStyleGrid;
-	Uri mImageUri;
+
 	File fileTempSelectedImg;
 	ImageButton imgBtnGallryStyleSlideshow, imgBtnGallryStyleGrid;// ,
-																	// imgBtnGallryStyleList;
-	private int imgItemSize;
 	ViewFlipper gallryStyleFlipper;
 	OnClickListener galleryStyleClickListener;
 	OnItemClickListener galleryImageClickListener;
@@ -116,7 +113,6 @@ public class ImageChooserActivity extends TabActivity {
 		gallryStyleFlipper.setAnimation(s_in);
 		gallryStyleFlipper.setOutAnimation(s_out);
 
-		imgItemSize = galleryStyleGrid.getWidth() / 3;
 		fileTempSelectedImg = new File(Environment.getExternalStorageDirectory(), "testJIgsawImg.jpg");
 		for (int i = 0; i < getTabWidget().getTabCount(); i++) {
 			getTabWidget().getChildAt(i).setId(i);
@@ -160,8 +156,7 @@ public class ImageChooserActivity extends TabActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View clickedImgView, int arg2, long arg3) {
 				Log.i(TAG, "User has select an image :) finally");
-				selectedImage = gridImageAdapter.getImage((Integer) clickedImgView.getTag());
-				finishWithResult();
+				finishWithResult(gridImageAdapter.getImage((Integer) clickedImgView.getTag()));
 
 			}
 
@@ -198,7 +193,7 @@ public class ImageChooserActivity extends TabActivity {
 						String queryString = editTextSearchFromGoogle.getText().toString();
 						Log.i(TAG, "searching image from google, query=" + queryString);
 						if (queryString.length() == 0) {
-							editTextSearchFromGoogle.startAnimation(shakeAnimation);
+							editTextSearchFromGoogle.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake));
 						} else {
 							searchImagesFromGoogle(queryString);
 						}
@@ -210,26 +205,32 @@ public class ImageChooserActivity extends TabActivity {
 			}
 
 			private void searchImagesFromGoogle(String queryString) {
-				dialogLoadingImage = ProgressDialog.show(getParent(), "Searching Images", "Please wait...", true);
-
-				ArrayList urls = GoogleImageSearcher.getImageURL(queryString);
+				// dialogLoadingImage =
+				// ProgressDialog.show(ImageChooserActivity.this,
+				// "Searching Images", "Please wait...", true);
+				// dialogLoadingImage.show();
+				ArrayList urls = (new GoogleImageSearcher()).getImageURL(queryString);
 				if (urls.size() == 0)
 					Toast.makeText(getApplicationContext(), "No Image found", Toast.LENGTH_LONG);
 				else {
-					dialogLoadingImage.setMessage("Found " + urls.size() + " images...");
+					// dialogLoadingImage.setMessage("Found " + urls.size() +
+					// " images...");
 					for (int i = 0; i < urls.size(); i++) {
 						try {
-							dialogLoadingImage.setMessage("Loading " + urls.size() + " of " + i + " image");
+							// dialogLoadingImage.setMessage("Loading " +
+							// urls.size() + " of " + i + " image");
+							Log.i(TAG, "Loading image from " + urls.get(i).toString());
 							URL url = new URL(urls.get(i).toString());
-							Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-							addImageToGalleryAdapters(bmp);
+							addImageToGalleryAdapters(BitmapFactory.decodeStream(url.openStream()));
+
 						} catch (Exception e) {
-							// TODO: handle exception
+							System.gc();
 						}
 					}
 				}
 
-				dialogLoadingImage.hide();
+				// dialogLoadingImage.dismiss();
+				mTabHost.setCurrentTab(0);
 			}
 
 		};
@@ -241,8 +242,9 @@ public class ImageChooserActivity extends TabActivity {
 
 	void addImageToGalleryAdapters(Bitmap bmp) {
 
-		gridImageAdapter.addImage(selectedImage);
-		sliderImageAdapter.addImage(selectedImage);
+		gridImageAdapter.addImage(bmp);
+		sliderImageAdapter.addImage(bmp);
+		Log.i(TAG, "Adding image to adapter" + sliderImageAdapter.getCount());
 	}
 
 	private void init(Context context) {
@@ -251,8 +253,10 @@ public class ImageChooserActivity extends TabActivity {
 		btnSearchImgFromGoogle = (Button) findViewById(R.id.btnSearchImgFromGoogle);
 		// btnBrowseImgFromMobile = (Button)
 		// findViewById(R.id.btnBrowseImgFromMobile);
-		editTextSearchFromGoogle = (EditText) findViewById(R.id.editTextSearchImgFromGoogle);
-		shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
+		editTextSearchFromGoogle
+
+		= (EditText) findViewById(R.id.editTextSearchImgFromGoogle);
+		// shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
 		// imgViewSelectedImage = (ImageView)
 		// findViewById(R.id.imgViewSelectedImage);
 
@@ -319,7 +323,7 @@ public class ImageChooserActivity extends TabActivity {
 	/**
 	 * 
 	 */
-	protected void finishWithResult() {
+	protected void finishWithResult(Bitmap selectedImage) {
 		Log.i(TAG, "Reterning selected image");
 		Intent resultIntent = new Intent();
 		resultIntent.putExtra("image", selectedImage);
@@ -375,10 +379,24 @@ public class ImageChooserActivity extends TabActivity {
 		return img;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.ActivityGroup#onDestroy()
+	 */
+	@Override
+	protected void onDestroy() {
+		sliderImageAdapter = null;
+		gridImageAdapter = null;
+		gallryStyleFlipper=null;
+		System.gc();
+		super.onDestroy();
+	}
+
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i(TAG, "result from cam or gallery");
 		Toast.makeText(this, "image result requets =" + requestCode, Toast.LENGTH_SHORT).show();
-
+		Bitmap selectedImage = null;
 		if (requestCode == SELECT_IMAGE_FROM_CAMERA_REQUEST && resultCode == RESULT_OK) {
 
 			if (data == null) {
@@ -422,6 +440,7 @@ public class ImageChooserActivity extends TabActivity {
 				e.printStackTrace();
 			}
 		}
+		mTabHost.setCurrentTab(0);
 	}
 
 	protected void showCamera() {
