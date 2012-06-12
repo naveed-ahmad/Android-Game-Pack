@@ -1,5 +1,7 @@
 package com.nav.gamepack.puzzle.jigsaw;
 
+import org.w3c.dom.Text;
+
 import com.nav.gamepack.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -31,19 +34,44 @@ public class JigsawActivity extends Activity {
 	private static int JIGSAW_SETTING_REQUEST = 4002;
 	AlertDialog settingDialog;
 	JigsawSetting setting;
+	JigsawBoardView jigsawBoard;
+	Button btnShowJigsawImage;
+	TextView txtViewTime, txtViewMoveCount;
+	int moveCount;
 	public static JigsawActivity _jigsawActivity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		moveCount = 0;
 		setContentView(R.layout.jigsaw_game);
 		Intent intentJigsawSetting = new Intent();
 		Log.i(TAG, "Getting user setting");
-        
+
+		btnShowJigsawImage = (Button) findViewById(R.id.btnViewImage);
+		txtViewMoveCount = (TextView) findViewById(R.id.textViewMoveCount);
+		txtViewTime = (TextView) findViewById(R.id.textViewTime);
+		jigsawBoard = (JigsawBoardView) findViewById(R.id.jigsawBoardView);
 		intentJigsawSetting.setClass(JigsawActivity.this, JigsawSettingActivity.class);
 		startActivityForResult(intentJigsawSetting, JIGSAW_SETTING_REQUEST);
+		btnShowJigsawImage.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				showJigsawImageDialog("Jigsaw Image");
+			}
+		});
 	}
 
+	void incrementTimer() {
+		txtViewTime.setText("Time:       " + moveCount++);
+	}
+
+	void incrementMoveCount() {
+		txtViewMoveCount.setText("Move Count:       " + moveCount++);
+	}
+
+	/*
+	 * TODO: remove static methods
+	 */
 	public static JigsawActivity getActivity() {
 		if (_jigsawActivity == null)
 			_jigsawActivity = new JigsawActivity();
@@ -103,13 +131,24 @@ public class JigsawActivity extends Activity {
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+		jigsawBoard.setSetting(JigsawSetting.getSetting());
 		if (requestCode == JIGSAW_SETTING_REQUEST && resultCode == RESULT_OK) {
 			Log.i(TAG, "response form jigsaw setting");
 			// Yeah we have an image lets get it and play jigsaw :)
-			Bitmap img = (Bitmap) data.getParcelableExtra("image");
+			// Bitmap img = (Bitmap) data.getParcelableExtra("image");
 
 		} else
 			super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void showJigsawImageDialog(String s) {
+		LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		View dlgView = layoutInflater.inflate(R.layout.slideshow_image_item, null);
+		AlertDialog dlgJigsawImg = new AlertDialog.Builder(this).setTitle(s).setPositiveButton("Back", null).setView(dlgView).create();
+		ImageView imgView = (ImageView) dlgView.findViewById(R.id.imageItem);
+		imgView.setImageBitmap(JigsawSetting.getSetting().jigsawImage);
+		dlgJigsawImg.show();
+		dlgJigsawImg.setTitle(s);
 	}
 }

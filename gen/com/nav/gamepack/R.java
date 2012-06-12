@@ -187,7 +187,7 @@ containing a value of this type.
         public static final int imgViewCloudSmallFast=0x7f08002d;
         public static final int imgViewJigsawWalking=0x7f080035;
         public static final int jigsaw=0x7f08003d;
-        public static final int jigsawBoardView1=0x7f08001c;
+        public static final int jigsawBoardView=0x7f08001c;
         public static final int jigsawBoardViewDemo=0x7f080022;
         public static final int linearLayout1=0x7f080010;
         public static final int linearLayoutAdvertisementBoardSize=0x7f08000c;

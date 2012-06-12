@@ -62,7 +62,6 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	private Bitmap jigsawImage;
 	ImageView testImgView;
 	View cellSizeChooserView;
-	LayoutInflater layoutInflater;
 	Animation shakeAnimation;
 	JigsawSetting setting;
 
@@ -92,10 +91,11 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		btnViewImage.setOnClickListener(this);
 		// btnBack.setOnClickListener(this);
 		shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
-		layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		setting = JigsawSetting.getSetting();
 		setting.enableTouch = true;
+		setting.cropImage = true;
+		
 		setting.jigsawImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_jigsaw_image);
 		jigsawBoard.setSetting(setting);
 		initlizeDialogs();
@@ -106,6 +106,8 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	 */
 	private void initlizeDialogs() {
 		Log.i(TAG, "Init Dialogs");
+		LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
 		cellSizeChooserView = layoutInflater.inflate(R.layout.board_cell_size_chooser, null);
 		seekBarCellSize = (SeekBar) cellSizeChooserView.findViewById(R.id.seekBarBoardCellCount);
 		txtViewSizeCount = (TextView) cellSizeChooserView.findViewById(R.id.txtViewCellSize);
@@ -140,15 +142,20 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 						else {
 							dlgChangeCellSize.dismiss();
 							if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("r")) {
-								jigsawBoard.setRowCount(cellCount);
+								// jigsawBoard.setRowCount(cellCount);
+								setting.rowCount = cellCount;
 								if (chkBoxSameSize.isChecked())
-									jigsawBoard.setColumnCount(cellCount);
+									// jigsawBoard.setColumnCount(cellCount);
+									setting.columnCount = cellCount;
 							} else if (txtViewSizeCount.getTag().toString().equalsIgnoreCase("c")) {
-								jigsawBoard.setColumnCount(cellCount);
+								setting.columnCount = cellCount;
+								// jigsawBoard.setColumnCount(cellCount);
 								if (chkBoxSameSize.isChecked())
-									jigsawBoard.setRowCount(cellCount);
+									setting.rowCount = cellCount;
+								// jigsawBoard.setRowCount(cellCount);
 							}
-							jigsawBoard.initBoard(true, false, true);
+							jigsawBoard.setSetting(setting);
+							jigsawBoard.initBoard();
 							jigsawBoard.invalidate();
 						}
 					}
@@ -201,7 +208,9 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 		resultIntent.putExtra("rowsCount", jigsawBoard.getRowCount() + "");
 		resultIntent.putExtra("rowsColumnsCount", jigsawBoard.getColumnCount());
 		resultIntent.putExtra("jigsawCellMap", jigsawBoard.getJigsawCellImageMapping());
-
+		setting.cellImageMapping = jigsawBoard.getJigsawCellImageMapping();
+		if (setting != JigsawSetting.getSetting())
+			JigsawSetting.setSetting(setting);
 		// if (getParent() == null)
 		setResult(Activity.RESULT_OK, resultIntent);
 		// else
@@ -253,6 +262,7 @@ public class JigsawSettingActivity extends Activity implements OnClickListener, 
 	}
 
 	private void showJigsawImageDialog(String s) {
+		LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View dlgView = layoutInflater.inflate(R.layout.slideshow_image_item, null);
 		AlertDialog dlgJigsawImg = new AlertDialog.Builder(this).setTitle("Jigsaw Image").setPositiveButton("Back", null).setView(dlgView).create();
 		ImageView imgView = (ImageView) dlgView.findViewById(R.id.imageItem);

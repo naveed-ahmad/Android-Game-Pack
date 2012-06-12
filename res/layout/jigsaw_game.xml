@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <com.nav.gamepack.puzzle.jigsaw.JigsawBoardView
-        android:id="@+id/jigsawBoardView1"
+        android:id="@+id/jigsawBoardView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

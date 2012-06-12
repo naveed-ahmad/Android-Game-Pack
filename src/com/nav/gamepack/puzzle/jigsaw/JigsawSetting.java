@@ -15,9 +15,14 @@ public class JigsawSetting {
 	Boolean enableTouch;
 	Bitmap jigsawImage;
 	Boolean shuffleCells, cropImage;
+	public int[] cellImageMapping;
 
-	private static JigsawSetting setting;
+	private static JigsawSetting setting=null;
 	int rowCount, columnCount;
+
+	///public String toString() {
+	//	return "shuffle=" + shuffleCells.toString() + " crop=" + cropImage.toString() + " mapping =" + cellImageMapping.toString();
+	//}
 
 	/**
  * 
@@ -37,5 +42,14 @@ public class JigsawSetting {
 		if (setting == null)
 			setting = new JigsawSetting();
 		return setting;
+	}
+
+	/**
+	 * @param setting2
+	 *            TODO: remove all static hell
+	 */
+
+	public static void setSetting(JigsawSetting setting2) {
+		setting = setting2;
 	}
 }
